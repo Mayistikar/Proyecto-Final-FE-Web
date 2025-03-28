@@ -25,6 +25,24 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli
 
+      - name: Run unit tests
+        run: ng test --watch=false --code-coverage
+
+      - name: Ensure tests passed
+        run: |
+          if [ $? -ne 0 ]; then
+            echo "Unit tests failed"
+            exit 1
+          fi
+
+      - name: Check code coverage
+        run: |
+          COVERAGE=$(grep -o 'statements.*[0-9]*\.[0-9]*%' coverage/lcov-report/index.html | grep -o '[0-9]*\.[0-9]*')
+          if (( $(echo "$COVERAGE < 71" | bc -l) )); then
+            echo "Code coverage ($COVERAGE%) is below the required threshold of 71%"
+            exit 1
+          fi
+
       - name: Build Angular app
         run: ng build
 
@@ -39,4 +57,4 @@ jobs:
         run: ls -la ./dist
 
       - name: Deploy to S3
-        run: aws s3 sync ./dist/proyecto-final-web  s3://fe-web-v1 --delete
+        run: aws s3 sync ./dist/proyecto-final-web s3://fe-web-v1 --delete
