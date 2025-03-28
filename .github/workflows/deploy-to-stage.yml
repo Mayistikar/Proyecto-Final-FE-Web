@@ -53,11 +53,6 @@ jobs:
       - name: Install AWS Amplify CLI
         run: npm install -g @aws-amplify/cli
 
-      - name: Initialize Amplify
-        run: amplify init --yes
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Pull existing Amplify project
         run: amplify pull --appId ${{ secrets.AWS_AMPLIFY_APP_ID }} --envName staging --yes
