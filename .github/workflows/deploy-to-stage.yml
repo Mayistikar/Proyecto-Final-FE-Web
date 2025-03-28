@@ -35,5 +35,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: List build output
+        run: ls -la ./dist
+
       - name: Deploy to S3
         run: aws s3 sync ./dist/fe-web-app-stage s3://fe-web-v1 --delete
