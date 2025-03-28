@@ -3,11 +3,9 @@ name: Deploy Angular App to S3
 on:
   pull_request:
     branches: [main]
-    types: [opened, synchronize, reopened]
 
 jobs:
   deploy:
-    if: github.event.pull_request.head.ref == 'develop' && github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-latest
 
     steps:
