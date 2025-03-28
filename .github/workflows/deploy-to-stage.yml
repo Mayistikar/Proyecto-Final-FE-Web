@@ -25,13 +25,13 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli
 
-      - name: Instalar nyc
+      - name: NYC install
         run: npm install nyc --save-dev
 
-      - name: Ejecutar pruebas con cobertura
+      - name: Test Angular app
         run: npx nyc --reporter=lcov --reporter=text-summary ng test --watch=false
 
-      - name: Verificar cobertura mínima
+      - name: Coverage check
         run: npx nyc check-coverage --statements=70 --branches=70 --functions=70 --lines=70
 
       - name: Build Angular app
@@ -49,6 +49,9 @@ jobs:
 
       - name: Deploy to S3
         run: aws s3 sync ./dist/proyecto-final-web s3://fe-web-v1 --delete
+
+      - name: Install AWS Amplify CLI
+        run: npm install -g @aws-amplify/cli
 
       - name: Deploy with AWS Amplify
         run: amplify publish
