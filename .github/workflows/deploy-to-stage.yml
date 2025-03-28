@@ -39,7 +39,7 @@ jobs:
         run: npm install nyc --save-dev
 
       - name: Ejecutar pruebas con cobertura
-        run: npx nyc --reporter=lcov --reporter=text-summary npm test
+        run: npx nyc --reporter=lcov --reporter=text-summary ng test --watch=false
 
       - name: Verificar cobertura mínima
         run: npx nyc check-coverage --statements=70 --branches=70 --functions=70 --lines=70
