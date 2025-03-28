@@ -37,10 +37,19 @@ jobs:
 
       - name: Check code coverage
         run: |
-          COVERAGE=$(grep -o 'statements.*[0-9]*\.[0-9]*%' coverage/proyecto-final-web/index.html | grep -o '[0-9]*\.[0-9]*')
-          if (( $(echo "$COVERAGE < 71" | bc -l) )); then
-            echo "Code coverage ($COVERAGE%) is below the required threshold of 71%"
+          COVERAGE=$(grep -oE 'statements.*[0-9]+(\.[0-9]+)?%' coverage/proyecto-final-web/index.html \
+            | grep -oE '[0-9]+(\.[0-9]+)?')
+
+          if [ -z "$COVERAGE" ]; then
+            echo "No se pudo obtener la cobertura de statements en el archivo HTML."
             exit 1
+          fi
+
+          if (( $(echo "$COVERAGE < 70" | bc -l) )); then
+            echo "Code coverage ($COVERAGE%) is below the required threshold of 70%"
+            exit 1
+          else
+            echo "Code coverage is $COVERAGE%. Good job!"
           fi
 
       - name: Build Angular app
