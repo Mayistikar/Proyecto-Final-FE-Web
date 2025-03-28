@@ -35,22 +35,14 @@ jobs:
             exit 1
           fi
 
-      - name: Check code coverage
-        run: |
-          COVERAGE=$(grep -oE 'statements.*[0-9]+(\.[0-9]+)?%' coverage/proyecto-final-web/index.html \
-            | grep -oE '[0-9]+(\.[0-9]+)?')
+      - name: Instalar nyc
+        run: npm install nyc --save-dev
 
-          if [ -z "$COVERAGE" ]; then
-            echo "No se pudo obtener la cobertura de statements en el archivo HTML."
-            exit 1
-          fi
+      - name: Ejecutar pruebas con cobertura
+        run: npx nyc --reporter=lcov --reporter=text-summary npm test
 
-          if (( $(echo "$COVERAGE < 70" | bc -l) )); then
-            echo "Code coverage ($COVERAGE%) is below the required threshold of 70%"
-            exit 1
-          else
-            echo "Code coverage is $COVERAGE%. Good job!"
-          fi
+      - name: Verificar cobertura mínima
+        run: npx nyc check-coverage --statements=70 --branches=70 --functions=70 --lines=70
 
       - name: Build Angular app
         run: ng build
