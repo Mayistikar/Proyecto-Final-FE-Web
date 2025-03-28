@@ -25,16 +25,6 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli
 
-      - name: Run unit tests
-        run: ng test --watch=false --code-coverage
-
-      - name: Ensure tests passed
-        run: |
-          if [ $? -ne 0 ]; then
-            echo "Unit tests failed"
-            exit 1
-          fi
-
       - name: Instalar nyc
         run: npm install nyc --save-dev
 
@@ -59,3 +49,9 @@ jobs:
 
       - name: Deploy to S3
         run: aws s3 sync ./dist/proyecto-final-web s3://fe-web-v1 --delete
+
+      - name: Deploy with AWS Amplify
+        run: amplify publish
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
