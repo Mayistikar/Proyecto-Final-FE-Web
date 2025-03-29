@@ -2,6 +2,7 @@ import { Component} from '@angular/core';
 import {FormGroup, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {RouterLink} from '@angular/router';
 import { CommonModule} from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
@@ -10,11 +11,13 @@ import { CommonModule} from '@angular/common';
     ReactiveFormsModule,
     RouterLink,
     CommonModule,
+    TranslateModule,
   ],
   templateUrl: './manufacturer.component.html',
   styleUrl: './manufacturer.component.css'
 })
 export class ManufacturerComponent {
+
   manufacturerForm = new FormGroup({
     manufacturerName: new FormControl('', [Validators.required, Validators.minLength(3)]),
     companyName: new FormControl('', [Validators.required, Validators.minLength(3)]),

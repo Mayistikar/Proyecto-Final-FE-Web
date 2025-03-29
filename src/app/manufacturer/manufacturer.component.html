@@ -1,178 +1,150 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col">
-
       <div class="card mb-5" style="max-width: 540px;">
-         <div class="row g-0">
+        <div class="row g-0">
           <div class="col-md-4">
             <img src="https://assetsccp.s3.us-east-1.amazonaws.com/maunfacturer_form_2.png" class="img-fluid rounded-start card-image" alt="manufacturer form">
           </div>
           <div class="col-md-8 card-info">
             <div class="card-body">
-              <h1 class="card-title">Registro de Fabricante</h1>
-              <p class="card-text">Complete el formulario para registrarse en la plataforma y gestionar sus productos en CCP</p>
+              <h1 class="card-title">{{ 'MANUFACTURER_REGISTRATION_TITLE' | translate }}</h1>
+              <p class="card-text">{{ 'MANUFACTURER_REGISTRATION_DESCRIPTION' | translate }}</p>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-    <div class="col">
-
-    </div>
+    <div class="col"></div>
   </div>
 
   <form [formGroup]="manufacturerForm" (ngSubmit)="onSubmit()">
     <div class="row">
-
       <div class="col mb-6">
-
         <div class="mb-3">
-          <label for="manufacturerName" class="form-label">Nombre completo del representante *</label>
-          <input type="text" class="form-control" id="manufacturerName" formControlName="manufacturerName" aria-describedby="manufacturerNameHelp" placeholder="Ingrese el nombre completo del representante"
+          <label for="manufacturerName" class="form-label">{{ 'MANUFACTURER_REPRESENTATIVE_NAME_LABEL' | translate }}</label>
+          <input type="text" class="form-control" id="manufacturerName" formControlName="manufacturerName" aria-describedby="manufacturerNameHelp" [placeholder]="'MANUFACTURER_REPRESENTATIVE_NAME_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': manufacturerName.invalid && manufacturerName.dirty, 'is-valid': manufacturerName.valid}"/>
-
           <div id="manufacturerNameHelpBlock" class="form-text float-end">
             {{ manufacturerName.value?.length || 0 }}/256
           </div>
-
           <div *ngIf="manufacturerName.invalid && (manufacturerName.dirty)" class="invalid-feedback">
-            <small *ngIf="manufacturerName.errors?.['required']" >El nombre del fabricante es obligatorio.</small>
-            <small *ngIf="manufacturerName.errors?.['minlength']">El nombre del fabricante es muy corto.</small>
+            <small *ngIf="manufacturerName.errors?.['required']">{{ 'MANUFACTURER_REPRESENTATIVE_NAME_REQUIRED' | translate }}</small>
+            <small *ngIf="manufacturerName.errors?.['minlength']">{{ 'MANUFACTURER_REPRESENTATIVE_NAME_MINLENGTH' | translate }}</small>
           </div>
         </div>
 
-
-
         <div class="mb-3">
-          <label for="companyName" class="form-label">Nombre de la empresa *</label>
-          <input type="text" class="form-control" id="companyName" formControlName="companyName" placeholder="Ingrese el nombre de la empresa"
+          <label for="companyName" class="form-label">{{ 'MANUFACTURER_COMPANY_NAME_LABEL' | translate }}</label>
+          <input type="text" class="form-control" id="companyName" formControlName="companyName" [placeholder]="'MANUFACTURER_COMPANY_NAME_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': companyName.invalid && companyName.dirty, 'is-valid': companyName.valid}"/>
-
           <div id="companyNameHelpBlock" class="form-text float-end">
             {{ companyName.value?.length || 0 }}/256
           </div>
-
           <div *ngIf="companyName.invalid && (companyName.dirty)" class="invalid-feedback">
-            <small *ngIf="companyName.errors?.['required']">El nombre de la empresa es obligatorio.</small>
-            <small *ngIf="companyName.errors?.['minlength']">El nombre de la empresa es muy corto.</small>
+            <small *ngIf="companyName.errors?.['required']">{{ 'MANUFACTURER_COMPANY_NAME_REQUIRED' | translate }}</small>
+            <small *ngIf="companyName.errors?.['minlength']">{{ 'MANUFACTURER_COMPANY_NAME_MINLENGTH' | translate }}</small>
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="companyAddress" class="form-label">Dirección de la empresa *</label>
-          <input type="text" class="form-control" id="companyAddress" formControlName="companyAddress" placeholder="Ingrese la dirección de la empresa"
+          <label for="companyAddress" class="form-label">{{ 'MANUFACTURER_COMPANY_ADDRESS_LABEL' | translate }}</label>
+          <input type="text" class="form-control" id="companyAddress" formControlName="companyAddress" [placeholder]="'MANUFACTURER_COMPANY_ADDRESS_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': companyAddress.invalid && companyAddress.dirty,'is-valid': companyAddress.valid }"/>
-
           <div id="companyAddressHelpBlock" class="form-text float-end">
             {{ companyAddress.value?.length || 0 }}/256
           </div>
-
           <div *ngIf="companyAddress.invalid && (companyAddress.dirty)" class="invalid-feedback">
-            <small *ngIf="companyAddress.errors?.['required']">La dirección de la empresa es obligatoria.</small>
-            <small *ngIf="companyAddress.errors?.['minlength']">La dirección de la empresa es muy corta.</small>
+            <small *ngIf="companyAddress.errors?.['required']">{{ 'MANUFACTURER_COMPANY_ADDRESS_REQUIRED' | translate }}</small>
+            <small *ngIf="companyAddress.errors?.['minlength']">{{ 'MANUFACTURER_COMPANY_ADDRESS_MINLENGTH' | translate }}</small>
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="manufacturerEmail" class="form-label">Correo electrónico *</label>
-          <input type="email" class="form-control" id="manufacturerEmail" formControlName="manufacturerEmail" placeholder="Ingrese el email de la empresa"
+          <label for="manufacturerEmail" class="form-label">{{ 'MANUFACTURER_EMAIL_LABEL' | translate }}</label>
+          <input type="email" class="form-control" id="manufacturerEmail" formControlName="manufacturerEmail" [placeholder]="'MANUFACTURER_EMAIL_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': manufacturerEmail.invalid && manufacturerEmail.dirty, 'is-valid': manufacturerEmail.valid}"/>
           <div *ngIf="manufacturerEmail.invalid && (manufacturerEmail.dirty)" class="invalid-feedback">
-            <small *ngIf="manufacturerEmail.errors?.['required']">El correo electrónico es obligatorio.</small>
-            <small *ngIf="manufacturerEmail.errors?.['email']">El formato del correo electrónico no es válido.</small>
+            <small *ngIf="manufacturerEmail.errors?.['required']">{{ 'MANUFACTURER_EMAIL_REQUIRED' | translate }}</small>
+            <small *ngIf="manufacturerEmail.errors?.['email']">{{ 'MANUFACTURER_EMAIL_INVALID' | translate }}</small>
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="manufacturerPhone" class="form-label">Número de teléfono *</label>
-          <input type="tel" class="form-control" id="manufacturerPhone" formControlName="manufacturerPhone" placeholder="+593 999 999 999"
+          <label for="manufacturerPhone" class="form-label">{{ 'MANUFACTURER_PHONE_LABEL' | translate }}</label>
+          <input type="tel" class="form-control" id="manufacturerPhone" formControlName="manufacturerPhone" [placeholder]="'MANUFACTURER_PHONE_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': manufacturerPhone.invalid && manufacturerPhone.dirty, 'is-valid': manufacturerPhone.valid}"/>
           <div *ngIf="manufacturerPhone.invalid && (manufacturerPhone.dirty)" class="invalid-feedback">
-            <small *ngIf="manufacturerPhone.errors?.['required']">El número de teléfono es obligatorio.</small>
-            <small *ngIf="manufacturerPhone.errors?.['pattern']">El formato del número de teléfono no es válido.</small>
-            <small *ngIf="manufacturerPhone.errors?.['minlength']">El número de teléfono es muy corto.</small>
+            <small *ngIf="manufacturerPhone.errors?.['required']">{{ 'MANUFACTURER_PHONE_REQUIRED' | translate }}</small>
+            <small *ngIf="manufacturerPhone.errors?.['pattern']">{{ 'MANUFACTURER_PHONE_INVALID' | translate }}</small>
+            <small *ngIf="manufacturerPhone.errors?.['minlength']">{{ 'MANUFACTURER_PHONE_MINLENGTH' | translate }}</small>
           </div>
         </div>
-
       </div>
 
       <div class="col mb-6">
-
         <div class="mb-3">
-          <label for="companyCountry" class="form-label">País de operación *</label>
-          <input type="text" class="form-control" id="companyCountry" formControlName="companyCountry" placeholder="Seleccione el país de operación de la empresa"
+          <label for="companyCountry" class="form-label">{{ 'MANUFACTURER_COUNTRY_LABEL' | translate }}</label>
+          <input type="text" class="form-control" id="companyCountry" formControlName="companyCountry" [placeholder]="'MANUFACTURER_COUNTRY_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': companyCountry.invalid && companyCountry.dirty, 'is-valid': companyCountry.valid}"/>
           <div *ngIf="companyCountry.invalid && (companyCountry.dirty)" class="invalid-feedback">
-            <small *ngIf="companyCountry.errors?.['required']">El país de operación es obligatorio.</small>
-            <small *ngIf="companyCountry.errors?.['minlength']">El nombre del país es muy corto.</small>
+            <small *ngIf="companyCountry.errors?.['required']">{{ 'MANUFACTURER_COUNTRY_REQUIRED' | translate }}</small>
+            <small *ngIf="companyCountry.errors?.['minlength']">{{ 'MANUFACTURER_COUNTRY_MINLENGTH' | translate }}</small>
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="manufacturerRUC" class="form-label">Identificación fiscal o RUC *</label>
-          <input type="text" class="form-control" id="manufacturerRUC" formControlName="manufacturerRUC" placeholder="Ingrese su número de identificación fiscal o RUC"
+          <label for="manufacturerRUC" class="form-label">{{ 'MANUFACTURER_RUC_LABEL' | translate }}</label>
+          <input type="text" class="form-control" id="manufacturerRUC" formControlName="manufacturerRUC" [placeholder]="'MANUFACTURER_RUC_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': manufacturerRUC.invalid && manufacturerRUC.dirty, 'is-valid': manufacturerRUC.valid}"/>
-
           <div id="manufacturerRUCHelpBlock" class="form-text float-end">
             {{ manufacturerRUC.value?.length || 0 }}/256
           </div>
-
           <div *ngIf="manufacturerRUC.invalid && (manufacturerRUC.dirty)" class="invalid-feedback">
-            <small *ngIf="manufacturerRUC.errors?.['required']">La identificación fiscal o RUC es obligatoria.</small>
-            <small *ngIf="manufacturerRUC.errors?.['pattern']">El formato de la identificación fiscal o RUC no es válido.</small>
-            <small *ngIf="manufacturerRUC.errors?.['minlength']">La identificación fiscal o RUC es muy corta.</small>
+            <small *ngIf="manufacturerRUC.errors?.['required']">{{ 'MANUFACTURER_RUC_REQUIRED' | translate }}</small>
+            <small *ngIf="manufacturerRUC.errors?.['pattern']">{{ 'MANUFACTURER_RUC_INVALID' | translate }}</small>
+            <small *ngIf="manufacturerRUC.errors?.['minlength']">{{ 'MANUFACTURER_RUC_MINLENGTH' | translate }}</small>
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="password" class="form-label">Contraseña *</label>
-          <input type="password" class="form-control" id="password" formControlName="password" placeholder="Ingrese la contraseña"
+          <label for="password" class="form-label">{{ 'MANUFACTURER_PASSWORD_LABEL' | translate }}</label>
+          <input type="password" class="form-control" id="password" formControlName="password" [placeholder]="'MANUFACTURER_PASSWORD_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': password.invalid && password.dirty || !passwordsMatch, 'is-valid': password.valid && passwordsMatch}"/>
-
           <div id="passwordHelpBlock" class="form-text float-end">
-            Mínimo 8 caracteres
+            {{ 'MANUFACTURER_PASSWORD_MINLENGTH' | translate }}
           </div>
-
           <div id="invalidPassword" *ngIf="password.invalid && password.dirty && !passwordsMatch" class="invalid-feedback">
-            <small *ngIf="password.errors?.['required']">La contraseña es obligatoria.</small>
-            <small *ngIf="password.errors?.['minlength']">La contraseña es muy corta.</small>
+            <small *ngIf="password.errors?.['required']">{{ 'MANUFACTURER_PASSWORD_REQUIRED' | translate }}</small>
+            <small *ngIf="password.errors?.['minlength']">{{ 'MANUFACTURER_PASSWORD_MINLENGTH' | translate }}</small>
           </div>
-
           <div *ngIf="!passwordsMatch" class="invalid-feedback">
-            <small>Las contraseñas no coinciden</small>
+            <small>{{ 'MANUFACTURER_PASSWORDS_NOT_MATCH' | translate }}</small>
           </div>
-
         </div>
 
         <div class="mb-3">
-          <label for="confirmPassword" class="form-label">Confirmación de contraseña *</label>
-          <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirme la contraseña"
+          <label for="confirmPassword" class="form-label">{{ 'MANUFACTURER_CONFIRM_PASSWORD_LABEL' | translate }}</label>
+          <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" [placeholder]="'MANUFACTURER_CONFIRM_PASSWORD_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': confirmPassword.invalid && confirmPassword.dirty  || !passwordsMatch, 'is-valid': confirmPassword.valid && passwordsMatch}"/>
-
           <div id="confirmPasswordHelpBlock" class="form-text float-end">
-            Mínimo 8 caracteres
+            {{ 'MANUFACTURER_PASSWORD_MINLENGTH' | translate }}
           </div>
-
           <div *ngIf="confirmPassword.invalid && confirmPassword.dirty && !passwordsMatch" class="invalid-feedback">
-            <small *ngIf="confirmPassword.errors?.['required']">La confirmación de la contraseña es obligatoria.</small>
-            <small *ngIf="confirmPassword.errors?.['minlength']">La confirmación de la contraseña es muy corta.</small>
+            <small *ngIf="confirmPassword.errors?.['required']">{{ 'MANUFACTURER_CONFIRM_PASSWORD_REQUIRED' | translate }}</small>
+            <small *ngIf="confirmPassword.errors?.['minlength']">{{ 'MANUFACTURER_CONFIRM_PASSWORD_MINLENGTH' | translate }}</small>
           </div>
-
           <div *ngIf="!passwordsMatch" class="invalid-feedback">
-            <small>Las contraseñas no coinciden</small>
+            <small>{{ 'MANUFACTURER_PASSWORDS_NOT_MATCH' | translate }}</small>
           </div>
-
         </div>
 
         <div class="mb-3">
           <br>
-          <button type="submit" class="btn btn-outline-secondary float-end btn-cancel-manufacturer m-2" routerLink="/" >Cancelar</button>
-          <button type="submit" class="btn btn-primary float-end btn-submit-manufacturer m-2" [disabled]="!manufacturerForm.valid">Enviar</button>
+          <button type="submit" class="btn btn-outline-secondary float-end btn-cancel-manufacturer m-2" routerLink="/" >{{ 'MANUFACTURER_CANCEL_BUTTON' | translate }}</button>
+          <button type="submit" class="btn btn-primary float-end btn-submit-manufacturer m-2" [disabled]="!manufacturerForm.valid">{{ 'MANUFACTURER_SUBMIT_BUTTON' | translate }}</button>
         </div>
       </div>
-
     </div>
-
   </form>
 </div>
