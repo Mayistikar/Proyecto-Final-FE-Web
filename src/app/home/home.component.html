@@ -9,7 +9,7 @@
     </mat-card>
   </mat-grid-tile>
 
-  <mat-grid-tile>
+  <mat-grid-tile class="login-title">
     <div class="login-container login-input">
       <h1>{{ 'LOGIN_TITLE' | translate }}</h1>
 
@@ -34,10 +34,11 @@
         </mat-form-field>
 
         <div class="btn-container">
-          <button mat-flat-button class="btn-login" type="submit">{{ 'LOGIN_BUTTON' | translate }}</button>
-          <button mat-flat-button class="btn-man-register" type="submit">{{ 'REGISTER_MANUFACTURER' | translate }}</button>
-          <button mat-flat-button class="btn-sell-register" type="submit">{{ 'REGISTER_SELLER' | translate }}</button>
+          <a mat-flat-button routerLink="/manufacturer" class="btn-login" type="submit">{{ 'LOGIN_BUTTON' | translate }}</a>
+          <a mat-flat-button routerLink="/manufacturer" class="btn-man-register" type="submit">{{ 'REGISTER_MANUFACTURER' | translate }}</a>
+          <a mat-flat-button routerLink="/manufacturer" class="btn-sell-register" type="submit">{{ 'REGISTER_SELLER' | translate }}</a>
         </div>
+
       </form>
     </div>
   </mat-grid-tile>

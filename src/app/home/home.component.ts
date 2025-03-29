@@ -9,6 +9,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+
 
 
 @Component({
@@ -21,7 +23,9 @@ import {TranslatePipe} from '@ngx-translate/core';
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule, TranslatePipe
+    CommonModule,
+    TranslatePipe,
+    RouterLink
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
