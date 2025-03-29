@@ -1,0 +1,14 @@
+.flag-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  position: relative;
+  padding: 0.2rem;
+}
+
+.flag-icon{
+  width: 24px;
+  height: 24px;
+}

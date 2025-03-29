@@ -8,10 +8,11 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 
 @Component({
-  selector: 'app-home',
+  selector: 'home',
   imports: [MatButtonModule,
     MatCardModule,
     MatGridListModule,
@@ -20,7 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule, TranslatePipe
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
