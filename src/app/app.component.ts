@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -15,12 +16,12 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatButtonModule,MatIconModule
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'proyecto-final-web';
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private router: Router) {
     translate.addLangs(['en', 'es']);
     translate.setDefaultLang('en');
   }
@@ -28,4 +29,5 @@ export class AppComponent {
   changeLanguage(lang: string) {
     this.translate.use(lang);
   }
+
 }

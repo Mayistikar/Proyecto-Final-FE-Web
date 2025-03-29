@@ -1,20 +1,12 @@
-<mat-toolbar>
-  <span>CPP</span>
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
-  <div class="language-selector">
+<mat-toolbar class="tool-bar tool-bar-content">
+    <span>CPP</span>
     <div class="language-buttons">
       <button (click)="changeLanguage('en')" class="flag-button" title="English">
-        <img src="https://assetsccp.s3.us-east-1.amazonaws.com/english.png" alt="English" class="flag-icon" />
+        <img src="https://assetsccp.s3.us-east-1.amazonaws.com/english.png" alt="English" class="flag-icon"/>
       </button>
       <button (click)="changeLanguage('es')" class="flag-button" title="Español">
-        <img src="https://assetsccp.s3.us-east-1.amazonaws.com/spanish.png" alt="Español" class="flag-icon" />
+        <img src="https://assetsccp.s3.us-east-1.amazonaws.com/spanish.png" alt="Español" class="flag-icon"/>
       </button>
     </div>
-  </div>
 </mat-toolbar>
 <home></home>

@@ -1,0 +1,38 @@
+@use '@angular/material' as mat;
+.language-buttons{
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.flag-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  position: relative;
+  padding: 0.2rem;
+}
+
+.flag-icon{
+  width: 24px;
+  height: 24px;
+}
+
+.tool-bar {
+  @include mat.toolbar-overrides((
+    container-background-color: #0091EA,
+    container-text-color: white,
+  ));
+}
+.tool-bar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
