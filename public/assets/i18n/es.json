@@ -9,5 +9,7 @@
   "PASSWORD_PLACEHOLDER": "Ingrese su contraseña",
   "PASSWORD_REQUIRED": "La contraseña es obligatoria",
   "PASSWORD_MINLENGTH": "La contraseña debe tener al menos 4 caracteres",
-  "LOGIN_BUTTON": "Iniciar Sesión"
+  "LOGIN_BUTTON": "Iniciar Sesión",
+  "REGISTER_MANUFACTURER": "Registrarse como Fabricante",
+  "REGISTER_SELLER": "Registrarse como Vendedor"
 }
