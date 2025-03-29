@@ -1,18 +1,46 @@
 <mat-grid-list cols="2">
   <mat-grid-tile>
-
     <mat-card class="welcome-card" appearance="outlined">
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+      <img mat-card-image src="https://assetsccp.s3.us-east-1.amazonaws.com/ccp.png" alt="Photo of a Shiba Inu">
       <mat-card-content>
+        <h1>¡Bienvenido a CCP!</h1>
         <p>
-          The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-          A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-          bred for hunting.
+          Somos líderes en la distribución de productos de consumo masivo, conectando fabricantes con supermercados y tiendas en 5 países. Con una red de bodegas estratégicas, garantizamos abastecimiento eficiente y entregas rápidas.
+          Inicia sesión ó registrese para gestionar tus pedidos y optimizar tu operación.
         </p>
       </mat-card-content>
     </mat-card>
+  </mat-grid-tile>
 
+  <mat-grid-tile>
+    <div class="login-container login-input">
+      <h1>Inicio de Sesión</h1>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <h2 class="label-text-login">Usuario</h2>
+        <mat-form-field appearance="fill">
+          <mat-label>Ingrese su usuario</mat-label>
+          <input matInput formControlName="usuario">
+          <mat-error *ngIf="loginForm.get('usuario')?.hasError('required')">
+            El usuario es obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <h2 class="label-text-login">Contraseña</h2>
+        <mat-form-field appearance="fill">
+          <mat-label>Ingrese su contraseña</mat-label>
+          <input matInput [type]="'password'" formControlName="contrasena">
+          <mat-error *ngIf="loginForm.get('contrasena')?.hasError('required')">
+            La contraseña es obligatoria
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('contrasena')?.hasError('minlength')">
+            La contraseña debe tener al menos 4 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-flat-button class="btn-login" type="submit">Iniciar Sesión</button>
+      </form>
+    </div>
 
   </mat-grid-tile>
-  <mat-grid-tile>2</mat-grid-tile>
 </mat-grid-list>
