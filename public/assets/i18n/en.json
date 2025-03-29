@@ -1,0 +1,13 @@
+{
+  "WELCOME_TITLE": "Welcome to CCP!",
+  "WELCOME_DESCRIPTION": "We are leaders in the distribution of mass consumer products, connecting manufacturers with supermarkets and stores in 5 countries. With a network of strategic warehouses, we ensure efficient supply and fast deliveries. Log in or register to manage your orders and optimize your operation.",
+  "LOGIN_TITLE": "Login",
+  "USERNAME_LABEL": "Username",
+  "USERNAME_PLACEHOLDER": "Enter your username",
+  "USERNAME_REQUIRED": "Username is required",
+  "PASSWORD_LABEL": "Password",
+  "PASSWORD_PLACEHOLDER": "Enter your password",
+  "PASSWORD_REQUIRED": "Password is required",
+  "PASSWORD_MINLENGTH": "Password must be at least 4 characters",
+  "LOGIN_BUTTON": "Login"
+}

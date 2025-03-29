@@ -1,0 +1,13 @@
+{
+  "WELCOME_TITLE": "¡Bienvenido a CCP!",
+  "WELCOME_DESCRIPTION": "Somos líderes en la distribución de productos de consumo masivo, conectando fabricantes con supermercados y tiendas en 5 países. Con una red de bodegas estratégicas, garantizamos abastecimiento eficiente y entregas rápidas. Inicia sesión ó registrese para gestionar tus pedidos y optimizar tu operación.",
+  "LOGIN_TITLE": "Inicio de Sesión",
+  "USERNAME_LABEL": "Usuario",
+  "USERNAME_PLACEHOLDER": "Ingrese su usuario",
+  "USERNAME_REQUIRED": "El usuario es obligatorio",
+  "PASSWORD_LABEL": "Contraseña",
+  "PASSWORD_PLACEHOLDER": "Ingrese su contraseña",
+  "PASSWORD_REQUIRED": "La contraseña es obligatoria",
+  "PASSWORD_MINLENGTH": "La contraseña debe tener al menos 4 caracteres",
+  "LOGIN_BUTTON": "Iniciar Sesión"
+}
