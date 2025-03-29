@@ -1,0 +1,46 @@
+.card-info {
+  display: flex;
+  width: 343px;
+  padding: 24px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.card-body h1 {
+  color: var(--Gray-900, #212529);
+
+  font-family: Inter, sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.card-body p {
+  color: var(--Body-Text-Base-Color, #68717A);
+
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.btn-submit-manufacturer {
+  width: 124px;
+  height: 44px;
+  border-radius: 4px;
+  background: #03A9F4;
+}
+
+.btn-cancel-manufacturer {
+  width: 124px;
+  height: 44px;
+  border-radius: 4px;
+  background: #F5F5F5;
+  border-style: none;
+  color: black;
+}

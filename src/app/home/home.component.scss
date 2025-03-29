@@ -164,3 +164,13 @@
     filled-container-color: #0277BD,
   ));
 }
+
+.login-title h1 {
+  color: #000;
+  font-family: var(--Display-Large-Font, Roboto), serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--Display-Large-Line-Height, 64px); /* 112.281% */
+  letter-spacing: var(--Display-Large-Tracking, -0.25px);
+}

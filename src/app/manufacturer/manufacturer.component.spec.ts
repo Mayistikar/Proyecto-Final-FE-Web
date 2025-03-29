@@ -1,23 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HomeComponent } from './home.component';
-import { TranslateModule, TranslateLoader, TranslateFakeLoader, TranslateService, TranslateStore } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
+import { ManufacturerComponent } from './manufacturer.component';
+import { TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 
-describe('HomeComponent', () => {
-  let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
+describe('ManufacturerComponent', () => {
+  let component: ManufacturerComponent;
+  let fixture: ComponentFixture<ManufacturerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        HomeComponent,
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useClass: TranslateFakeLoader
-          }
-        })
+        ManufacturerComponent,
+        TranslateModule.forRoot(),
       ],
       providers: [
         TranslateService,
@@ -28,12 +23,13 @@ describe('HomeComponent', () => {
             params: of({}), // Mock params observable
             snapshot: { paramMap: { get: () => 'test-id' } } // Mock snapshot
           }
-        }
+        },
+        Router,
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(HomeComponent);
+    fixture = TestBed.createComponent(ManufacturerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
