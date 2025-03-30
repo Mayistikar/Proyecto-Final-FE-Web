@@ -30,4 +30,8 @@ export class AppComponent {
   changeLanguage(lang: string) {
     this.translate.use(lang);
   }
+
+  getTranslateService() {
+    return this.translate;
+  }
 }
