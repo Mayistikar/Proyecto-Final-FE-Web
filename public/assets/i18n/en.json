@@ -48,12 +48,14 @@
   "MANUFACTURER_PASSWORD_LABEL": "Password *",
   "MANUFACTURER_PASSWORD_PLACEHOLDER": "Enter the password",
   "MANUFACTURER_PASSWORD_REQUIRED": "The password is required.",
-  "MANUFACTURER_PASSWORD_MINLENGTH": "The password is too short.",
+  "MANUFACTURER_PASSWORD_MINLENGTH": "Minimum 8 characters",
+  "MANUFACTURER_PASSWORD_SHORT": "The password is too short.",
   "MANUFACTURER_CONFIRM_PASSWORD_LABEL": "Confirm password *",
   "MANUFACTURER_CONFIRM_PASSWORD_PLACEHOLDER": "Confirm the password",
   "MANUFACTURER_CONFIRM_PASSWORD_REQUIRED": "The password confirmation is required.",
   "MANUFACTURER_CONFIRM_PASSWORD_MINLENGTH": "The password confirmation is too short.",
   "MANUFACTURER_PASSWORDS_NOT_MATCH": "Passwords do not match",
   "MANUFACTURER_CANCEL_BUTTON": "Cancel",
-  "MANUFACTURER_SUBMIT_BUTTON": "Submit"
+  "MANUFACTURER_SUBMIT_BUTTON": "Submit",
+  "MANUFACTURER_HELP_FIELDS": "(*) Required fields"
 }

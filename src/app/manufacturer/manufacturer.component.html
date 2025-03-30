@@ -18,6 +18,10 @@
     <div class="col"></div>
   </div>
 
+  <div class="text-primary mb-4">
+    <small>{{ 'MANUFACTURER_HELP_FIELDS' | translate }}</small>
+  </div>
+
   <form [formGroup]="manufacturerForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col mb-6">
@@ -84,13 +88,20 @@
 
       <div class="col mb-6">
         <div class="mb-3">
-          <label for="companyCountry" class="form-label">{{ 'MANUFACTURER_COUNTRY_LABEL' | translate }}</label>
-          <input type="text" class="form-control" id="companyCountry" formControlName="companyCountry" [placeholder]="'MANUFACTURER_COUNTRY_PLACEHOLDER' | translate"
-                 [ngClass]="{'is-invalid': companyCountry.invalid && companyCountry.dirty, 'is-valid': companyCountry.valid}"/>
-          <div *ngIf="companyCountry.invalid && (companyCountry.dirty)" class="invalid-feedback">
-            <small *ngIf="companyCountry.errors?.['required']">{{ 'MANUFACTURER_COUNTRY_REQUIRED' | translate }}</small>
-            <small *ngIf="companyCountry.errors?.['minlength']">{{ 'MANUFACTURER_COUNTRY_MINLENGTH' | translate }}</small>
+          <div class="mb-3">
+            <label for="companyCountry" class="form-label">{{ 'MANUFACTURER_COUNTRY_LABEL' | translate }}</label>
+            <select class="form-select" id="companyCountry" formControlName="companyCountry"
+                    [ngClass]="{'is-invalid': companyCountry.invalid && companyCountry.dirty, 'is-valid': companyCountry.valid}">
+              <option value="" selected disabled>{{ 'MANUFACTURER_COUNTRY_PLACEHOLDER' | translate }}</option>
+              <option value="Colombia">Colombia</option>
+              <option value="USA">USA</option>
+            </select>
+            <div *ngIf="companyCountry.invalid && (companyCountry.dirty)" class="invalid-feedback">
+              <small *ngIf="companyCountry.errors?.['required']">{{ 'MANUFACTURER_COUNTRY_REQUIRED' | translate }}</small>
+              <small *ngIf="companyCountry.errors?.['minlength']">{{ 'MANUFACTURER_COUNTRY_MINLENGTH' | translate }}</small>
+            </div>
           </div>
+
         </div>
 
         <div class="mb-3">
@@ -116,7 +127,7 @@
           </div>
           <div id="invalidPassword" *ngIf="password.invalid && password.dirty && !passwordsMatch" class="invalid-feedback">
             <small *ngIf="password.errors?.['required']">{{ 'MANUFACTURER_PASSWORD_REQUIRED' | translate }}</small>
-            <small *ngIf="password.errors?.['minlength']">{{ 'MANUFACTURER_PASSWORD_MINLENGTH' | translate }}</small>
+            <small *ngIf="password.errors?.['minlength']">{{ 'MANUFACTURER_PASSWORD_SHORT' | translate }}</small>
           </div>
           <div *ngIf="!passwordsMatch" class="invalid-feedback">
             <small>{{ 'MANUFACTURER_PASSWORDS_NOT_MATCH' | translate }}</small>
@@ -132,7 +143,7 @@
           </div>
           <div *ngIf="confirmPassword.invalid && confirmPassword.dirty && !passwordsMatch" class="invalid-feedback">
             <small *ngIf="confirmPassword.errors?.['required']">{{ 'MANUFACTURER_CONFIRM_PASSWORD_REQUIRED' | translate }}</small>
-            <small *ngIf="confirmPassword.errors?.['minlength']">{{ 'MANUFACTURER_CONFIRM_PASSWORD_MINLENGTH' | translate }}</small>
+            <small *ngIf="confirmPassword.errors?.['minlength']">{{ 'MANUFACTURER_PASSWORD_SHORT' | translate }}</small>
           </div>
           <div *ngIf="!passwordsMatch" class="invalid-feedback">
             <small>{{ 'MANUFACTURER_PASSWORDS_NOT_MATCH' | translate }}</small>

@@ -41,4 +41,25 @@ describe('HomeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should log user and password when form is valid', () => {
+    spyOn(console, 'log');
+    component.loginForm.setValue({ usuario: 'testuser', contrasena: 'testpass' });
+    component.onSubmit();
+    expect(console.log).toHaveBeenCalledWith('Usuario:', 'testuser', 'Contraseña:', 'testpass');
+  });
+
+  it('should log "Formulario inválido" when form is invalid', () => {
+    spyOn(console, 'log');
+    component.loginForm.setValue({ usuario: '', contrasena: '' });
+    component.onSubmit();
+    expect(console.log).toHaveBeenCalledWith('Formulario inválido');
+  });
+
+  it('should log "Formulario inválido" when password is too short', () => {
+    spyOn(console, 'log');
+    component.loginForm.setValue({ usuario: 'testuser', contrasena: '123' });
+    component.onSubmit();
+    expect(console.log).toHaveBeenCalledWith('Formulario inválido');
+  });
 });
