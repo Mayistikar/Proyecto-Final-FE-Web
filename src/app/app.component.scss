@@ -3,7 +3,7 @@
   display: flex;
   justify-content: flex-end;
   padding: 0.5rem;
-  margin-left: 0.5rem;
+  margin-right: 3rem;
 }
 
 .flag-button {
@@ -13,7 +13,7 @@
   overflow: hidden;
   outline: none;
   position: relative;
-  padding: 0.2rem;
+  padding: 0.5rem;
 }
 
 .flag-icon{
@@ -30,9 +30,13 @@
 .tool-bar-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
 }
 
+.ccp-title {
+  font-size: 1.5rem;
+  color: white;
+  margin-left: 5rem;
+}

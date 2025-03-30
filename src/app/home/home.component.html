@@ -9,12 +9,11 @@
     </mat-card>
   </mat-grid-tile>
 
-  <mat-grid-tile>
+  <mat-grid-tile class="login-title">
     <div class="login-container login-input">
       <h1>{{ 'LOGIN_TITLE' | translate }}</h1>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <h2 class="label-text-login">{{ 'USERNAME_LABEL' | translate }}</h2>
         <mat-form-field appearance="fill">
           <mat-label>{{ 'USERNAME_PLACEHOLDER' | translate }}</mat-label>
           <input matInput formControlName="usuario">
@@ -23,7 +22,6 @@
           </mat-error>
         </mat-form-field>
 
-        <h2 class="label-text-login">{{ 'PASSWORD_LABEL' | translate }}</h2>
         <mat-form-field appearance="fill">
           <mat-label>{{ 'PASSWORD_PLACEHOLDER' | translate }}</mat-label>
           <input matInput [type]="'password'" formControlName="contrasena">
@@ -35,7 +33,12 @@
           </mat-error>
         </mat-form-field>
 
-        <button mat-flat-button class="btn-login" type="submit">{{ 'LOGIN_BUTTON' | translate }}</button>
+        <div class="btn-container">
+          <a mat-flat-button routerLink="/manufacturer" class="btn-login" type="submit">{{ 'LOGIN_BUTTON' | translate }}</a>
+          <a mat-flat-button routerLink="/manufacturer" class="btn-man-register" type="submit">{{ 'REGISTER_MANUFACTURER' | translate }}</a>
+          <a mat-flat-button routerLink="/manufacturer" class="btn-sell-register" type="submit">{{ 'REGISTER_SELLER' | translate }}</a>
+        </div>
+
       </form>
     </div>
   </mat-grid-tile>

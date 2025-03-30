@@ -24,11 +24,12 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/proyecto-final-web'),
-      subdir: '.',
+      dir: require('path').join(__dirname, './coverage'),
+      subdir: '.', // Esto evita crear un subdirectorio con el nombre del navegador
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        { type: 'html', subdir: 'html' },
+        { type: 'text-summary' },
+        { type: 'json-summary' }  // Agrega este reporter para generar el archivo JSON
       ]
     },
     reporters: ['progress', 'kjhtml'],
