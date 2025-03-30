@@ -127,7 +127,7 @@
           </div>
           <div id="invalidPassword" *ngIf="password.invalid && password.dirty && !passwordsMatch" class="invalid-feedback">
             <small *ngIf="password.errors?.['required']">{{ 'MANUFACTURER_PASSWORD_REQUIRED' | translate }}</small>
-            <small *ngIf="password.errors?.['minlength']">{{ 'MANUFACTURER_PASSWORD_MINLENGTH' | translate }}</small>
+            <small *ngIf="password.errors?.['minlength']">{{ 'MANUFACTURER_PASSWORD_SHORT' | translate }}</small>
           </div>
           <div *ngIf="!passwordsMatch" class="invalid-feedback">
             <small>{{ 'MANUFACTURER_PASSWORDS_NOT_MATCH' | translate }}</small>
@@ -143,7 +143,7 @@
           </div>
           <div *ngIf="confirmPassword.invalid && confirmPassword.dirty && !passwordsMatch" class="invalid-feedback">
             <small *ngIf="confirmPassword.errors?.['required']">{{ 'MANUFACTURER_CONFIRM_PASSWORD_REQUIRED' | translate }}</small>
-            <small *ngIf="confirmPassword.errors?.['minlength']">{{ 'MANUFACTURER_CONFIRM_PASSWORD_MINLENGTH' | translate }}</small>
+            <small *ngIf="confirmPassword.errors?.['minlength']">{{ 'MANUFACTURER_PASSWORD_SHORT' | translate }}</small>
           </div>
           <div *ngIf="!passwordsMatch" class="invalid-feedback">
             <small>{{ 'MANUFACTURER_PASSWORDS_NOT_MATCH' | translate }}</small>

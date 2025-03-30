@@ -27,8 +27,16 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli
 
-      - name: Run unit tests with code coverage
-        run: ng test --code-coverage --watch=false
+      - name: Ejecutar pruebas unitarias con coverage
+        run: npm run test -- --watch=false --code-coverage
 
-      - name: Check minimum 71% coverage
-        run: npx nyc check-coverage --statements=71 --branches=71 --functions=71 --lines=71
+      - name: Validar umbral de coverage (mínimo 71%)
+        run: |
+          COVERAGE=$(node -p "require('./coverage/coverage-summary.json').total.lines.pct")
+          echo "Coverage actual: $COVERAGE%"
+          if (( $(echo "$COVERAGE < 71" | bc -l) )); then
+            echo "Error: La cobertura ($COVERAGE%) es inferior al 71% requerido."
+            exit 1
+          else
+            echo "La cobertura cumple con el mínimo requerido."
+          fi
