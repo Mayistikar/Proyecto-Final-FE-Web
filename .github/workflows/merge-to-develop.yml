@@ -1,4 +1,4 @@
-name: CI for Develop
+name: Tests and Coverage Develop
 
 on:
   push:
@@ -27,11 +27,8 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli
 
-      - name: Install NYC for code coverage
-        run: npm install nyc --save-dev
-
-      - name: Run unit tests
-        run: npx nyc --reporter=lcov --reporter=text-summary ng test --watch=false
+      - name: Run unit tests with code coverage
+        run: ng test --code-coverage --watch=false
 
       - name: Check minimum 71% coverage
         run: npx nyc check-coverage --statements=71 --branches=71 --functions=71 --lines=71

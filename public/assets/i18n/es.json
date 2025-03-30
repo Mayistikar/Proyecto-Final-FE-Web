@@ -56,5 +56,6 @@
   "MANUFACTURER_CONFIRM_PASSWORD_MINLENGTH": "La confirmación de la contraseña es muy corta.",
   "MANUFACTURER_PASSWORDS_NOT_MATCH": "Las contraseñas no coinciden",
   "MANUFACTURER_CANCEL_BUTTON": "Cancelar",
-  "MANUFACTURER_SUBMIT_BUTTON": "Enviar"
+  "MANUFACTURER_SUBMIT_BUTTON": "Enviar",
+  "MANUFACTURER_HELP_FIELDS": "(*) Campos obligatorios"
 }

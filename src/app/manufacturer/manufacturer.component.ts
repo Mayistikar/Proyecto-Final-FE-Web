@@ -4,7 +4,6 @@ import {RouterLink} from '@angular/router';
 import { CommonModule} from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
-
 @Component({
   selector: 'app-manufacturer',
   imports: [
@@ -22,7 +21,7 @@ export class ManufacturerComponent {
     manufacturerName: new FormControl('', [Validators.required, Validators.minLength(3)]),
     companyName: new FormControl('', [Validators.required, Validators.minLength(3)]),
     companyAddress: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    companyCountry: new FormControl(''),
+    companyCountry: new FormControl('', [Validators.required]),
     manufacturerEmail: new FormControl('', [Validators.required, Validators.email]),
     manufacturerPhone: new FormControl('', [Validators.required, Validators.minLength(10), Validators.pattern('^\\+?[0-9]*$')]),
     manufacturerRUC: new FormControl('', [Validators.required, Validators.minLength(13), Validators.pattern('^[0-9]*$')]),
