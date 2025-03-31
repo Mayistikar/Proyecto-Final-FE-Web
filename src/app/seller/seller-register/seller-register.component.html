@@ -1,0 +1,131 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+      <div class="card mb-5" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="https://assetsccp.s3.us-east-1.amazonaws.com/maunfacturer_form_2.png" class="img-fluid rounded-start card-image" alt="manufacturer form">
+          </div>
+          <div class="col-md-8 card-info">
+            <div class="card-body">
+              <h1 class="card-title">{{ 'SELLER_REGISTRATION_TITLE' | translate }}</h1>
+              <p class="card-text">{{ 'SELLER_REGISTRATION_DESCRIPTION' | translate }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col"></div>
+  </div>
+
+  <div class="text-primary mb-4">
+    <small>{{ 'SELLER_HELP_FIELDS' | translate }}</small>
+  </div>
+
+  <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col mb-6">
+        <div class="mb-3">
+          <label for="name" class="form-label">{{ 'SELLER_NAME_LABEL' | translate }}</label>
+          <input type="text" class="form-control" id="name" formControlName="name" aria-describedby="nameHelp" [placeholder]="'SELLER_NAME_PLACEHOLDER' | translate"
+                 [ngClass]="{'is-invalid': name.invalid && name.dirty, 'is-valid': name.valid}" />
+          <div id="nameHelpBlock" class="form-text float-end">
+            {{ name.value?.length || 0 }}/256
+          </div>
+          <div *ngIf="name.invalid && (name.dirty)" class="invalid-feedback">
+            <small *ngIf="name.errors?.['required']">{{ 'SELLER_NAME_REQUIRED' | translate }}</small>
+            <small *ngIf="name.errors?.['minlength']">{{ 'SELLER_NAME_MINLENGTH' | translate }}</small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">{{ 'SELLER_EMAIL_LABEL' | translate }}</label>
+          <input type="email" class="form-control" id="email" formControlName="email" [placeholder]="'SELLER_EMAIL_PLACEHOLDER' | translate"
+                 [ngClass]="{'is-invalid': email.invalid && email.dirty, 'is-valid': email.valid}" />
+          <div *ngIf="email.invalid && (email.dirty)" class="invalid-feedback">
+            <small *ngIf="email.errors?.['required']">{{ 'SELLER_EMAIL_REQUIRED' | translate }}</small>
+            <small *ngIf="email.errors?.['email']">{{ 'SELLER_EMAIL_INVALID' | translate }}</small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="phone" class="form-label">{{ 'SELLER_PHONE_LABEL' | translate }}</label>
+          <input type="tel" class="form-control" id="phone" formControlName="phone" [placeholder]="'SELLER_PHONE_PLACEHOLDER' | translate"
+                 [ngClass]="{'is-invalid': phone.invalid && phone.dirty, 'is-valid': phone.valid}" />
+          <div *ngIf="phone.invalid && (phone.dirty)" class="invalid-feedback">
+            <small *ngIf="phone.errors?.['required']">{{ 'SELLER_PHONE_REQUIRED' | translate }}</small>
+            <small *ngIf="phone.errors?.['minlength']">{{ 'SELLER_PHONE_MINLENGTH' | translate }}</small>
+            <small *ngIf="phone.errors?.['pattern']">{{ 'SELLER_PHONE_INVALID' | translate }}</small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="address" class="form-label">{{ 'SELLER_ADDRESS_LABEL' | translate }}</label>
+          <input type="text" class="form-control" id="address" formControlName="address" [placeholder]="'SELLER_ADDRESS_PLACEHOLDER' | translate"
+                 [ngClass]="{'is-invalid': address.invalid && address.dirty, 'is-valid': address.valid}" />
+          <div id="addressHelpBlock" class="form-text float-end">
+            {{ address.value?.length || 0 }}/256
+          </div>
+          <div *ngIf="address.invalid && (address.dirty)" class="invalid-feedback">
+            <small *ngIf="address.errors?.['required']">{{ 'SELLER_ADDRESS_REQUIRED' | translate }}</small>
+            <small *ngIf="address.errors?.['minlength']">{{ 'SELLER_ADDRESS_MINLENGTH' | translate }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col mb-6">
+        <div class="mb-3">
+          <label for="zone" class="form-label">{{ 'SELLER_ZONE_LABEL' | translate }}</label>
+          <input type="text" class="form-control" id="zone" formControlName="zone" [placeholder]="'SELLER_ZONE_PLACEHOLDER' | translate"
+                 [ngClass]="{'is-invalid': zone.invalid && zone.dirty, 'is-valid': zone.valid}" />
+          <div *ngIf="zone.invalid && (zone.dirty)" class="invalid-feedback">
+            <small *ngIf="zone.errors?.['required']">{{ 'SELLER_ZONE_REQUIRED' | translate }}</small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="specialty" class="form-label">{{ 'SELLER_SPECIALTY_LABEL' | translate }}</label>
+          <input type="text" class="form-control" id="specialty" formControlName="specialty" [placeholder]="'SELLER_SPECIALTY_PLACEHOLDER' | translate" />
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">{{ 'SELLER_PASSWORD_LABEL' | translate }}</label>
+          <input type="password" class="form-control" id="password" formControlName="password" [placeholder]="'SELLER_PASSWORD_PLACEHOLDER' | translate"
+                 [ngClass]="{'is-invalid': password.invalid && password.dirty || !passwordsMatch, 'is-valid': password.valid && passwordsMatch}" />
+          <div id="passwordHelpBlock" class="form-text float-end">
+            {{ 'SELLER_PASSWORD_MINLENGTH' | translate }}
+          </div>
+          <div id="invalidPassword" *ngIf="password.invalid && password.dirty && !passwordsMatch" class="invalid-feedback">
+            <small *ngIf="password.errors?.['required']">{{ 'SELLER_PASSWORD_REQUIRED' | translate }}</small>
+            <small *ngIf="password.errors?.['minlength']">{{ 'SELLER_PASSWORD_SHORT' | translate }}</small>
+          </div>
+          <div *ngIf="!passwordsMatch" class="invalid-feedback">
+            <small>{{ 'SELLER_PASSWORDS_NOT_MATCH' | translate }}</small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">{{ 'SELLER_CONFIRM_PASSWORD_LABEL' | translate }}</label>
+          <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" [placeholder]="'SELLER_CONFIRM_PASSWORD_PLACEHOLDER' | translate"
+                 [ngClass]="{'is-invalid': confirmPassword.invalid && confirmPassword.dirty  || !passwordsMatch, 'is-valid': confirmPassword.valid && passwordsMatch}" />
+          <div id="confirmPasswordHelpBlock" class="form-text float-end">
+            {{ 'SELLER_PASSWORD_MINLENGTH' | translate }}
+          </div>
+          <div *ngIf="confirmPassword.invalid && confirmPassword.dirty && !passwordsMatch" class="invalid-feedback">
+            <small *ngIf="confirmPassword.errors?.['required']">{{ 'SELLER_CONFIRM_PASSWORD_REQUIRED' | translate }}</small>
+            <small *ngIf="confirmPassword.errors?.['minlength']">{{ 'SELLER_PASSWORD_SHORT' | translate }}</small>
+          </div>
+          <div *ngIf="!passwordsMatch" class="invalid-feedback">
+            <small>{{ 'SELLER_PASSWORDS_NOT_MATCH' | translate }}</small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <br>
+          <button type="submit" class="btn btn-outline-secondary float-end btn-cancel-manufacturer m-2" routerLink="/" >{{ 'SELLER_CANCEL_BUTTON' | translate }}</button>
+          <button type="submit" class="btn btn-primary float-end btn-submit-manufacturer m-2" [disabled]="!sellerForm.valid">{{ 'SELLER_SUBMIT_BUTTON' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
