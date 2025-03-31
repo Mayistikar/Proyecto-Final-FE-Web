@@ -105,5 +105,32 @@ describe('SellerRegisterComponent (refactor)', () => {
 
     expect(console.error).toHaveBeenCalledWith('Registration error', jasmine.any(Error));
   }));
+
+  it('should return form controls via getters', () => {
+    const formData = buildValidForm();
+    component.sellerForm.setValue(formData);
+
+    expect(component.zone?.value).toBe(formData.zone);
+    expect(component.specialty?.value).toBe(formData.specialty);
+    expect(component.password?.value).toBe(formData.password);
+    expect(component.confirmPassword?.value).toBe(formData.confirmPassword);
+  });
+
+  it('should return true from passwordsMatch when passwords match', () => {
+    const formData = buildValidForm();
+    component.sellerForm.setValue(formData);
+    expect(component.passwordsMatch).toBeTrue();
+  });
+
+  it('should return false from passwordsMatch and set error when passwords do not match', () => {
+    const formData = buildValidForm();
+    formData.confirmPassword = 'otraClave';
+    component.sellerForm.setValue(formData);
+
+    expect(component.passwordsMatch).toBeFalse();
+    expect(component.confirmPassword?.errors).toEqual({ passwordsDoNotMatch: true });
+  });
+
+  
   
 });
