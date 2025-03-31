@@ -93,4 +93,17 @@ describe('SellerRegisterComponent (refactor)', () => {
 
     expect(console.error).toHaveBeenCalledWith('Registration error', jasmine.any(Error));
   }));
+
+  it('should log error on failed registration', fakeAsync(() => {
+    spyOn(console, 'error');
+    const formData = buildValidForm();
+    component.sellerForm.setValue(formData);
+    sellerServiceSpy.register.and.returnValue(throwError(() => new Error('Fail')));
+
+    component.onSubmit();
+    tick();
+
+    expect(console.error).toHaveBeenCalledWith('Registration error', jasmine.any(Error));
+  }));
+  
 });
