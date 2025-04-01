@@ -1,4 +1,11 @@
 @use '@angular/material' as mat;
+
+html, body {
+  height: 100%;
+  padding: 5px;
+  overflow: scroll;
+}
+
 .language-buttons{
   display: flex;
   justify-content: flex-end;
