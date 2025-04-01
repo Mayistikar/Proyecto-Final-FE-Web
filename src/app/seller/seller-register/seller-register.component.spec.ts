@@ -32,7 +32,7 @@ describe('SellerRegisterComponent (refactor)', () => {
         SellerRegisterComponent,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
-        RouterTestingModule.withRoutes([]) 
+        RouterTestingModule.withRoutes([])
       ],
       providers: [
         { provide: SellerService, useValue: spy }
@@ -64,7 +64,7 @@ describe('SellerRegisterComponent (refactor)', () => {
     const formData = buildValidForm();
     formData.confirmPassword = 'diferente123';
     component.sellerForm.setValue(formData);
-  
+
     expect(component.passwordsMatch).toBeFalse();
     expect(component.sellerForm.valid).toBeFalse();
   });
@@ -131,6 +131,4 @@ describe('SellerRegisterComponent (refactor)', () => {
     expect(component.confirmPassword?.errors).toEqual({ passwordsDoNotMatch: true });
   });
 
-  
-  
 });

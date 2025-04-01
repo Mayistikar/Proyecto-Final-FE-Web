@@ -24,7 +24,7 @@ jobs:
         run: npm install -g @angular/cli
 
       - name: Ejecutar pruebas unitarias con coverage
-        run: npm run test -- --watch=false --code-coverage
+        run: ng test --code-coverage --watch=false --code-coverage
 
       - name: Validar coverage por componente (mínimo 71%)
         run: |
