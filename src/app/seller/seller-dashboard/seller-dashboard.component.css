@@ -1,0 +1,46 @@
+.container {
+  padding: 1rem;
+  max-width: 100%;
+  margin: auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 2rem;
+    max-width: 800px;
+  }
+}
+
+h2 {
+  font-weight: 600;
+  color: #212529;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  font-weight: 500;
+  margin-top: 1.5rem;
+  color: #343a40;
+  font-size: 1.2rem;
+}
+
+.list-group-item {
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 0.75rem;
+  border: 1px solid #dee2e6;
+  padding: 1rem;
+  font-size: 0.95rem;
+}
+
+.btn-outline-secondary {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.75rem;
+}
+
+.btn-primary {
+  border-radius: 6px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+}

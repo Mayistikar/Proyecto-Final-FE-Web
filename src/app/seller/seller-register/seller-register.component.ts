@@ -19,7 +19,13 @@ import { Seller } from '../seller.model';
   templateUrl: './seller-register.component.html',
   styleUrls: ['./seller-register.component.scss']
 })
+
 export class SellerRegisterComponent {
+  coverageZoneGroups = [
+    { label: 'COVERAGE_COLOMBIA', zones: ['ZONE_BOGOTA', 'ZONE_MEDELLIN', 'ZONE_CALI', 'ZONE_BARRANQUILLA'] },
+    { label: 'COVERAGE_USA', zones: ['ZONE_NEW_YORK', 'ZONE_CALIFORNIA', 'ZONE_TEXAS', 'ZONE_FLORIDA'] }
+  ];
+
   sellerForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -31,7 +37,10 @@ export class SellerRegisterComponent {
     confirmPassword: new FormControl('', [Validators.required])
   });
 
-  constructor(private router: Router, private sellerService: SellerService) {}
+  constructor(
+    private router: Router,
+    private sellerService: SellerService,
+  ) {}
 
   get name() { return this.sellerForm.get('name')!; }
   get email() { return this.sellerForm.get('email')!; }
@@ -52,12 +61,16 @@ export class SellerRegisterComponent {
     return match;
   }
 
+  getZoneGroups() {
+    return this.coverageZoneGroups;
+  }
+
   onSubmit(): void {
     if (this.sellerForm.valid && this.passwordsMatch) {
       const { name, email, phone, address, zone, specialty, password } = this.sellerForm.getRawValue();
-  
+
       const seller = new Seller(
-        '', // id vacío por ahora
+        '',
         name ?? '',
         email ?? '',
         phone ?? '',
@@ -66,11 +79,11 @@ export class SellerRegisterComponent {
         specialty ?? '',
         password ?? ''
       );
-  
+
       this.sellerService.register(seller).subscribe({
         next: () => this.router.navigate(['/seller-dashboard']),
         error: (err: any) => console.error('Registration error', err)
       });
     }
   }
-}  
+}

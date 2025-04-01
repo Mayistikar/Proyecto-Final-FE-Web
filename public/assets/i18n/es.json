@@ -105,5 +105,27 @@
   "SELLER_PASSWORDS_NOT_MATCH": "Las contraseñas no coinciden",
 
   "SELLER_SUBMIT_BUTTON": "Enviar",
-  "SELLER_CANCEL_BUTTON": "Cancelar"
+  "SELLER_CANCEL_BUTTON": "Cancelar",
+   
+  "COVERAGE_COLOMBIA": "Colombia",
+  "COVERAGE_USA": "Estados Unidos",
+  "ZONE_BOGOTA": "Bogotá",
+  "ZONE_MEDELLIN": "Medellín",
+  "ZONE_CALI": "Cali",
+  "ZONE_BARRANQUILLA": "Barranquilla",
+  "ZONE_NEW_YORK": "Nueva York",
+  "ZONE_CALIFORNIA": "California",
+  "ZONE_TEXAS": "Texas",
+  "ZONE_FLORIDA": "Florida",
+
+  "SELLER_DASHBOARD_TITLE": "Hola {{name}}!",
+  "SELLER_SALES_PLANS_TITLE": "Planes de Ventas",
+  "SELLER_VIEW_DETAILS": "Ver detalles",
+  "SELLER_CREATE_PLAN": "Crear Plan de Venta",
+  "STARTER_PLAN_NAME": "Plan Inicial",
+  "STARTER_PLAN_DESC": "Permite vender hasta 50 productos al mes.",
+  "GROWTH_PLAN_NAME": "Plan de Crecimiento",
+  "GROWTH_PLAN_DESC": "Incluye análisis y permite hasta 200 productos.",
+  "PRO_PLAN_NAME": "Plan Profesional",
+  "PRO_PLAN_DESC": "Listados ilimitados y soporte premium."
 }

@@ -22,7 +22,7 @@
     <small>{{ 'SELLER_HELP_FIELDS' | translate }}</small>
   </div>
 
-  <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()" class="mb-5">
     <div class="row">
       <div class="col mb-6">
         <div class="mb-3">
@@ -30,7 +30,6 @@
           <input type="text" class="form-control" id="name" formControlName="name" aria-describedby="nameHelp" [placeholder]="'SELLER_NAME_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': name.invalid && name.dirty, 'is-valid': name.valid}" />
           <div id="nameHelpBlock" class="form-text float-end">
-            {{ name.value?.length || 0 }}/256
           </div>
           <div *ngIf="name.invalid && (name.dirty)" class="invalid-feedback">
             <small *ngIf="name.errors?.['required']">{{ 'SELLER_NAME_REQUIRED' | translate }}</small>
@@ -64,7 +63,6 @@
           <input type="text" class="form-control" id="address" formControlName="address" [placeholder]="'SELLER_ADDRESS_PLACEHOLDER' | translate"
                  [ngClass]="{'is-invalid': address.invalid && address.dirty, 'is-valid': address.valid}" />
           <div id="addressHelpBlock" class="form-text float-end">
-            {{ address.value?.length || 0 }}/256
           </div>
           <div *ngIf="address.invalid && (address.dirty)" class="invalid-feedback">
             <small *ngIf="address.errors?.['required']">{{ 'SELLER_ADDRESS_REQUIRED' | translate }}</small>
@@ -76,12 +74,24 @@
       <div class="col mb-6">
         <div class="mb-3">
           <label for="zone" class="form-label">{{ 'SELLER_ZONE_LABEL' | translate }}</label>
-          <input type="text" class="form-control" id="zone" formControlName="zone" [placeholder]="'SELLER_ZONE_PLACEHOLDER' | translate"
-                 [ngClass]="{'is-invalid': zone.invalid && zone.dirty, 'is-valid': zone.valid}" />
+          <select
+            class="form-select"
+            id="zone"
+            formControlName="zone"
+            [ngClass]="{ 'is-invalid': zone.invalid && zone.dirty, 'is-valid': zone.valid }"
+          >
+            <option value="" disabled selected>{{ 'SELLER_ZONE_PLACEHOLDER' | translate }}</option>
+            <ng-container *ngFor="let group of coverageZoneGroups">
+              <optgroup [label]="group.label | translate">
+                <option *ngFor="let z of group.zones" [value]="z">{{ z | translate }}</option>
+              </optgroup>
+            </ng-container>
+          </select>
           <div *ngIf="zone.invalid && (zone.dirty)" class="invalid-feedback">
             <small *ngIf="zone.errors?.['required']">{{ 'SELLER_ZONE_REQUIRED' | translate }}</small>
           </div>
         </div>
+
 
         <div class="mb-3">
           <label for="specialty" class="form-label">{{ 'SELLER_SPECIALTY_LABEL' | translate }}</label>
@@ -122,8 +132,13 @@
 
         <div class="mb-3">
           <br>
-          <button type="submit" class="btn btn-outline-secondary float-end btn-cancel-manufacturer m-2" routerLink="/" >{{ 'SELLER_CANCEL_BUTTON' | translate }}</button>
-          <button type="submit" class="btn btn-primary float-end btn-submit-manufacturer m-2" [disabled]="!sellerForm.valid">{{ 'SELLER_SUBMIT_BUTTON' | translate }}</button>
+          <button type="button" class="btn btn-outline-secondary float-end btn-cancel-seller m-2" routerLink="/" >
+            {{ 'SELLER_CANCEL_BUTTON' | translate }}
+          </button>
+          
+          <button type="submit" class="btn btn-primary float-end btn-submit-seller m-2" [disabled]="!sellerForm.valid">
+            {{ 'SELLER_SUBMIT_BUTTON' | translate }}
+          </button>
         </div>
       </div>
     </div>

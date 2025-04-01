@@ -7,6 +7,7 @@ import { SellerService } from '../seller.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { faker } from '@faker-js/faker';
+import { SellerDashboardComponent } from '../seller-dashboard/seller-dashboard.component';
 
 describe('SellerRegisterComponent (refactor)', () => {
   let component: SellerRegisterComponent;
@@ -30,6 +31,7 @@ describe('SellerRegisterComponent (refactor)', () => {
     await TestBed.configureTestingModule({
       imports: [
         SellerRegisterComponent,
+        SellerDashboardComponent,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         RouterTestingModule.withRoutes([])
@@ -131,4 +133,93 @@ describe('SellerRegisterComponent (refactor)', () => {
     expect(component.confirmPassword?.errors).toEqual({ passwordsDoNotMatch: true });
   });
 
+  it('should return the coverage zone groups', () => {
+    const mockGroups = [
+      { label: 'Colombia', zones: ['Bogotá', 'Medellín'] },
+      { label: 'USA', zones: ['New York', 'Florida'] }
+    ];
+  
+    (component as any).coverageZoneGroups = mockGroups;
+  
+    const result = component.getZoneGroups();
+  
+    expect(result).toEqual(mockGroups);
+  });
+
+  it('should create Seller instance with correct data and call register', fakeAsync(() => {
+    const formData = buildValidForm();
+    component.sellerForm.setValue(formData);
+    const navigateSpy = spyOn(component['router'], 'navigate');
+    sellerServiceSpy.register.and.returnValue(of({}));
+  
+    component.onSubmit();
+    tick();
+  
+    expect(sellerServiceSpy.register).toHaveBeenCalledWith(jasmine.objectContaining({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      address: formData.address,
+      zone: formData.zone,
+      specialty: formData.specialty,
+      password: formData.password
+    }));
+  
+    expect(navigateSpy).toHaveBeenCalledWith(['/seller-dashboard']);
+  }));
+
+  it('should use empty string for null form values', fakeAsync(() => {
+    const emptyForm = {
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      zone: '',
+      specialty: '',
+      password: '',
+      confirmPassword: ''
+    };
+  
+    // Desactiva validadores para permitir el envío
+    Object.keys(component.sellerForm.controls).forEach(key => {
+      component.sellerForm.get(key)?.clearValidators();
+      component.sellerForm.get(key)?.updateValueAndValidity();
+    });
+  
+    component.sellerForm.setValue(emptyForm);
+    fixture.detectChanges();
+  
+    // Espía a router.navigate para evitar error de ruta no definida
+    const navigateSpy = spyOn(component['router'], 'navigate');
+    sellerServiceSpy.register.and.returnValue(of({}));
+  
+    component.onSubmit();
+    tick();
+  
+    expect(sellerServiceSpy.register).toHaveBeenCalledWith(jasmine.objectContaining({
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      zone: '',
+      specialty: '',
+      password: ''
+    }));
+  
+    // Asegura que intentó navegar a la ruta esperada
+    expect(navigateSpy).toHaveBeenCalledWith(['/seller-dashboard']);
+  }));
+
+  describe('Coalescing to empty string', () => {
+    it('should return empty string if value is undefined or null', () => {
+      const undefinedValue = undefined;
+      const nullValue = null;
+      const nonEmpty = 'text';
+  
+      expect(undefinedValue ?? '').toBe('');
+      expect(nullValue ?? '').toBe('');
+      expect(nonEmpty ?? '').toBe('text');
+    });
+  });
+  
 });

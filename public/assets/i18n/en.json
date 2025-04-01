@@ -104,6 +104,27 @@
   "SELLER_PASSWORDS_NOT_MATCH": "Passwords do not match",
 
   "SELLER_SUBMIT_BUTTON": "Submit",
-  "SELLER_CANCEL_BUTTON": "Cancel"
- 
-}
+  "SELLER_CANCEL_BUTTON": "Cancel",
+  
+  "COVERAGE_COLOMBIA": "Colombia",
+  "COVERAGE_USA": "United States",
+  "ZONE_BOGOTA": "Bogotá",
+  "ZONE_MEDELLIN": "Medellín",
+  "ZONE_CALI": "Cali",
+  "ZONE_BARRANQUILLA": "Barranquilla",
+  "ZONE_NEW_YORK": "New York",
+  "ZONE_CALIFORNIA": "California",
+  "ZONE_TEXAS": "Texas",
+  "ZONE_FLORIDA": "Florida", 
+
+  "SELLER_DASHBOARD_TITLE": "Hello {{name}}!",
+  "SELLER_SALES_PLANS_TITLE": "Sales Plans",
+  "SELLER_VIEW_DETAILS": "View details",
+  "SELLER_CREATE_PLAN": "Create Sales Plan",
+  "STARTER_PLAN_NAME": "Starter Plan",
+  "STARTER_PLAN_DESC": "Allows selling up to 50 products per month.",
+  "GROWTH_PLAN_NAME": "Growth Plan",
+  "GROWTH_PLAN_DESC": "Includes analytics and allows up to 200 products.",
+  "PRO_PLAN_NAME": "Pro Plan",
+  "PRO_PLAN_DESC": "Unlimited product listings and premium support."
+  }
