@@ -29,18 +29,24 @@
   line-height: 28px;
 }
 
-.btn-submit-manufacturer {
+.btn-submit-seller {
   width: 124px;
   height: 44px;
   border-radius: 4px;
   background: #03A9F4;
+  color: white;
 }
 
-.btn-cancel-manufacturer {
+.btn-cancel-seller {
   width: 124px;
   height: 44px;
   border-radius: 4px;
   background: #F5F5F5;
   border-style: none;
   color: black;
+}
+
+.form-select {
+  z-index: 1;
+  position: relative;
 }
