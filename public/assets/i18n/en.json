@@ -57,5 +57,53 @@
   "MANUFACTURER_PASSWORDS_NOT_MATCH": "Passwords do not match",
   "MANUFACTURER_CANCEL_BUTTON": "Cancel",
   "MANUFACTURER_SUBMIT_BUTTON": "Submit",
-  "MANUFACTURER_HELP_FIELDS": "(*) Required fields"
+  "MANUFACTURER_HELP_FIELDS": "(*) Required fields",
+
+  "SELLER_REGISTRATION_TITLE": "Seller Registration",
+  "SELLER_REGISTRATION_DESCRIPTION": "Complete the form to register as a seller on CCP",
+  "SELLER_HELP_FIELDS": "(*) Required fields",
+
+  "SELLER_NAME_LABEL": "Full Name *",
+  "SELLER_NAME_PLACEHOLDER": "Enter the full name of the seller",
+  "SELLER_NAME_REQUIRED": "The name is required.",
+  "SELLER_NAME_MINLENGTH": "The name is too short.",
+
+  "SELLER_EMAIL_LABEL": "Email *",
+  "SELLER_EMAIL_PLACEHOLDER": "Enter your email",
+  "SELLER_EMAIL_REQUIRED": "Email is required.",
+  "SELLER_EMAIL_INVALID": "Email format is invalid.",
+
+  "SELLER_PHONE_LABEL": "Phone Number *",
+  "SELLER_PHONE_PLACEHOLDER": "Enter your phone number",
+  "SELLER_PHONE_REQUIRED": "Phone number is required.",
+  "SELLER_PHONE_INVALID": "Invalid phone number format.",
+  "SELLER_PHONE_MINLENGTH": "Phone number is too short.",
+
+  "SELLER_ADDRESS_LABEL": "Address *",
+  "SELLER_ADDRESS_PLACEHOLDER": "Enter your address",
+  "SELLER_ADDRESS_REQUIRED": "Address is required.",
+  "SELLER_ADDRESS_MINLENGTH": "Address is too short.",
+
+  "SELLER_ZONE_LABEL": "Coverage Area *",
+  "SELLER_ZONE_PLACEHOLDER": "Select your coverage area",
+  "SELLER_ZONE_REQUIRED": "Coverage area is required.",
+
+  "SELLER_SPECIALTY_LABEL": "Specialty *",
+  "SELLER_SPECIALTY_PLACEHOLDER": "Enter your specialty",
+
+  "SELLER_PASSWORD_LABEL": "Password *",
+  "SELLER_PASSWORD_PLACEHOLDER": "Enter your password",
+  "SELLER_PASSWORD_REQUIRED": "Password is required.",
+  "SELLER_PASSWORD_MINLENGTH": "Minimum 8 characters",
+  "SELLER_PASSWORD_SHORT": "Password is too short.",
+
+  "SELLER_CONFIRM_PASSWORD_LABEL": "Confirm Password *",
+  "SELLER_CONFIRM_PASSWORD_PLACEHOLDER": "Confirm your password",
+  "SELLER_CONFIRM_PASSWORD_REQUIRED": "Password confirmation is required.",
+
+  "SELLER_PASSWORDS_NOT_MATCH": "Passwords do not match",
+
+  "SELLER_SUBMIT_BUTTON": "Submit",
+  "SELLER_CANCEL_BUTTON": "Cancel"
+ 
 }

@@ -58,5 +58,52 @@
   "MANUFACTURER_PASSWORDS_NOT_MATCH": "Las contraseñas no coinciden",
   "MANUFACTURER_CANCEL_BUTTON": "Cancelar",
   "MANUFACTURER_SUBMIT_BUTTON": "Enviar",
-  "MANUFACTURER_HELP_FIELDS": "(*) Campos obligatorios"
+  "MANUFACTURER_HELP_FIELDS": "(*) Campos obligatorios", 
+
+  "SELLER_REGISTRATION_TITLE": "Registro de Vendedor",
+  "SELLER_REGISTRATION_DESCRIPTION": "Complete el formulario para registrarse como vendedor en CCP",
+  "SELLER_HELP_FIELDS": "(*) Campos obligatorios",
+
+  "SELLER_NAME_LABEL": "Nombre Completo *",
+  "SELLER_NAME_PLACEHOLDER": "Ingrese el nombre completo del vendedor",
+  "SELLER_NAME_REQUIRED": "El nombre es obligatorio.",
+  "SELLER_NAME_MINLENGTH": "El nombre es muy corto.",
+
+  "SELLER_EMAIL_LABEL": "Correo electrónico *",
+  "SELLER_EMAIL_PLACEHOLDER": "Ingrese su email",
+  "SELLER_EMAIL_REQUIRED": "El correo electrónico es obligatorio.",
+  "SELLER_EMAIL_INVALID": "El formato del correo no es válido.",
+
+  "SELLER_PHONE_LABEL": "Número de teléfono *",
+  "SELLER_PHONE_PLACEHOLDER": "Ingrese su número de teléfono",
+  "SELLER_PHONE_REQUIRED": "El número de teléfono es obligatorio.",
+  "SELLER_PHONE_INVALID": "El formato del teléfono no es válido.",
+  "SELLER_PHONE_MINLENGTH": "El número de teléfono es muy corto.",
+
+  "SELLER_ADDRESS_LABEL": "Dirección *",
+  "SELLER_ADDRESS_PLACEHOLDER": "Ingrese su dirección",
+  "SELLER_ADDRESS_REQUIRED": "La dirección es obligatoria.",
+  "SELLER_ADDRESS_MINLENGTH": "La dirección es muy corta.",
+
+  "SELLER_ZONE_LABEL": "Sector de Cobertura *",
+  "SELLER_ZONE_PLACEHOLDER": "Seleccione su sector de cobertura",
+  "SELLER_ZONE_REQUIRED": "El sector de cobertura es obligatorio.",
+
+  "SELLER_SPECIALTY_LABEL": "Especialidad *",
+  "SELLER_SPECIALTY_PLACEHOLDER": "Diligencie su especialidad",
+
+  "SELLER_PASSWORD_LABEL": "Contraseña *",
+  "SELLER_PASSWORD_PLACEHOLDER": "Ingrese la contraseña",
+  "SELLER_PASSWORD_REQUIRED": "La contraseña es obligatoria.",
+  "SELLER_PASSWORD_MINLENGTH": "Mínimo 8 caracteres",
+  "SELLER_PASSWORD_SHORT": "La contraseña es muy corta.",
+
+  "SELLER_CONFIRM_PASSWORD_LABEL": "Confirmación de contraseña *",
+  "SELLER_CONFIRM_PASSWORD_PLACEHOLDER": "Confirme la contraseña",
+  "SELLER_CONFIRM_PASSWORD_REQUIRED": "La confirmación de la contraseña es obligatoria.",
+
+  "SELLER_PASSWORDS_NOT_MATCH": "Las contraseñas no coinciden",
+
+  "SELLER_SUBMIT_BUTTON": "Enviar",
+  "SELLER_CANCEL_BUTTON": "Cancelar"
 }
