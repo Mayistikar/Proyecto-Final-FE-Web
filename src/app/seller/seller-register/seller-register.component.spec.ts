@@ -221,5 +221,45 @@ describe('SellerRegisterComponent (refactor)', () => {
       expect(nonEmpty ?? '').toBe('text');
     });
   });
+
+  it('should replace null or undefined values with empty string when creating Seller', fakeAsync(() => {
+    const nullishForm = {
+      name: null,
+      email: null,
+      phone: null,
+      address: null,
+      zone: null,
+      specialty: null,
+      password: null,
+      confirmPassword: null
+    };
+  
+    // Desactiva validadores para permitir submit
+    Object.keys(nullishForm).forEach(key => {
+      component.sellerForm.get(key)?.clearValidators();
+      component.sellerForm.get(key)?.updateValueAndValidity();
+    });
+  
+    component.sellerForm.setValue(nullishForm);
+    fixture.detectChanges();
+  
+    const navigateSpy = spyOn(component['router'], 'navigate');
+    sellerServiceSpy.register.and.returnValue(of({}));
+  
+    component.onSubmit();
+    tick();
+  
+    expect(sellerServiceSpy.register).toHaveBeenCalledWith(jasmine.objectContaining({
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      zone: '',
+      specialty: '',
+      password: ''
+    }));
+  
+    expect(navigateSpy).toHaveBeenCalledWith(['/seller-dashboard']);
+  }));
   
 });

@@ -1,8 +1,9 @@
 import { Component} from '@angular/core';
 import {FormGroup, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
-import {RouterLink} from '@angular/router';
+import {RouterLink, Router } from '@angular/router';
 import { CommonModule} from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ManufacturerService } from './manufacturer.service';
 
 @Component({
   selector: 'app-manufacturer',
@@ -16,6 +17,14 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './manufacturer.component.css'
 })
 export class ManufacturerComponent {
+  successMessageVisible = false;
+  errorMessageVisible = false;
+
+  constructor(
+    private manufacturerService: ManufacturerService,
+    private router: Router,
+    private translate: TranslateService
+  ) {}
 
   manufacturerForm = new FormGroup({
     manufacturerName: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -74,6 +83,48 @@ export class ManufacturerComponent {
   }
 
   onSubmit() {
-    console.warn(this.manufacturerForm.value);
+    console.log('Submit button clicked');
+  
+    if (!this.manufacturerForm.valid || !this.passwordsMatch) {
+      console.warn('Form is invalid');
+      console.table(this.manufacturerForm.value);
+      return;
+    }
+  
+    const form = this.manufacturerForm.value;
+  
+    const payload = {
+      email: this.manufacturerEmail.value,
+      password: this.password.value,
+      confirm_password: this.confirmPassword.value,
+      representative_name: this.manufacturerName.value,
+      company_name: this.companyName.value,
+      company_address: this.companyAddress.value,
+      phone: this.manufacturerPhone.value,
+      operation_country: this.companyCountry.value,
+      tax_id: this.manufacturerRUC.value || null
+    };
+  
+    console.log('Payload to send:', payload);
+  
+    this.manufacturerService.register(payload).subscribe({
+      next: () => {
+        this.successMessageVisible = true;
+
+        setTimeout(() => {
+          this.router.navigate(['/'], {
+            state: {
+              pendingValidation: true,
+              userType: 'manufacturer',
+              email: payload.email
+            }
+          });
+        }, 3500);
+      },
+      error: () => {
+        this.errorMessageVisible = true;
+        setTimeout(() => this.errorMessageVisible = false, 5000);
+      }
+    });
   }
 }
