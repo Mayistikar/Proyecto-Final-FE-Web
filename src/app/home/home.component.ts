@@ -9,7 +9,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 
 
@@ -34,12 +34,29 @@ import { RouterLink } from '@angular/router';
 })
 export class HomeComponent {
   loginForm: FormGroup;
+  pendingValidation: boolean = false;
+  userType: string | null = null;
+  email: string | null = null;
 
-  constructor(private fb: FormBuilder) {
+
+  constructor(private fb: FormBuilder, private router: Router) {
     this.loginForm = this.fb.group({
       usuario: ['', [Validators.required]],
       contrasena: ['', [Validators.required, Validators.minLength(4)]]
     });
+
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state as { pendingValidation?: boolean; userType?: string; email?: string };
+
+    if (state?.pendingValidation) {
+      this.pendingValidation = true;
+      this.userType = state.userType || null;
+      this.email = state.email || null;
+
+      setTimeout(() => {
+        this.pendingValidation = false;
+      }, 3000);
+    }
   }
 
   onSubmit() {

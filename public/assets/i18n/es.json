@@ -127,5 +127,16 @@
   "GROWTH_PLAN_NAME": "Plan de Crecimiento",
   "GROWTH_PLAN_DESC": "Incluye análisis y permite hasta 200 productos.",
   "PRO_PLAN_NAME": "Plan Profesional",
-  "PRO_PLAN_DESC": "Listados ilimitados y soporte premium."
+  "PRO_PLAN_DESC": "Listados ilimitados y soporte premium.",
+
+  "REGISTER_SUCCESS": "Registro exitoso. Tu cuenta será validada antes de habilitar la operación en la plataforma.",
+  "REGISTER_ERROR": "Ocurrió un error durante el registro. Intenta de nuevo.", 
+
+  "REGISTER_SUCCESS_TITLE": "¡Registro Exitoso!",
+  "REGISTER_SUCCESS_MESSAGE": "Tu cuenta de fabricante está en revisión. Te notificaremos cuando sea aprobada.",
+  "REGISTER_ERROR_TITLE": "Error en el Registro",
+  "REGISTER_ERROR_MESSAGE": "Hubo un problema con tu registro. Por favor, intenta nuevamente más tarde.",
+  "REDIRECTING_MESSAGE": "Serás redirigido a la página de inicio en breve...",
+ 
+  "PENDING_VALIDATION_MESSAGE": "Tu cuenta está pendiente de validación. Por favor, espera aprobación."
 }

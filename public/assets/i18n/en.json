@@ -126,5 +126,17 @@
   "GROWTH_PLAN_NAME": "Growth Plan",
   "GROWTH_PLAN_DESC": "Includes analytics and allows up to 200 products.",
   "PRO_PLAN_NAME": "Pro Plan",
-  "PRO_PLAN_DESC": "Unlimited product listings and premium support."
-  }
+  "PRO_PLAN_DESC": "Unlimited product listings and premium support.",
+
+  "REGISTER_SUCCESS": "Registration successful. Your account will be validated before operation.",
+  "REGISTER_ERROR": "There was an error during registration. Please try again.", 
+
+  "REGISTER_SUCCESS_TITLE": "Registration Successful!",
+  "REGISTER_SUCCESS_MESSAGE": "Your manufacturer account is under review. We’ll notify you once it’s approved.",
+  "REGISTER_ERROR_TITLE": "Registration Failed",
+  "REGISTER_ERROR_MESSAGE": "There was a problem with your registration. Please try again later.",
+  "REDIRECTING_MESSAGE": "You will be redirected to the home page shortly...",
+
+  "PENDING_VALIDATION_MESSAGE": "Your account is pending validation. Please wait for approval."
+
+}

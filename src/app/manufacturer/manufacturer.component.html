@@ -158,4 +158,32 @@
       </div>
     </div>
   </form>
+
+  <!--Success Toast -->
+  <div *ngIf="successMessageVisible" class="toast-container position-fixed top-0 end-0 p-4 mt-5 me-4 z-3">
+   <div class="toast show align-items-center text-bg-success border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ 'REGISTER_SUCCESS_MESSAGE' | translate }}
+        <br>
+        <small>{{ 'REDIRECTING_MESSAGE' | translate }}</small>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close"
+              (click)="successMessageVisible = false"></button>
+    </div>
+  </div>
+</div>
+
+<!--Error Toast -->
+<div *ngIf="errorMessageVisible" class="toast-container position-fixed top-0 end-0 p-4 mt-5 me-4 z-3">
+  <div class="toast show align-items-center text-bg-danger border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ 'REGISTER_ERROR_MESSAGE' | translate }}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close"
+              (click)="errorMessageVisible = false"></button>
+    </div>
+  </div>
+</div>
 </div>
