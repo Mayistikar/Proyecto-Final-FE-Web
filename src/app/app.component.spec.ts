@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -8,6 +10,7 @@ describe('AppComponent', () => {
       imports: [
         AppComponent,
         TranslateModule.forRoot(),
+        RouterTestingModule,
       ],
       providers: [
         TranslateService,
@@ -54,5 +57,14 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.getTranslateService().getLangs()).toEqual(['en', 'es']);
+  });
+
+  it('should navigate to home when goHome is called', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const router = TestBed.inject(Router);
+    const navigateSpy = spyOn(router, 'navigate');
+    app.goHome();
+    expect(navigateSpy).toHaveBeenCalledWith(['/']);
   });
 });

@@ -137,6 +137,20 @@
   "REGISTER_ERROR_MESSAGE": "There was a problem with your registration. Please try again later.",
   "REDIRECTING_MESSAGE": "You will be redirected to the home page shortly...",
 
-  "PENDING_VALIDATION_MESSAGE": "Your account is pending validation. Please wait for approval."
+  "PENDING_VALIDATION_MESSAGE": "Your account is pending validation. Please wait for approval.", 
+
+  "MANUFACTURER_DASHBOARD_TITLE": "Hello {{name}}!",
+  "MANUFACTURER_PRODUCTS_TITLE": "Products",
+  "MANUFACTURER_VIEW_DETAILS": "View details",
+  "MANUFACTURER_CREATE_PRODUCT": "Create Product",
+  "MANUFACTURER_UPLOAD_PRODUCTS": "Upload Products", 
+
+  "PRODUCT_1_NAME": "Still Mineral Water 1L",
+  "PRODUCT_1_DESC": "Bottle of pure water, perfect for daily hydration.",
+  "PRODUCT_2_NAME": "Orange Juice 500ml",
+  "PRODUCT_2_DESC": "Natural juice with no preservatives.",
+  "PRODUCT_3_NAME": "Cola-flavored Soda 500ml",
+  "PRODUCT_3_DESC": "Refreshing drink with classic cola flavor."
+
 
 }
