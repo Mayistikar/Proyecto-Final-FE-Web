@@ -4,7 +4,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import { RouterOutlet } from '@angular/router';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    RouterOutlet
+    RouterOutlet, 
+    RouterModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -22,7 +24,10 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   title = 'proyecto-final-web';
 
-  constructor(private translate: TranslateService) {
+  constructor(
+    private translate: TranslateService,
+    private router: Router // <--- Aquí lo agregas
+  ) {
     translate.addLangs(['en', 'es']);
     translate.setDefaultLang('en');
   }
@@ -33,5 +38,9 @@ export class AppComponent {
 
   getTranslateService() {
     return this.translate;
+  }
+
+  goHome() {
+    this.router.navigate(['/']);
   }
 }

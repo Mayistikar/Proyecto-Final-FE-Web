@@ -138,5 +138,19 @@
   "REGISTER_ERROR_MESSAGE": "Hubo un problema con tu registro. Por favor, intenta nuevamente más tarde.",
   "REDIRECTING_MESSAGE": "Serás redirigido a la página de inicio en breve...",
  
-  "PENDING_VALIDATION_MESSAGE": "Tu cuenta está pendiente de validación. Por favor, espera aprobación."
+  "PENDING_VALIDATION_MESSAGE": "Tu cuenta está pendiente de validación. Por favor, espera aprobación.", 
+
+  "MANUFACTURER_DASHBOARD_TITLE": "¡Hola {{name}}!",
+  "MANUFACTURER_PRODUCTS_TITLE": "Productos",
+  "MANUFACTURER_VIEW_DETAILS": "Ver detalles",
+  "MANUFACTURER_CREATE_PRODUCT": "Crear Producto",
+  "MANUFACTURER_UPLOAD_PRODUCTS": "Cargar Productos", 
+   
+  "PRODUCT_1_NAME": "Agua mineral sin gas 1L",
+  "PRODUCT_1_DESC": "Botella de agua pura ideal para hidratación diaria.",
+  "PRODUCT_2_NAME": "Jugo de naranja 500ml",
+  "PRODUCT_2_DESC": "Jugo natural sin conservantes.",
+  "PRODUCT_3_NAME": "Gaseosa sabor cola 500ml",
+  "PRODUCT_3_DESC": "Bebida refrescante con sabor clásico de cola."
+
 }
