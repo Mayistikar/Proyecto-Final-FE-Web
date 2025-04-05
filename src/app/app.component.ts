@@ -6,6 +6,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    RouterOutlet, 
+    RouterOutlet,
     RouterModule
   ],
   templateUrl: './app.component.html',
@@ -26,7 +27,8 @@ export class AppComponent {
 
   constructor(
     private translate: TranslateService,
-    private router: Router // <--- Aquí lo agregas
+    private router: Router,
+    private authService: AuthService,
   ) {
     translate.addLangs(['en', 'es']);
     translate.setDefaultLang('en');
@@ -42,5 +44,10 @@ export class AppComponent {
 
   goHome() {
     this.router.navigate(['/']);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login'], { queryParams: { logout: true } });
   }
 }
