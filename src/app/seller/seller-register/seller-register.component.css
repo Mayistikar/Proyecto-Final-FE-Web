@@ -1,0 +1,57 @@
+.card-info {
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  margin: auto;
+}
+
+@media (min-width: 768px) {
+  .card-info {
+    padding: 2rem;
+  }
+}
+
+.card-body h1 {
+  color: #212529;
+  font-family: Inter, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.card-body p {
+  color: #68717A;
+  font-family: Inter, sans-serif;
+  font-size: 1rem;
+  line-height: 1.75rem;
+}
+
+.btn-submit-seller,
+.btn-cancel-seller {
+  width: 100%;
+  max-width: 150px;
+  height: 44px;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.btn-submit-seller {
+  background: #03A9F4;
+  color: white;
+}
+
+.btn-cancel-seller {
+  background: #F5F5F5;
+  border-style: none;
+  color: black;
+}
+
+.form-select {
+  z-index: 1;
+  position: relative;
+  width: 100%;
+}

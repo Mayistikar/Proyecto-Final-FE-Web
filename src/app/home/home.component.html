@@ -34,12 +34,28 @@
         </mat-form-field>
 
         <div class="btn-container">
-          <a mat-flat-button routerLink="/manufacturer" class="btn-login" type="submit">{{ 'LOGIN_BUTTON' | translate }}</a>
-          <a mat-flat-button routerLink="/manufacturer" class="btn-man-register" type="submit">{{ 'REGISTER_MANUFACTURER' | translate }}</a>
-          <a mat-flat-button routerLink="/manufacturer" class="btn-sell-register" type="submit">{{ 'REGISTER_SELLER' | translate }}</a>
+          <button mat-flat-button class="btn-login" type="submit" [disabled]="isLoading">
+            <span *ngIf="!isLoading">{{ 'LOGIN_BUTTON' | translate }}</span>
+            <mat-spinner *ngIf="isLoading" diameter="20" class="login-spinner"></mat-spinner>
+          </button>          <a mat-flat-button routerLink="/manufacturer" class="btn-man-register" type="submit">{{ 'REGISTER_MANUFACTURER' | translate }}</a>
+          <a mat-flat-button routerLink="/seller-register" class="btn-sell-register" type="submit">{{ 'REGISTER_SELLER' | translate }}</a>
         </div>
 
       </form>
     </div>
   </mat-grid-tile>
 </mat-grid-list>
+
+<!-- Pending Validation Toast -->
+<div *ngIf="pendingValidation" class="toast-container position-fixed top-0 end-0 p-4 mt-5 me-4 z-3">
+  <div class="toast align-items-center text-bg-warning border-0 show fade" role="alert">
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ 'PENDING_VALIDATION_MESSAGE' | translate }}
+        <br>
+        <small>{{ email }}</small>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close" (click)="pendingValidation = false"></button>
+    </div>
+  </div>
+</div>

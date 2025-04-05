@@ -2,9 +2,9 @@
   "WELCOME_TITLE": "Welcome to CCP!",
   "WELCOME_DESCRIPTION": "We are leaders in the distribution of mass consumer products, connecting manufacturers with supermarkets and stores in 5 countries. With a network of strategic warehouses, we ensure efficient supply and fast deliveries. Log in or register to manage your orders and optimize your operation.",
   "LOGIN_TITLE": "Login",
-  "USERNAME_LABEL": "Username",
-  "USERNAME_PLACEHOLDER": "Enter your username",
-  "USERNAME_REQUIRED": "Username is required",
+  "USERNAME_LABEL": "Email",
+  "USERNAME_PLACEHOLDER": "Enter your email",
+  "USERNAME_REQUIRED": "Email is required",
   "PASSWORD_LABEL": "Password",
   "PASSWORD_PLACEHOLDER": "Enter your password",
   "PASSWORD_REQUIRED": "Password is required",
@@ -57,5 +57,100 @@
   "MANUFACTURER_PASSWORDS_NOT_MATCH": "Passwords do not match",
   "MANUFACTURER_CANCEL_BUTTON": "Cancel",
   "MANUFACTURER_SUBMIT_BUTTON": "Submit",
-  "MANUFACTURER_HELP_FIELDS": "(*) Required fields"
+  "MANUFACTURER_HELP_FIELDS": "(*) Required fields",
+
+  "SELLER_REGISTRATION_TITLE": "Seller Registration",
+  "SELLER_REGISTRATION_DESCRIPTION": "Complete the form to register as a seller on CCP",
+  "SELLER_HELP_FIELDS": "(*) Required fields",
+
+  "SELLER_NAME_LABEL": "Full Name *",
+  "SELLER_NAME_PLACEHOLDER": "Enter the full name of the seller",
+  "SELLER_NAME_REQUIRED": "The name is required.",
+  "SELLER_NAME_MINLENGTH": "The name is too short.",
+
+  "SELLER_EMAIL_LABEL": "Email *",
+  "SELLER_EMAIL_PLACEHOLDER": "Enter your email",
+  "SELLER_EMAIL_REQUIRED": "Email is required.",
+  "SELLER_EMAIL_INVALID": "Email format is invalid.",
+
+  "SELLER_PHONE_LABEL": "Phone Number *",
+  "SELLER_PHONE_PLACEHOLDER": "Enter your phone number",
+  "SELLER_PHONE_REQUIRED": "Phone number is required.",
+  "SELLER_PHONE_INVALID": "Invalid phone number format.",
+  "SELLER_PHONE_MINLENGTH": "Phone number is too short.",
+
+  "SELLER_ADDRESS_LABEL": "Address *",
+  "SELLER_ADDRESS_PLACEHOLDER": "Enter your address",
+  "SELLER_ADDRESS_REQUIRED": "Address is required.",
+  "SELLER_ADDRESS_MINLENGTH": "Address is too short.",
+
+  "SELLER_ZONE_LABEL": "Coverage Area *",
+  "SELLER_ZONE_PLACEHOLDER": "Select your coverage area",
+  "SELLER_ZONE_REQUIRED": "Coverage area is required.",
+
+  "SELLER_SPECIALTY_LABEL": "Specialty *",
+  "SELLER_SPECIALTY_PLACEHOLDER": "Enter your specialty",
+
+  "SELLER_PASSWORD_LABEL": "Password *",
+  "SELLER_PASSWORD_PLACEHOLDER": "Enter your password",
+  "SELLER_PASSWORD_REQUIRED": "Password is required.",
+  "SELLER_PASSWORD_MINLENGTH": "Minimum 8 characters",
+  "SELLER_PASSWORD_SHORT": "Password is too short.",
+
+  "SELLER_CONFIRM_PASSWORD_LABEL": "Confirm Password *",
+  "SELLER_CONFIRM_PASSWORD_PLACEHOLDER": "Confirm your password",
+  "SELLER_CONFIRM_PASSWORD_REQUIRED": "Password confirmation is required.",
+
+  "SELLER_PASSWORDS_NOT_MATCH": "Passwords do not match",
+
+  "SELLER_SUBMIT_BUTTON": "Submit",
+  "SELLER_CANCEL_BUTTON": "Cancel",
+
+  "COVERAGE_COLOMBIA": "Colombia",
+  "COVERAGE_USA": "United States",
+  "ZONE_BOGOTA": "Bogotá",
+  "ZONE_MEDELLIN": "Medellín",
+  "ZONE_CALI": "Cali",
+  "ZONE_BARRANQUILLA": "Barranquilla",
+  "ZONE_NEW_YORK": "New York",
+  "ZONE_CALIFORNIA": "California",
+  "ZONE_TEXAS": "Texas",
+  "ZONE_FLORIDA": "Florida",
+
+  "SELLER_DASHBOARD_TITLE": "Hello {{name}}!",
+  "SELLER_SALES_PLANS_TITLE": "Sales Plans",
+  "SELLER_VIEW_DETAILS": "View details",
+  "SELLER_CREATE_PLAN": "Create Sales Plan",
+  "STARTER_PLAN_NAME": "Starter Plan",
+  "STARTER_PLAN_DESC": "Allows selling up to 50 products per month.",
+  "GROWTH_PLAN_NAME": "Growth Plan",
+  "GROWTH_PLAN_DESC": "Includes analytics and allows up to 200 products.",
+  "PRO_PLAN_NAME": "Pro Plan",
+  "PRO_PLAN_DESC": "Unlimited product listings and premium support.",
+
+  "REGISTER_SUCCESS": "Registration successful. Your account will be validated before operation.",
+  "REGISTER_ERROR": "There was an error during registration. Please try again.",
+
+  "REGISTER_SUCCESS_TITLE": "Registration Successful!",
+  "REGISTER_SUCCESS_MESSAGE": "Your manufacturer account is under review. We’ll notify you once it’s approved.",
+  "REGISTER_ERROR_TITLE": "Registration Failed",
+  "REGISTER_ERROR_MESSAGE": "There was a problem with your registration. Please try again later.",
+  "REDIRECTING_MESSAGE": "You will be redirected to the home page shortly...",
+
+  "PENDING_VALIDATION_MESSAGE": "Your account is pending validation. Please wait for approval.",
+
+  "MANUFACTURER_DASHBOARD_TITLE": "Hello {{name}}!",
+  "MANUFACTURER_PRODUCTS_TITLE": "Products",
+  "MANUFACTURER_VIEW_DETAILS": "View details",
+  "MANUFACTURER_CREATE_PRODUCT": "Create Product",
+  "MANUFACTURER_UPLOAD_PRODUCTS": "Upload Products",
+
+  "PRODUCT_1_NAME": "Still Mineral Water 1L",
+  "PRODUCT_1_DESC": "Bottle of pure water, perfect for daily hydration.",
+  "PRODUCT_2_NAME": "Orange Juice 500ml",
+  "PRODUCT_2_DESC": "Natural juice with no preservatives.",
+  "PRODUCT_3_NAME": "Cola-flavored Soda 500ml",
+  "PRODUCT_3_DESC": "Refreshing drink with classic cola flavor."
+
+
 }

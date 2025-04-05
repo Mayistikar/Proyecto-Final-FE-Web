@@ -1,0 +1,27 @@
+<div class="container mt-5">
+    <h2 class="mb-4">{{ 'MANUFACTURER_DASHBOARD_TITLE' | translate:{ name: manufacturerName } }}</h2>
+  
+    <h4 class="mb-3">{{ 'MANUFACTURER_PRODUCTS_TITLE' | translate }}</h4>
+  
+    <div class="list-group mb-4">
+      <div *ngFor="let product of products" class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ product.name | translate }}</strong><br />
+          <span>{{ product.description | translate }}</span>
+        </div>
+        <button class="btn btn-outline-secondary btn-sm">
+          {{ 'MANUFACTURER_VIEW_DETAILS' | translate }}
+        </button>
+      </div>
+    </div>
+  
+    <div class="d-flex justify-content-end gap-2">
+      <button class="btn btn-primary">
+        {{ 'MANUFACTURER_CREATE_PRODUCT' | translate }}
+      </button>
+      <button class="btn btn-primary">
+        {{ 'MANUFACTURER_UPLOAD_PRODUCTS' | translate }}
+      </button>
+    </div>
+  </div>
+  
