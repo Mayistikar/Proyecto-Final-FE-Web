@@ -81,7 +81,7 @@ describe('SellerRegisterComponent (refactor)', () => {
     tick();
 
     expect(sellerServiceSpy.register).toHaveBeenCalled();
-    expect(navigateSpy).toHaveBeenCalledWith(['/seller-dashboard']);
+    expect(navigateSpy).toHaveBeenCalledWith(['/login']);
   }));
 
   it('should log error on failed registration', fakeAsync(() => {
@@ -138,11 +138,11 @@ describe('SellerRegisterComponent (refactor)', () => {
       { label: 'Colombia', zones: ['Bogotá', 'Medellín'] },
       { label: 'USA', zones: ['New York', 'Florida'] }
     ];
-  
+
     (component as any).coverageZoneGroups = mockGroups;
-  
+
     const result = component.getZoneGroups();
-  
+
     expect(result).toEqual(mockGroups);
   });
 
@@ -151,10 +151,10 @@ describe('SellerRegisterComponent (refactor)', () => {
     component.sellerForm.setValue(formData);
     const navigateSpy = spyOn(component['router'], 'navigate');
     sellerServiceSpy.register.and.returnValue(of({}));
-  
+
     component.onSubmit();
     tick();
-  
+
     expect(sellerServiceSpy.register).toHaveBeenCalledWith(jasmine.objectContaining({
       name: formData.name,
       email: formData.email,
@@ -164,8 +164,8 @@ describe('SellerRegisterComponent (refactor)', () => {
       specialty: formData.specialty,
       password: formData.password
     }));
-  
-    expect(navigateSpy).toHaveBeenCalledWith(['/seller-dashboard']);
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/login']);
   }));
 
   it('should use empty string for null form values', fakeAsync(() => {
@@ -179,23 +179,23 @@ describe('SellerRegisterComponent (refactor)', () => {
       password: '',
       confirmPassword: ''
     };
-  
+
     // Desactiva validadores para permitir el envío
     Object.keys(component.sellerForm.controls).forEach(key => {
       component.sellerForm.get(key)?.clearValidators();
       component.sellerForm.get(key)?.updateValueAndValidity();
     });
-  
+
     component.sellerForm.setValue(emptyForm);
     fixture.detectChanges();
-  
+
     // Espía a router.navigate para evitar error de ruta no definida
     const navigateSpy = spyOn(component['router'], 'navigate');
     sellerServiceSpy.register.and.returnValue(of({}));
-  
+
     component.onSubmit();
     tick();
-  
+
     expect(sellerServiceSpy.register).toHaveBeenCalledWith(jasmine.objectContaining({
       name: '',
       email: '',
@@ -205,9 +205,9 @@ describe('SellerRegisterComponent (refactor)', () => {
       specialty: '',
       password: ''
     }));
-  
+
     // Asegura que intentó navegar a la ruta esperada
-    expect(navigateSpy).toHaveBeenCalledWith(['/seller-dashboard']);
+    expect(navigateSpy).toHaveBeenCalledWith(['/login']);
   }));
 
   describe('Coalescing to empty string', () => {
@@ -215,7 +215,7 @@ describe('SellerRegisterComponent (refactor)', () => {
       const undefinedValue = undefined;
       const nullValue = null;
       const nonEmpty = 'text';
-  
+
       expect(undefinedValue ?? '').toBe('');
       expect(nullValue ?? '').toBe('');
       expect(nonEmpty ?? '').toBe('text');
@@ -233,22 +233,22 @@ describe('SellerRegisterComponent (refactor)', () => {
       password: null,
       confirmPassword: null
     };
-  
+
     // Desactiva validadores para permitir submit
     Object.keys(nullishForm).forEach(key => {
       component.sellerForm.get(key)?.clearValidators();
       component.sellerForm.get(key)?.updateValueAndValidity();
     });
-  
+
     component.sellerForm.setValue(nullishForm);
     fixture.detectChanges();
-  
+
     const navigateSpy = spyOn(component['router'], 'navigate');
     sellerServiceSpy.register.and.returnValue(of({}));
-  
+
     component.onSubmit();
     tick();
-  
+
     expect(sellerServiceSpy.register).toHaveBeenCalledWith(jasmine.objectContaining({
       name: '',
       email: '',
@@ -258,8 +258,8 @@ describe('SellerRegisterComponent (refactor)', () => {
       specialty: '',
       password: ''
     }));
-  
-    expect(navigateSpy).toHaveBeenCalledWith(['/seller-dashboard']);
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/login']);
   }));
-  
+
 });

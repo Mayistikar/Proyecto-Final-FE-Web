@@ -81,7 +81,7 @@ export class SellerRegisterComponent {
       );
 
       this.sellerService.register(seller).subscribe({
-        next: () => this.router.navigate(['/seller-dashboard']),
+        next: () => this.router.navigate(['/login']),
         error: (err: any) => console.error('Registration error', err)
       });
     }

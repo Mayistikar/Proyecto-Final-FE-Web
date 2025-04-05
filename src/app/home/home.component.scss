@@ -174,3 +174,12 @@
   line-height: var(--Display-Large-Line-Height, 64px); /* 112.281% */
   letter-spacing: var(--Display-Large-Tracking, -0.25px);
 }
+
+.login-spinner {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+button.btn-login:disabled {
+  opacity: 0.7;
+}

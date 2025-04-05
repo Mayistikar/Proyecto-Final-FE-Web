@@ -4,11 +4,14 @@ import { ManufacturerComponent } from './manufacturer/manufacturer.component';
 import { SellerRegisterComponent } from './seller/seller-register/seller-register.component';
 import { SellerDashboardComponent } from './seller/seller-dashboard/seller-dashboard.component';
 import { ManufacturerDashboardComponent } from './manufacturer/manufacturer-dashboard/manufacturer-dashboard.component';
+import { AuthGuard } from './auth/auth.guard';
+
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'manufacturer', component: ManufacturerComponent },
   { path: 'seller-register', component: SellerRegisterComponent },
-  { path: 'seller-dashboard', component: SellerDashboardComponent },
-  { path: 'manufacturer-dashboard', component: ManufacturerDashboardComponent }
+  { path: 'seller-dashboard', component: SellerDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'manufacturer-dashboard', component: ManufacturerDashboardComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '' }
 ];
