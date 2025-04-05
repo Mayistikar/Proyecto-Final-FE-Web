@@ -44,9 +44,9 @@ export class HomeComponent {
   isLoading = false;
 
   constructor(private fb: FormBuilder,
-              private router: Router,
-              private authService: AuthService,
-              private http: HttpClient,
+              public router: Router,
+              public authService: AuthService,
+              public http: HttpClient,
               private cdr: ChangeDetectorRef) {
     this.loginForm = this.fb.group({
       usuario: ['', [Validators.required]],
