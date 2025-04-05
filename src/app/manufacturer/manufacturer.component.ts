@@ -19,6 +19,7 @@ import { ManufacturerService } from './manufacturer.service';
 export class ManufacturerComponent {
   successMessageVisible = false;
   errorMessageVisible = false;
+  isSubmitting: boolean = false;
 
   constructor(
     private manufacturerService: ManufacturerService,
@@ -90,6 +91,8 @@ export class ManufacturerComponent {
       console.table(this.manufacturerForm.value);
       return;
     }
+
+    this.isSubmitting = true;
   
     const form = this.manufacturerForm.value;
   

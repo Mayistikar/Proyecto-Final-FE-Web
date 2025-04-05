@@ -21,6 +21,7 @@ import { Seller } from '../seller.model';
 })
 
 export class SellerRegisterComponent {
+  isSubmitting: boolean = false;
   coverageZoneGroups = [
     { label: 'COVERAGE_COLOMBIA', zones: ['ZONE_BOGOTA', 'ZONE_MEDELLIN', 'ZONE_CALI', 'ZONE_BARRANQUILLA'] },
     { label: 'COVERAGE_USA', zones: ['ZONE_NEW_YORK', 'ZONE_CALIFORNIA', 'ZONE_TEXAS', 'ZONE_FLORIDA'] }
@@ -69,6 +70,8 @@ export class SellerRegisterComponent {
     if (this.sellerForm.valid && this.passwordsMatch) {
       const { name, email, phone, address, zone, specialty, password } = this.sellerForm.getRawValue();
 
+      this.isSubmitting = true;
+      
       const seller = new Seller(
         '',
         name ?? '',
