@@ -4,8 +4,10 @@ import { TranslateModule, TranslateLoader, TranslateFakeLoader, TranslateService
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { fakeAsync, tick } from '@angular/core/testing';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AuthService } from '../auth/auth.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -14,7 +16,7 @@ describe('HomeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        HomeComponent,
+        HttpClientTestingModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,
@@ -22,19 +24,30 @@ describe('HomeComponent', () => {
           }
         })
       ],
+      declarations: [HomeComponent],
       providers: [
         TranslateService,
         TranslateStore,
+        FormBuilder,
+        AuthService,
         {
           provide: ActivatedRoute,
           useValue: {
             params: of({}), // Mock params observable
             snapshot: { paramMap: { get: () => 'test-id' } } // Mock snapshot
           }
+        },
+        {
+          provide: Router,
+          useValue: {
+            navigate: jasmine.createSpy('navigate'),
+            getCurrentNavigation: () => ({
+              extras: { state: { pendingValidation: true, userType: 'manufacturer', email: 'test@example.com' } }
+            })
+          }
         }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
@@ -49,21 +62,21 @@ describe('HomeComponent', () => {
     spyOn(console, 'log');
     component.loginForm.setValue({ usuario: 'testuser', contrasena: 'testpass' });
     component.onSubmit();
-    expect(console.log).toHaveBeenCalledWith('Usuario:', 'testuser', 'Contraseña:', 'testpass');
+    expect(console.log).toHaveBeenCalledWith('Login successful', jasmine.any(Object));
   });
 
-  it('should log "Formulario inválido" when form is invalid', () => {
-    spyOn(console, 'log');
+  it('should log "Form invalid" when form is invalid', () => {
+    spyOn(console, 'warn');
     component.loginForm.setValue({ usuario: '', contrasena: '' });
     component.onSubmit();
-    expect(console.log).toHaveBeenCalledWith('Formulario inválido');
+    expect(console.warn).toHaveBeenCalledWith('Form invalid');
   });
 
-  it('should log "Formulario inválido" when password is too short', () => {
-    spyOn(console, 'log');
+  it('should log "Form invalid" when password is too short', () => {
+    spyOn(console, 'warn');
     component.loginForm.setValue({ usuario: 'testuser', contrasena: '123' });
     component.onSubmit();
-    expect(console.log).toHaveBeenCalledWith('Formulario inválido');
+    expect(console.warn).toHaveBeenCalledWith('Form invalid');
   });
 
   it('should set pendingValidation state from router navigation and clear it after timeout', fakeAsync(() => {
@@ -72,19 +85,19 @@ describe('HomeComponent', () => {
       userType: 'manufacturer',
       email: 'test@example.com'
     };
-  
+
     const mockRouter = {
       getCurrentNavigation: () => ({
         extras: { state: mockState }
       })
     } as any;
-  
-    const component = new HomeComponent(new FormBuilder(), mockRouter);
-  
+
+    const component = new HomeComponent(new FormBuilder(), mockRouter, TestBed.inject(AuthService), TestBed.inject(HttpClient), TestBed.inject(ChangeDetectorRef));
+
     expect(component.pendingValidation).toBeTrue();
     expect(component.userType).toBe('manufacturer');
     expect(component.email).toBe('test@example.com');
-  
+
     tick(3000);
     expect(component.pendingValidation).toBeFalse();
   }));
@@ -93,7 +106,7 @@ describe('HomeComponent', () => {
     const mockState = {
       pendingValidation: true
     };
-  
+
     const mockRouter = {
       getCurrentNavigation: () => ({
         extras: {
@@ -101,15 +114,14 @@ describe('HomeComponent', () => {
         }
       })
     };
-  
-    const component = new HomeComponent(new FormBuilder(), mockRouter as any);
-  
+
+    const component = new HomeComponent(new FormBuilder(), mockRouter as any, TestBed.inject(AuthService), TestBed.inject(HttpClient), TestBed.inject(ChangeDetectorRef));
+
     expect(component.pendingValidation).toBeTrue();
     expect(component.userType).toBeNull();
     expect(component.email).toBeNull();
-  
+
     tick(3000);
     expect(component.pendingValidation).toBeFalse();
   }));
-
 });
