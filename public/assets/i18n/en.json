@@ -2,9 +2,9 @@
   "WELCOME_TITLE": "Welcome to CCP!",
   "WELCOME_DESCRIPTION": "We are leaders in the distribution of mass consumer products, connecting manufacturers with supermarkets and stores in 5 countries. With a network of strategic warehouses, we ensure efficient supply and fast deliveries. Log in or register to manage your orders and optimize your operation.",
   "LOGIN_TITLE": "Login",
-  "USERNAME_LABEL": "Username",
-  "USERNAME_PLACEHOLDER": "Enter your username",
-  "USERNAME_REQUIRED": "Username is required",
+  "USERNAME_LABEL": "Email",
+  "USERNAME_PLACEHOLDER": "Enter your email",
+  "USERNAME_REQUIRED": "Email is required",
   "PASSWORD_LABEL": "Password",
   "PASSWORD_PLACEHOLDER": "Enter your password",
   "PASSWORD_REQUIRED": "Password is required",
@@ -105,7 +105,7 @@
 
   "SELLER_SUBMIT_BUTTON": "Submit",
   "SELLER_CANCEL_BUTTON": "Cancel",
-  
+
   "COVERAGE_COLOMBIA": "Colombia",
   "COVERAGE_USA": "United States",
   "ZONE_BOGOTA": "Bogotá",
@@ -115,7 +115,7 @@
   "ZONE_NEW_YORK": "New York",
   "ZONE_CALIFORNIA": "California",
   "ZONE_TEXAS": "Texas",
-  "ZONE_FLORIDA": "Florida", 
+  "ZONE_FLORIDA": "Florida",
 
   "SELLER_DASHBOARD_TITLE": "Hello {{name}}!",
   "SELLER_SALES_PLANS_TITLE": "Sales Plans",
@@ -129,7 +129,7 @@
   "PRO_PLAN_DESC": "Unlimited product listings and premium support.",
 
   "REGISTER_SUCCESS": "Registration successful. Your account will be validated before operation.",
-  "REGISTER_ERROR": "There was an error during registration. Please try again.", 
+  "REGISTER_ERROR": "There was an error during registration. Please try again.",
 
   "REGISTER_SUCCESS_TITLE": "Registration Successful!",
   "REGISTER_SUCCESS_MESSAGE": "Your manufacturer account is under review. We’ll notify you once it’s approved.",
@@ -137,13 +137,13 @@
   "REGISTER_ERROR_MESSAGE": "There was a problem with your registration. Please try again later.",
   "REDIRECTING_MESSAGE": "You will be redirected to the home page shortly...",
 
-  "PENDING_VALIDATION_MESSAGE": "Your account is pending validation. Please wait for approval.", 
+  "PENDING_VALIDATION_MESSAGE": "Your account is pending validation. Please wait for approval.",
 
   "MANUFACTURER_DASHBOARD_TITLE": "Hello {{name}}!",
   "MANUFACTURER_PRODUCTS_TITLE": "Products",
   "MANUFACTURER_VIEW_DETAILS": "View details",
   "MANUFACTURER_CREATE_PRODUCT": "Create Product",
-  "MANUFACTURER_UPLOAD_PRODUCTS": "Upload Products", 
+  "MANUFACTURER_UPLOAD_PRODUCTS": "Upload Products",
 
   "PRODUCT_1_NAME": "Still Mineral Water 1L",
   "PRODUCT_1_DESC": "Bottle of pure water, perfect for daily hydration.",

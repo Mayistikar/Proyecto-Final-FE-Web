@@ -2,9 +2,9 @@
   "WELCOME_TITLE": "¡Bienvenido a CCP!",
   "WELCOME_DESCRIPTION": "Somos líderes en la distribución de productos de consumo masivo, conectando fabricantes con supermercados y tiendas en 5 países. Con una red de bodegas estratégicas, garantizamos abastecimiento eficiente y entregas rápidas. Inicia sesión ó registrese para gestionar tus pedidos y optimizar tu operación.",
   "LOGIN_TITLE": "Inicio de Sesión",
-  "USERNAME_LABEL": "Usuario",
-  "USERNAME_PLACEHOLDER": "Ingrese su usuario",
-  "USERNAME_REQUIRED": "El usuario es obligatorio",
+  "USERNAME_LABEL": "Correo Electrónico",
+  "USERNAME_PLACEHOLDER": "Ingrese su correo electrónico",
+  "USERNAME_REQUIRED": "El correo electrónico es obligatorio",
   "PASSWORD_LABEL": "Contraseña",
   "PASSWORD_PLACEHOLDER": "Ingrese su contraseña",
   "PASSWORD_REQUIRED": "La contraseña es obligatoria",
@@ -58,7 +58,7 @@
   "MANUFACTURER_PASSWORDS_NOT_MATCH": "Las contraseñas no coinciden",
   "MANUFACTURER_CANCEL_BUTTON": "Cancelar",
   "MANUFACTURER_SUBMIT_BUTTON": "Enviar",
-  "MANUFACTURER_HELP_FIELDS": "(*) Campos obligatorios", 
+  "MANUFACTURER_HELP_FIELDS": "(*) Campos obligatorios",
 
   "SELLER_REGISTRATION_TITLE": "Registro de Vendedor",
   "SELLER_REGISTRATION_DESCRIPTION": "Complete el formulario para registrarse como vendedor en CCP",
@@ -106,7 +106,7 @@
 
   "SELLER_SUBMIT_BUTTON": "Enviar",
   "SELLER_CANCEL_BUTTON": "Cancelar",
-   
+
   "COVERAGE_COLOMBIA": "Colombia",
   "COVERAGE_USA": "Estados Unidos",
   "ZONE_BOGOTA": "Bogotá",
@@ -130,22 +130,22 @@
   "PRO_PLAN_DESC": "Listados ilimitados y soporte premium.",
 
   "REGISTER_SUCCESS": "Registro exitoso. Tu cuenta será validada antes de habilitar la operación en la plataforma.",
-  "REGISTER_ERROR": "Ocurrió un error durante el registro. Intenta de nuevo.", 
+  "REGISTER_ERROR": "Ocurrió un error durante el registro. Intenta de nuevo.",
 
   "REGISTER_SUCCESS_TITLE": "¡Registro Exitoso!",
   "REGISTER_SUCCESS_MESSAGE": "Tu cuenta de fabricante está en revisión. Te notificaremos cuando sea aprobada.",
   "REGISTER_ERROR_TITLE": "Error en el Registro",
   "REGISTER_ERROR_MESSAGE": "Hubo un problema con tu registro. Por favor, intenta nuevamente más tarde.",
   "REDIRECTING_MESSAGE": "Serás redirigido a la página de inicio en breve...",
- 
-  "PENDING_VALIDATION_MESSAGE": "Tu cuenta está pendiente de validación. Por favor, espera aprobación.", 
+
+  "PENDING_VALIDATION_MESSAGE": "Tu cuenta está pendiente de validación. Por favor, espera aprobación.",
 
   "MANUFACTURER_DASHBOARD_TITLE": "¡Hola {{name}}!",
   "MANUFACTURER_PRODUCTS_TITLE": "Productos",
   "MANUFACTURER_VIEW_DETAILS": "Ver detalles",
   "MANUFACTURER_CREATE_PRODUCT": "Crear Producto",
-  "MANUFACTURER_UPLOAD_PRODUCTS": "Cargar Productos", 
-   
+  "MANUFACTURER_UPLOAD_PRODUCTS": "Cargar Productos",
+
   "PRODUCT_1_NAME": "Agua mineral sin gas 1L",
   "PRODUCT_1_DESC": "Botella de agua pura ideal para hidratación diaria.",
   "PRODUCT_2_NAME": "Jugo de naranja 500ml",
