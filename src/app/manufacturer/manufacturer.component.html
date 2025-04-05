@@ -157,11 +157,12 @@
           type="submit" 
           class="btn btn-primary float-end btn-submit-manufacturer m-2" 
           [disabled]="!manufacturerForm.valid || isSubmitting">
-          <span *ngIf="!isSubmitting">{{ 'MANUFACTURER_SUBMIT_BUTTON' | translate }}</span>
-          <span *ngIf="isSubmitting">
-            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-            {{ 'LOADING_BUTTON_TEXT' | translate }}
-          </span>
+          <div class="d-flex align-items-center justify-content-center">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <span class="text-button">
+              {{ isSubmitting ? ('LOADING_BUTTON_TEXT' | translate) : ('MANUFACTURER_SUBMIT_BUTTON' | translate) }}
+            </span>
+          </div>
         </button>
         </div>
       </div>
