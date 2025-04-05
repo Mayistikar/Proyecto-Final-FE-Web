@@ -153,7 +153,17 @@
         <div class="mb-3">
           <br>
           <button type="submit" class="btn btn-outline-secondary float-end btn-cancel-manufacturer m-2" routerLink="/" >{{ 'MANUFACTURER_CANCEL_BUTTON' | translate }}</button>
-          <button type="submit" class="btn btn-primary float-end btn-submit-manufacturer m-2" [disabled]="!manufacturerForm.valid">{{ 'MANUFACTURER_SUBMIT_BUTTON' | translate }}</button>
+          <button 
+          type="submit" 
+          class="btn btn-primary float-end btn-submit-manufacturer m-2" 
+          [disabled]="!manufacturerForm.valid || isSubmitting">
+          <div class="d-flex align-items-center justify-content-center">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <span class="text-button">
+              {{ isSubmitting ? ('LOADING_BUTTON_TEXT' | translate) : ('MANUFACTURER_SUBMIT_BUTTON' | translate) }}
+            </span>
+          </div>
+        </button>
         </div>
       </div>
     </div>

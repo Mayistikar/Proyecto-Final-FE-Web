@@ -150,7 +150,8 @@
   "PRODUCT_2_NAME": "Orange Juice 500ml",
   "PRODUCT_2_DESC": "Natural juice with no preservatives.",
   "PRODUCT_3_NAME": "Cola-flavored Soda 500ml",
-  "PRODUCT_3_DESC": "Refreshing drink with classic cola flavor."
+  "PRODUCT_3_DESC": "Refreshing drink with classic cola flavor.", 
 
+  "LOADING_BUTTON_TEXT": "Processing..."
 
 }
