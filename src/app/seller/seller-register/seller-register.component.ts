@@ -71,7 +71,7 @@ export class SellerRegisterComponent {
       const { name, email, phone, address, zone, specialty, password } = this.sellerForm.getRawValue();
 
       this.isSubmitting = true;
-      
+
       const seller = new Seller(
         '',
         name ?? '',
