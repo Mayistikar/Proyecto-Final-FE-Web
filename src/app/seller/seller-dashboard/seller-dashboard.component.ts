@@ -16,7 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./seller-dashboard.component.scss']
 })
 export class SellerDashboardComponent implements OnInit {
-  sellerName: string = 'Anderson';
+  sellerName: string = 'Vendedor';
   salesPlans: { name: string, description: string }[] = [
     { name: 'STARTER_PLAN_NAME', description: 'STARTER_PLAN_DESC' },
     { name: 'GROWTH_PLAN_NAME', description: 'GROWTH_PLAN_DESC' },
