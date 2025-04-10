@@ -45,4 +45,8 @@ export class ProductService {
       },
     });
   }
+
+  getProductsByManufacturer(manufacturerId: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.baseUrl}/products?manufacturerId=${manufacturerId}`);
+  }
 }

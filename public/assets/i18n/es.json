@@ -203,5 +203,16 @@
   "PRODUCT_FIELD_IMAGE": "Imagen del producto",
   "PRODUCT_PERISHABLE_YES": "Sí",
   "PRODUCT_PERISHABLE_NO": "No",
-  "PRODUCT_BACK_TO_DASHBOARD": "Volver al panel"
+  "PRODUCT_BACK_TO_DASHBOARD": "Volver al panel",
+
+
+  "MANUFACTURER_EDIT_PRODUCT_TITLE": "Editar Producto",
+  "PRODUCT_SAVE_SUCCESS": "Producto actualizado correctamente.",
+  "PRODUCT_SAVE_ERROR": "No se pudo actualizar el producto. Intenta nuevamente.",
+
+  "PRODUCT_DETAIL_TITLE": "Detalles del Producto",
+  "PRODUCT_IMAGE_ALT": "Imagen del producto",
+  "PRODUCT_FIELD_IMAGE_URL": "URL de la imagen",
+  "PRODUCT_FIELD_EDIT_BUTTON": "Editar producto"
+
 }
