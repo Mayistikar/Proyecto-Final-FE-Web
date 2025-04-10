@@ -119,6 +119,6 @@ export class EditProductComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/manufacturer/dashboard']);
+    this.router.navigate(['manufacturer-dashboard']);
   }
 }

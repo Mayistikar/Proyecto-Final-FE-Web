@@ -22,6 +22,11 @@
           <label for="price" class="form-label">{{ 'PRODUCT_PRICE' | translate }}</label>
           <input id="price" type="number" class="form-control" formControlName="price" placeholder="{{ 'PRODUCT_PRICE_PLACEHOLDER' | translate }}" />
         </div>
+
+        <div class="mb-3">
+          <label for="stock" class="form-label">{{ 'PRODUCT_STOCK' | translate }}</label>
+          <input id="stock" type="number" class="form-control" formControlName="stock" placeholder="{{ 'PRODUCT_STOCK_PLACEHOLDER' | translate }}" />
+        </div>
   
         <div class="mb-3">
           <label for="sku" class="form-label">{{ 'PRODUCT_SKU' | translate }}</label>
@@ -65,9 +70,12 @@
       <div class="d-flex justify-content-end gap-2 mt-4">
         <button class="btn btn-secondary" type="button" (click)="onCancel()">{{ 'BUTTON_CANCEL' | translate }}</button>
         <button class="btn btn-primary" type="submit" [disabled]="productForm.invalid || loading">
-          <ng-container *ngIf="!loading">{{ 'BUTTON_SAVE' | translate }}</ng-container>
-          <ng-template #loading>
-            <span class="spinner-border spinner-border-sm"></span> {{ 'LOADING_BUTTON_TEXT' | translate }}
+          <ng-container *ngIf="!loading; else loadingTemplate">
+            {{ 'BUTTON_UPDATE' | translate }}
+          </ng-container>
+          <ng-template #loadingTemplate>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            {{ 'LOADING_BUTTON_TEXT' | translate }}
           </ng-template>
         </button>
       </div>
