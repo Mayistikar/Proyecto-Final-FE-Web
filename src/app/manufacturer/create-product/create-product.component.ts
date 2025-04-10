@@ -129,7 +129,7 @@ export class CreateProductComponent implements OnInit {
     this.productService.createProduct(product).subscribe({
       next: () => {
         this.snackBar.open(this.translate.instant('PRODUCT.CREATED_SUCCESS'), 'OK', { duration: 3000 });
-        this.router.navigate(['/manufacturer/dashboard']);
+        this.router.navigate(['manufacturer-dashboard']);
       },
       error: () => {
         this.snackBar.open(this.translate.instant('PRODUCT.CREATED_ERROR'), 'OK', { duration: 3000 });

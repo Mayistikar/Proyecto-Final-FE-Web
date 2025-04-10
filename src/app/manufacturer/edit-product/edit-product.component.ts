@@ -109,7 +109,7 @@ export class EditProductComponent implements OnInit {
     this.productService.updateProduct(this.productId, updatedProduct).subscribe({
       next: () => {
         this.snackBar.open(this.translate.instant('PRODUCT_SAVE_SUCCESS'), 'OK', { duration: 3000 });
-        this.router.navigate(['/manufacturer/dashboard']);
+        this.router.navigate(['manufacturer-dashboard']);
       },
       error: () => {
         this.snackBar.open(this.translate.instant('PRODUCT_SAVE_ERROR'), 'OK', { duration: 3000 });
