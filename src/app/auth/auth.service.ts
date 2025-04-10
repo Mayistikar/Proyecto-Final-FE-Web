@@ -94,4 +94,21 @@ export class AuthService {
 
     return null;
   }
+
+  getCurrentManufacturer(): { id: string; email: string; role: string; companyName?: string } | null {
+    const id = this.getUserId();
+    const email = this.getUserEmail();
+    const role = this.getUserRole();
+  
+    if (id && email && role === 'manufacturer') {
+      return {
+        id,
+        email,
+        role,
+        companyName: email.split('@')[0]  // Simple fallback: usar parte del correo
+      };
+    }
+  
+    return null;
+  }
 }
