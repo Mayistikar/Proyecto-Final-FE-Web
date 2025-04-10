@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader, TranslateService, TranslateStore } from '@ngx-translate/core';
 import { CreateProductComponent } from './create-product.component';
@@ -9,14 +9,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 
-// 🔹 Mock services
+
 class MockAuthService {
   getCurrentManufacturer = () => ({ id: '123', companyName: 'Mock Co.' });
 }
 
 class MockProductService {
+
   createProduct = jasmine.createSpy().and.returnValue(of({}));
-  getPresignedUrl = jasmine.createSpy().and.returnValue(of({ uploadUrl: 'url', publicUrl: 'public-url' }));
+  getPresignedUrl = jasmine.createSpy().and.returnValue(
+    of({ uploadUrl: 'url', publicUrl: 'public-url' })
+  );
   uploadToS3 = jasmine.createSpy().and.returnValue(of({}));
 }
 
@@ -28,8 +31,11 @@ describe('CreateProductComponent', () => {
   let component: CreateProductComponent;
   let fixture: ComponentFixture<CreateProductComponent>;
   let snackBar: jasmine.SpyObj<MatSnackBar>;
+  let productService: MockProductService;
+  let router: MockRouter;
 
   beforeEach(async () => {
+
     snackBar = jasmine.createSpyObj('MatSnackBar', ['open']);
 
     await TestBed.configureTestingModule({
@@ -38,6 +44,7 @@ describe('CreateProductComponent', () => {
         ReactiveFormsModule,
         HttpClientTestingModule,
         MatSnackBarModule,
+
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
@@ -45,6 +52,7 @@ describe('CreateProductComponent', () => {
       providers: [
         TranslateService,
         TranslateStore,
+
         { provide: ProductService, useClass: MockProductService },
         { provide: AuthService, useClass: MockAuthService },
         { provide: Router, useClass: MockRouter },
@@ -55,6 +63,11 @@ describe('CreateProductComponent', () => {
     fixture = TestBed.createComponent(CreateProductComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+
+    productService = TestBed.inject(ProductService) as unknown as MockProductService;
+    router = TestBed.inject(Router) as unknown as MockRouter;
+
 
     spyOn(TestBed.inject(TranslateService), 'instant').and.callFake((key) => key);
   });
@@ -74,8 +87,8 @@ describe('CreateProductComponent', () => {
   });
 
 
+
   it('should submit form and navigate on success', () => {
-    const router = TestBed.inject(Router);
     component.productForm.patchValue({
       name: 'Product 1',
       description: 'Description for product',
@@ -90,13 +103,39 @@ describe('CreateProductComponent', () => {
       commercialConditions: 'standard',
       perishable: true
     });
+
     component.onSubmit();
     expect(router.navigate).toHaveBeenCalledWith(['manufacturer-dashboard']);
   });
 
+
   it('should navigate on cancel', () => {
-    const router = TestBed.inject(Router);
     component.onCancel();
     expect(router.navigate).toHaveBeenCalledWith(['manufacturer-dashboard']);
   });
-});
+
+  it('should add/remove the required validator on expirationDate when toggling perishable', () => {
+    const perishableControl = component.productForm.get('perishable');
+    const expirationControl = component.productForm.get('expirationDate');
+  
+    perishableControl?.setValue(false);
+    expirationControl?.updateValueAndValidity();
+  
+    expect(expirationControl?.validator).toBeNull();
+    expect(expirationControl?.value).toBeNull();
+  
+    perishableControl?.setValue(true);
+    expirationControl?.updateValueAndValidity();
+  
+    expect(expirationControl?.errors).toEqual({ required: true });
+  
+     perishableControl?.setValue(false);
+    expirationControl?.updateValueAndValidity();
+  
+    expect(expirationControl?.validator).toBeNull();
+    expect(expirationControl?.value).toBeNull();
+  });
+  
+ });
+  
+

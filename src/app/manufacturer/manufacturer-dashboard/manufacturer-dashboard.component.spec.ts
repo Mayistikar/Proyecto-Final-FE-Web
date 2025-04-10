@@ -4,8 +4,9 @@ import { TranslateModule, TranslateLoader, TranslateFakeLoader, TranslateService
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProductService } from '../services/product.service';
 import { AuthService } from '../../auth/auth.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 const mockManufacturer = {
   id: '123',
@@ -86,4 +87,28 @@ describe('ManufacturerDashboardComponent', () => {
     expect(component.products[0].name).toBe('PRODUCT_1_NAME');
     expect(component.products[1].description).toBe('PRODUCT_2_DESC');
   });
+
+  it('should redirect to /manufacturer if manufacturer is not found', () => {
+    const authService = TestBed.inject(AuthService);
+    spyOn(authService, 'getCurrentManufacturer').and.returnValue(null);
+    const router = TestBed.inject(Router);
+    spyOn(router, 'navigate');
+  
+    component.ngOnInit();
+  
+    expect(router.navigate).toHaveBeenCalledWith(['/manufacturer']);
+  });
+
+  it('should handle error when productService fails', () => {
+    const productService = TestBed.inject(ProductService);
+    spyOn(productService, 'getProductsByManufacturer')
+      .and.returnValue(throwError(() => new Error('Failed')));
+    spyOn(console, 'error');
+  
+    component.ngOnInit();
+  
+    expect(console.error).toHaveBeenCalledWith('Error loading products');
+    expect(component.loading).toBeFalse();
+  });
+
 });
