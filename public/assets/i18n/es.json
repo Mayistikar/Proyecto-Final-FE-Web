@@ -183,7 +183,9 @@
   "PRODUCT_CREATED_ERROR": "Ocurrió un error al crear el producto.",
   "FORM.INVALID": "Por favor, complete todos los campos requeridos.",
   "BUTTON_SAVE": "Guardar",
-  "BUTTON_CANCEL": "Cancelar", 
+  "BUTTON_CANCEL": "Cancelar",
+  "BUTTON_EDIT": "Editar",
+  "BUTTON_UPDATE": "Actualizar",
 
   "PRODUCT_SUCCESS_TITLE": "¡Producto creado con éxito!",
   "PRODUCT_SUCCESS_MESSAGE": "Tu producto ha sido publicado en la plataforma.",
