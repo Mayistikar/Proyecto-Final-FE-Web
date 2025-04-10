@@ -2,29 +2,35 @@ import { TestBed } from '@angular/core/testing';
 import { ProductDetailComponent } from './product-detail.component';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader, TranslateService, TranslateStore } from '@ngx-translate/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of, throwError } from 'rxjs';
 import { ProductService } from '../services/product.service';
 
-// Mock para ActivatedRoute con ID simulado
 const activatedRouteMock = {
   snapshot: {
     paramMap: {
-      get: (key: string) => '123'  // Devuelve un ID falso
+      get: (key: string) => '123'
     }
   }
 };
 
-// Mock de ProductService
 class MockProductService {
-  getProductById = () => of({
+  getProductById = jasmine.createSpy().and.returnValue(of({
     id: '123',
     name: 'Producto Ficticio',
     description: 'Este es un producto de prueba'
-  });
+  }));
 }
 
+const routerMock = {
+  navigate: jasmine.createSpy('navigate')
+};
+
 describe('ProductDetailComponent', () => {
+  let component: ProductDetailComponent;
+  let fixture: any;
+  let productService: MockProductService;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -38,14 +44,37 @@ describe('ProductDetailComponent', () => {
         TranslateService,
         TranslateStore,
         { provide: ProductService, useClass: MockProductService },
-        { provide: ActivatedRoute, useValue: activatedRouteMock }
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: Router, useValue: routerMock }
       ]
     }).compileComponents();
+
+    fixture = TestBed.createComponent(ProductDetailComponent);
+    component = fixture.componentInstance;
+    productService = TestBed.inject(ProductService) as unknown as MockProductService;
   });
 
   it('should create', () => {
-    const fixture = TestBed.createComponent(ProductDetailComponent);
-    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
+  });
+
+  it('should initialize productId from route and load product on ngOnInit', () => {
+    component.ngOnInit();
+    expect(component.productId).toBe('123');
+    expect(productService.getProductById).toHaveBeenCalledWith('123');
+    expect(component.product).toEqual(jasmine.objectContaining({ id: '123' }));
+    expect(component.loading).toBeFalse();
+  });
+
+  it('should handle error in getProductById', () => {
+    productService.getProductById = jasmine.createSpy().and.returnValue(throwError(() => new Error('error')));
+    component.ngOnInit();
+    expect(component.loading).toBeFalse();
+  });
+
+  it('should navigate to edit-product page when editProduct is called', () => {
+    component.productId = '456';
+    component.editProduct();
+    expect(routerMock.navigate).toHaveBeenCalledWith(['/manufacturer/edit-product/456']);
   });
 });
