@@ -152,6 +152,58 @@
   "PRODUCT_3_NAME": "Cola-flavored Soda 500ml",
   "PRODUCT_3_DESC": "Refreshing drink with classic cola flavor.", 
 
-  "LOADING_BUTTON_TEXT": "Processing..."
+  "LOADING_BUTTON_TEXT": "Processing...", 
+
+  "MANUFACTURER_CREATE_PRODUCT_TITLE": "Create New Product",
+
+  "PRODUCT_NAME": "Product Name *",
+  "PRODUCT_NAME_PLACEHOLDER": "Enter the product name",
+  "PRODUCT_DESCRIPTION": "Product Description *",
+  "PRODUCT_DESCRIPTION_PLACEHOLDER": "Provide detailed product information",
+  "PRODUCT_CATEGORY": "Category *",
+  "PRODUCT_CATEGORY_PLACEHOLDER": "Enter the category",
+  "PRODUCT_PRICE": "Unit Price *",
+  "PRODUCT_PRICE_PLACEHOLDER": "Enter the price (e.g., 9.99)",
+  "PRODUCT_STOCK": "Available Stock *",
+  "PRODUCT_STOCK_PLACEHOLDER": "Enter quantity in inventory",
+  "PRODUCT_SKU": "SKU Code *",
+  "PRODUCT_SKU_PLACEHOLDER": "E.g. ABC123456",
+  "PRODUCT_EXPIRATION_DATE": "Expiration Date (required if perishable)",
+  "PRODUCT_DELIVERY_TIME": "Estimated Delivery Time *",
+  "PRODUCT_DELIVERY_TIME_PLACEHOLDER": "Enter estimated delivery in days",
+  "PRODUCT_STORAGE_CONDITIONS": "Storage Conditions *",
+  "PRODUCT_STORAGE_PLACEHOLDER": "E.g., Refrigerate between 2-8°C",
+  "PRODUCT_COMMERCIAL_CONDITIONS": "Commercial Conditions *",
+  "PRODUCT_COMMERCIAL_PLACEHOLDER": "Include legal, tax, and regional terms",
+  "PRODUCT_IMAGE_LABEL": "Product Image",
+  "PRODUCT_IS_PERISHABLE": "Is this a perishable product?",
+
+  "PRODUCT_CREATED_SUCCESS": "Product created successfully.",
+  "PRODUCT_CREATED_ERROR": "There was an error creating the product.",
+  "FORM.INVALID": "Please complete all required fields.",
+  "BUTTON_SAVE": "Save",
+  "BUTTON_CANCEL": "Cancel", 
+
+  "PRODUCT_SUCCESS_TITLE": "Product Successfully Created!",
+  "PRODUCT_SUCCESS_MESSAGE": "Your product has been published on the platform.",
+  "PRODUCT_REDIRECTING_MESSAGE": "You will be redirected to the manufacturer dashboard shortly...",
+  "PRODUCT_DETAILS_TITLE": "Product Details",
+  "PRODUCT_FIELD_NAME": "Name",
+  "PRODUCT_FIELD_DESCRIPTION": "Description",
+  "PRODUCT_FIELD_CATEGORY": "Category",
+  "PRODUCT_FIELD_PRICE": "Price",
+  "PRODUCT_FIELD_STOCK": "Stock",
+  "PRODUCT_FIELD_SKU": "SKU Code",
+  "PRODUCT_FIELD_EXPIRATION": "Expiration Date",
+  "PRODUCT_FIELD_DELIVERY": "Delivery Time",
+  "PRODUCT_FIELD_STORAGE": "Storage Conditions",
+  "PRODUCT_FIELD_COMMERCIAL": "Commercial Conditions",
+  "PRODUCT_FIELD_PERISHABLE": "Is Perishable?",
+  "PRODUCT_FIELD_IMAGE": "Product Image",
+  "PRODUCT_PERISHABLE_YES": "Yes",
+  "PRODUCT_PERISHABLE_NO": "No",
+  "PRODUCT_BACK_TO_DASHBOARD": "Back to Dashboard"
+
+  
 
 }
