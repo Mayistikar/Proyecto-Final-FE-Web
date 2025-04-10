@@ -5,6 +5,7 @@ import { SellerRegisterComponent } from './seller/seller-register/seller-registe
 import { SellerDashboardComponent } from './seller/seller-dashboard/seller-dashboard.component';
 import { ManufacturerDashboardComponent } from './manufacturer/manufacturer-dashboard/manufacturer-dashboard.component';
 import { AuthGuard } from './auth/auth.guard';
+import { CreateProductComponent } from './manufacturer/create-product/create-product.component';
 
 
 export const routes: Routes = [
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: 'seller-register', component: SellerRegisterComponent },
   { path: 'seller-dashboard', component: SellerDashboardComponent, canActivate: [AuthGuard] },
   { path: 'manufacturer-dashboard', component: ManufacturerDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'manufacturer/create-product', component: CreateProductComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];
