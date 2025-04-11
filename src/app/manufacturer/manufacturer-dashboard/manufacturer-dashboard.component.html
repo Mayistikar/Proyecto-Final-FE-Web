@@ -9,14 +9,14 @@
           <strong>{{ product.name | translate }}</strong><br />
           <span>{{ product.description | translate }}</span>
         </div>
-        <button class="btn btn-outline-secondary btn-sm">
+        <button class="btn btn-outline-secondary btn-sm" [routerLink]="['/manufacturer/product', product.id]">
           {{ 'MANUFACTURER_VIEW_DETAILS' | translate }}
         </button>
       </div>
     </div>
   
     <div class="d-flex justify-content-end gap-2">
-      <button class="btn btn-primary">
+      <button class="btn btn-primary" [routerLink]="['/manufacturer/create-product']">
         {{ 'MANUFACTURER_CREATE_PRODUCT' | translate }}
       </button>
       <button class="btn btn-primary">

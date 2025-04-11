@@ -1,8 +1,12 @@
 // manufacturer-dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { Product } from '../../models/product.model';
+import { ProductService } from '../services/product.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-manufacturer-dashboard',
@@ -16,17 +20,37 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./manufacturer-dashboard.component.scss']
 })
 export class ManufacturerDashboardComponent implements OnInit {
-  manufacturerName: string = 'Anderson';
-  products: { name: string, description: string }[] = [
-    { name: 'PRODUCT_1_NAME', description: 'PRODUCT_1_DESC' },
-    { name: 'PRODUCT_2_NAME', description: 'PRODUCT_2_DESC' },
-    { name: 'PRODUCT_3_NAME', description: 'PRODUCT_3_DESC' }
-  ];
+  manufacturerName: string = '';
+  products: Product[] = [];
+  loading = false;
 
-  constructor() {}
+  constructor(
+    private productService: ProductService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Simulated product list; in real case, fetch from backend
+    this.loading = true;
+    const manufacturer = this.authService.getCurrentManufacturer();
+    if (manufacturer) {
+      this.manufacturerName = manufacturer.companyName ?? '';
+      this.productService.getProductsByManufacturer(manufacturer.id).subscribe({
+        next: (data) => {
+          this.products = data;
+          this.loading = false;
+        },
+        error: () => {
+          console.error('Error loading products');
+          this.loading = false;
+        }
+      });
+    } else {
+      this.router.navigate(['/manufacturer']);
+    }
+  }
+
+  viewProductDetail(productId: string): void {
+    this.router.navigate([`/manufacturer/product/${productId}`]);
   }
 }
-
