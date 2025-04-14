@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { faker } from '@faker-js/faker';
 
 
 class MockAuthService {
@@ -135,7 +136,31 @@ describe('CreateProductComponent', () => {
     expect(expirationControl?.validator).toBeNull();
     expect(expirationControl?.value).toBeNull();
   });
+
+  it('should return early if no file is selected in onImageChange', () => {
+    const event = { target: { files: [] } } as unknown as Event;
+    component.onImageChange(event);
+    expect(productService.getPresignedUrl).not.toHaveBeenCalled();
+  });
+
+  it('should upload image and update imagePreview and imageUrl', () => {
+    const fakeFile = new File(['dummy content'], faker.system.fileName(), { type: 'image/png' });
+    const inputEvent = {
+      target: {
+        files: [fakeFile]
+      }
+    } as unknown as Event;
   
+    component.onImageChange(inputEvent);
+  
+    expect(productService.getPresignedUrl).toHaveBeenCalled();
+    expect(productService.uploadToS3).toHaveBeenCalled();
+    expect(component.productForm.get('imageUrl')?.value).toBe('public-url');
+    expect(component.imagePreview).toBe('public-url');
+  });
+
+
+
  });
   
 
