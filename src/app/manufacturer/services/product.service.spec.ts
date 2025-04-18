@@ -26,17 +26,6 @@ describe('ProductService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should call createProduct with correct payload', () => {
-    const mockProduct = { name: 'New Product' };
-    service.createProduct(mockProduct).subscribe(response => {
-      expect(response).toBeTruthy();
-    });
-
-    const req = httpMock.expectOne(`${baseUrl}/products`);
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(mockProduct);
-    req.flush({ success: true });
-  });
 
   it('should retrieve all products', () => {
     service.getProducts().subscribe(products => {

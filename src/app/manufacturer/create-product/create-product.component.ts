@@ -38,6 +38,7 @@ export class CreateProductComponent implements OnInit {
   loading = false;
   imagePreview: string | ArrayBuffer | null = null;
   isPerishable = false;
+  selectedImageFile: File | null = null; // Add this property
 
   constructor(
     private fb: FormBuilder,
@@ -80,8 +81,17 @@ export class CreateProductComponent implements OnInit {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
 
-    const fileName = `${Date.now()}-${file.name}`;
+    // Store the selected file
+    this.selectedImageFile = file;
 
+    // Create local preview using FileReader
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+      this.productForm.patchValue({ imageUrl: 'placeholder-url' }); // Set a placeholder URL or remove if not needed
+    };
+    reader.readAsDataURL(file);
+    /*
     this.productService.getPresignedUrl(fileName).subscribe({
       next: ({ uploadUrl, publicUrl }) => {
         this.productService.uploadToS3(uploadUrl, file).subscribe({
@@ -99,6 +109,7 @@ export class CreateProductComponent implements OnInit {
         this.snackBar.open('No se pudo obtener la URL de carga', 'OK', { duration: 3000 });
       },
     });
+     */
   }
 
   onSubmit(): void {
@@ -111,7 +122,7 @@ export class CreateProductComponent implements OnInit {
 
     const formValue = this.productForm.value;
     const product = new Product(
-      '', 
+      '',
       formValue.name,
       formValue.description,
       formValue.category,
@@ -126,10 +137,13 @@ export class CreateProductComponent implements OnInit {
       formValue.perishable
     );
 
-    this.productService.createProduct(product).subscribe({
+    this.productService.createProduct(product, this.selectedImageFile || undefined).subscribe({
       next: () => {
         this.snackBar.open(this.translate.instant('PRODUCT.CREATED_SUCCESS'), 'OK', { duration: 3000 });
-        this.router.navigate(['manufacturer-dashboard']);
+        console.log({ formValue });
+        console.log({ product });
+        this.loading = false;
+        // this.router.navigate(['manufacturer-dashboard']);
       },
       error: () => {
         this.snackBar.open(this.translate.instant('PRODUCT.CREATED_ERROR'), 'OK', { duration: 3000 });
