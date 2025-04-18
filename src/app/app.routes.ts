@@ -8,6 +8,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { CreateProductComponent } from './manufacturer/create-product/create-product.component';
 import { EditProductComponent } from './manufacturer/edit-product/edit-product.component';
 import { ProductDetailComponent } from './manufacturer/product-detail/product-detail.component';
+import { InventoryProductSearchComponent } from './logistic/inventory-product-search/inventory-product-search.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'manufacturer/create-product', component: CreateProductComponent, canActivate: [AuthGuard] },
   { path: 'manufacturer/edit-product/:id', component: EditProductComponent, canActivate: [AuthGuard] },
   { path: 'manufacturer/product/:id', component: ProductDetailComponent, canActivate: [AuthGuard] },
+  { path: 'logistic/inventory-product-search', component: InventoryProductSearchComponent},
   { path: '**', redirectTo: '' }
 ];

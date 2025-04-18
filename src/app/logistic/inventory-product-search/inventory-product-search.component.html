@@ -1,0 +1,49 @@
+<div class="inventory-search-container">
+    <h2 class="welcome">Hola Andrés 👋</h2>
+    <h3 class="title">Buscar Producto</h3>
+  
+    <div class="filters">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="filtrar()"
+        placeholder="🔍 Buscar por nombre o SKU"
+        class="input"
+      />
+  
+      <button class="btn btn-primary" (click)="filtrar()">Filtrar</button>
+      <button class="btn btn-secondary" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+  
+    <table class="product-table" *ngIf="productosFiltrados.length > 0">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>SKU</th>
+          <th>Categoría</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
+          <!-- <th>Imagen</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let producto of productosFiltrados">
+          <td>{{ producto.name }}</td>
+          <td>{{ producto.id }}</td>
+          <td>{{ producto.category }}</td>
+          <td>{{ producto.stock }}</td>
+          <td>${{ producto.price }}</td>
+          <!-- <td>
+            <img [src]="producto.image" alt="{{ producto.name }}" width="60" />
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="productosFiltrados.length === 0" class="no-results">
+      No se encontraron productos que coincidan con tu búsqueda.
+    </div>
+  </div>
+  
+  
+  
