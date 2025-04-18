@@ -1,0 +1,7 @@
+.product-image {
+  width: 416px;
+  height: 124px;
+  object-fit: contain; /* maintains aspect ratio without distortion */
+  display: block;
+  margin: 0 auto; /* centers the image */
+}
