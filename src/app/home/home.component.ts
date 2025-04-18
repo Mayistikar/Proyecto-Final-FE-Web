@@ -91,7 +91,8 @@ export class HomeComponent {
           role: response.role,
           idToken: response.id_token,
           accessToken: response.access_token,
-          refreshToken: response.refresh_token
+          refreshToken: response.refresh_token,
+          full_name: response.full_name
         });
 
         this.isLoading = false;

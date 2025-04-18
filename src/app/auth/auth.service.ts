@@ -9,6 +9,7 @@ export interface UserData {
   idToken: string;
   accessToken: string;
   refreshToken: string;
+  full_name:string;
 }
 
 @Injectable({
@@ -27,6 +28,7 @@ export class AuthService {
       localStorage.setItem('id_token', userData.idToken);
       localStorage.setItem('access_token', userData.accessToken);
       localStorage.setItem('refresh_token', userData.refreshToken);
+      localStorage.setItem('full_name',userData.full_name);
     }
 
     this._isAuthenticated.next(true);
@@ -39,6 +41,7 @@ export class AuthService {
     localStorage.removeItem('id_token');
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('full_name')
 
     this._isAuthenticated.next(false);
     this.router.navigate(['/']);
@@ -80,6 +83,11 @@ export class AuthService {
     return localStorage.getItem('refresh_token');
   }
 
+
+  getUserFullName(): string | null {
+    return localStorage.getItem('user_full_name');
+  }
+  
   getUserData(): UserData | null {
     const id = this.getUserId();
     const email = this.getUserEmail();
@@ -87,9 +95,10 @@ export class AuthService {
     const idToken = this.getIdToken();
     const accessToken = this.getAccessToken();
     const refreshToken = this.getRefreshToken();
+    const full_name =  this.getUserFullName();
 
-    if (id && email && role && idToken && accessToken && refreshToken) {
-      return { id, email, role, idToken, accessToken, refreshToken };
+    if (id && email && role && idToken && accessToken && refreshToken && full_name) {
+      return { id, email, role, idToken, accessToken, refreshToken, full_name };
     }
 
     return null;
