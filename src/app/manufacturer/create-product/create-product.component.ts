@@ -91,25 +91,6 @@ export class CreateProductComponent implements OnInit {
       this.productForm.patchValue({ imageUrl: 'placeholder-url' }); // Set a placeholder URL or remove if not needed
     };
     reader.readAsDataURL(file);
-    /*
-    this.productService.getPresignedUrl(fileName).subscribe({
-      next: ({ uploadUrl, publicUrl }) => {
-        this.productService.uploadToS3(uploadUrl, file).subscribe({
-          next: () => {
-            this.productForm.patchValue({ imageUrl: publicUrl });
-            this.imagePreview = publicUrl;
-            this.snackBar.open('Imagen cargada con éxito', 'OK', { duration: 3000 });
-          },
-          error: () => {
-            this.snackBar.open('Error al subir la imagen a S3', 'OK', { duration: 3000 });
-          },
-        });
-      },
-      error: () => {
-        this.snackBar.open('No se pudo obtener la URL de carga', 'OK', { duration: 3000 });
-      },
-    });
-     */
   }
 
   onSubmit(): void {
