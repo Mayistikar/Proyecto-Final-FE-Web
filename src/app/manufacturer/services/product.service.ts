@@ -13,9 +13,15 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  createProduct(product: any): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`${this.baseUrl}/products`, product, { headers });
+  createProduct(product: any, imageFile?: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('product', JSON.stringify(product));
+
+    if (imageFile) {
+      formData.append('image', imageFile, imageFile.name);
+    }
+
+    return this.http.post(`${this.baseUrl}/products`, formData);
   }
 
   getProducts(): Observable<any> {
@@ -34,8 +40,8 @@ export class ProductService {
   getPresignedUrl(fileName: string): Observable<{ uploadUrl: string; publicUrl: string }> {
     const url = `https://assetsccp.s3.us-east-1.amazonaws.com/${fileName}`;
     return of({
-      uploadUrl: url,  
-      publicUrl: url,  
+      uploadUrl: url,
+      publicUrl: url,
     });
   }
 
