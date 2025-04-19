@@ -95,5 +95,48 @@ describe('ProductService', () => {
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });
+
+  it('should create product WITHOUT image file', () => {
+    const mockProduct = { name: 'Gadget', price: 42 };
+    let responseBody: any;
+  
+    service.createProduct(mockProduct).subscribe(res => (responseBody = res));
+  
+    const req = httpMock.expectOne(`${baseUrl}/products`);
+    expect(req.request.method).toBe('POST');
+  
+    const body = req.request.body as FormData;
+    expect(body instanceof FormData).toBeTrue();
+    expect(body.get('product')).toBe(JSON.stringify(mockProduct)); 
+    expect(body.get('image')).toBeNull();                          
+  
+    req.flush({ ok: true });
+    expect(responseBody).toEqual({ ok: true });
+  });
+
+  it('should create product WITH image file', () => {
+    const mockProduct = { name: 'Widget', price: 99 };
+    const mockFile = new File(['file-content'], 'photo.png', { type: 'image/png' });
+    let responseBody: any;
+  
+    service.createProduct(mockProduct, mockFile).subscribe(res => (responseBody = res));
+  
+    const req = httpMock.expectOne(`${baseUrl}/products`);
+    expect(req.request.method).toBe('POST');
+  
+    const body = req.request.body as FormData;
+    expect(body instanceof FormData).toBeTrue();
+  
+    expect(body.get('product')).toBe(JSON.stringify(mockProduct));
+  
+    const sentFile = body.get('image') as File;
+    expect(sentFile).toBeTruthy();
+    expect(sentFile.name).toBe(mockFile.name);
+    expect(sentFile.type).toBe(mockFile.type);
+  
+    req.flush({ ok: true });
+    expect(responseBody).toEqual({ ok: true });
+  });
+  
 });
 
