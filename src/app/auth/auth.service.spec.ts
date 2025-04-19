@@ -109,17 +109,20 @@ describe('AuthService', () => {
     expect(authService.getCurrentManufacturer()).toBeNull();
   });
 
-  it('isAuthenticated observable should emit the correct sequence', () => {
+  it('isAuthenticated observable should emit the correct sequence (fresh instance)', () => {
+    localStorage.clear();
+  
+    const freshService = new AuthService(TestBed.inject(Router));
+  
     const emitted: boolean[] = [];
+    const sub = freshService.isAuthenticated.subscribe(v => emitted.push(v));
   
-    const sub = authService.isAuthenticated.subscribe(v => emitted.push(v));
+    expect(emitted).toEqual([false]);
   
-    expect(emitted[0]).toBeFalse();
-  
-    authService.login();                
+    freshService.login();             
     expect(emitted[emitted.length - 1]).toBeTrue();
   
-    authService.logout();
+    freshService.logout();
     expect(emitted[emitted.length - 1]).toBeFalse();
   
     sub.unsubscribe();
