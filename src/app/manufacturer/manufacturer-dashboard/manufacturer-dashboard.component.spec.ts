@@ -111,4 +111,26 @@ describe('ManufacturerDashboardComponent', () => {
     expect(component.loading).toBeFalse();
   });
 
+  it('should navigate to product detail when viewProductDetail is called', () => {
+    const router = TestBed.inject(Router);
+    const navSpy = spyOn(router, 'navigate');       
+  
+    const productId = '42';
+    component.viewProductDetail(productId);
+  
+    expect(navSpy).toHaveBeenCalledWith([`/manufacturer/product/${productId}`]);
+  });
+
+  it('should set manufacturerName to "" when companyName is undefined', () => {
+    const authService = TestBed.inject(AuthService);
+    spyOn(authService, 'getCurrentManufacturer').and.returnValue({
+      ...mockManufacturer,
+      companyName: undefined         
+    });
+  
+    component.ngOnInit();             
+  
+    expect(component.manufacturerName).toBe('');  
+  });
+
 });
