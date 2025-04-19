@@ -1,3 +1,168 @@
-<p>
-  create-sales-plan works!
-</p>
+<div class="container mt-5">
+  <h2 class="mb-4">{{ 'SALES_PLAN.CREATE_TITLE' | translate }}</h2>
+
+  <form [formGroup]="salesPlanForm" (ngSubmit)="onSubmit()" class="mb-5">
+    <div class="row">
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="name" class="form-label">{{ 'SALES_PLAN.NAME' | translate }}</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            formControlName="name"
+            [placeholder]="'SALES_PLAN.NAME_PLACEHOLDER' | translate"
+            [ngClass]="{ 'is-invalid': salesPlanForm.get('name')?.invalid && salesPlanForm.get('name')?.touched }"
+          />
+          <div class="invalid-feedback" *ngIf="salesPlanForm.get('name')?.errors?.['required']">
+            {{ 'SALES_PLAN.NAME_REQUIRED' | translate }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">{{ 'SALES_PLAN.DESCRIPTION' | translate }}</label>
+          <textarea
+            class="form-control"
+            id="description"
+            formControlName="description"
+            rows="3"
+            [placeholder]="'SALES_PLAN.DESCRIPTION_PLACEHOLDER' | translate"
+            [ngClass]="{ 'is-invalid': salesPlanForm.get('description')?.invalid && salesPlanForm.get('description')?.touched }"
+          ></textarea>
+          <div class="invalid-feedback" *ngIf="salesPlanForm.get('description')?.errors?.['required']">
+            {{ 'SALES_PLAN.DESCRIPTION_REQUIRED' | translate }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="visitRoute" class="form-label">{{ 'SALES_PLAN.ROUTE' | translate }}</label>
+          <select
+            id="visitRoute"
+            class="form-select"
+            formControlName="visitRoute"
+            [ngClass]="{ 'is-invalid': salesPlanForm.get('visitRoute')?.invalid && salesPlanForm.get('visitRoute')?.touched }"
+          >
+            <option value="" disabled>{{ 'SALES_PLAN.SELECT_ROUTE' | translate }}</option>
+            <option *ngFor="let route of availableRoutes" [value]="route">
+              {{ 'SALES_PLAN.' + route | translate }}
+            </option>
+          </select>
+          <div class="invalid-feedback">
+            {{ 'SALES_PLAN.ROUTE_REQUIRED' | translate }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="strategy" class="form-label">{{ 'SALES_PLAN.STRATEGY' | translate }}</label>
+          <select
+            id="strategy"
+            class="form-select"
+            formControlName="strategy"
+            [ngClass]="{ 'is-invalid': salesPlanForm.get('strategy')?.invalid && salesPlanForm.get('strategy')?.touched }"
+          >
+            <option value="" disabled>{{ 'SALES_PLAN.SELECT_STRATEGY' | translate }}</option>
+            <option *ngFor="let s of strategies" [value]="s">
+              {{ 'SALES_PLAN.STRATEGIES.' + s | translate }}
+            </option>
+          </select>
+          <div class="invalid-feedback">
+            {{ 'SALES_PLAN.STRATEGY_REQUIRED' | translate }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="event" class="form-label">{{ 'SALES_PLAN.EVENT' | translate }}</label>
+          <select
+            id="event"
+            class="form-select"
+            formControlName="event"
+            [ngClass]="{ 'is-invalid': salesPlanForm.get('event')?.invalid && salesPlanForm.get('event')?.touched }"
+          >
+            <option value="" disabled>{{ 'SALES_PLAN.SELECT_EVENT' | translate }}</option>
+            <option *ngFor="let e of events" [value]="e">
+              {{ 'SALES_PLAN.EVENTS.' + e | translate }}
+            </option>
+          </select>
+          <div class="invalid-feedback">
+            {{ 'SALES_PLAN.EVENT_REQUIRED' | translate }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="dailyGoal" class="form-label">{{ 'SALES_PLAN.DAILY_GOAL' | translate }}</label>
+          <input
+            type="number"
+            id="dailyGoal"
+            class="form-control"
+            formControlName="dailyGoal"
+            [placeholder]="'SALES_PLAN.DAILY_PLACEHOLDER' | translate"
+            [ngClass]="{ 'is-invalid': salesPlanForm.get('dailyGoal')?.invalid && salesPlanForm.get('dailyGoal')?.touched }"
+          />
+          <div class="invalid-feedback">
+            {{ 'SALES_PLAN.DAILY_REQUIRED' | translate }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="weeklyGoal" class="form-label">{{ 'SALES_PLAN.WEEKLY_GOAL' | translate }}</label>
+          <input
+            type="number"
+            id="weeklyGoal"
+            class="form-control"
+            formControlName="weeklyGoal"
+            [placeholder]="'SALES_PLAN.WEEKLY_PLACEHOLDER' | translate"
+            [ngClass]="{ 'is-invalid': salesPlanForm.get('weeklyGoal')?.invalid && salesPlanForm.get('weeklyGoal')?.touched }"
+          />
+          <div class="invalid-feedback">
+            {{ 'SALES_PLAN.WEEKLY_REQUIRED' | translate }}
+          </div>
+        </div>
+
+        <div class="form-row d-flex gap-3">
+          <div class="mb-3 w-50">
+            <label for="startTime" class="form-label">{{ 'SALES_PLAN.START_TIME' | translate }}</label>
+            <input
+              type="time"
+              id="startTime"
+              class="form-control"
+              formControlName="startTime"
+              [ngClass]="{ 'is-invalid': salesPlanForm.hasError('invalidTimeRange') && salesPlanForm.touched }"
+            />
+          </div>
+          <div class="mb-3 w-50">
+            <label for="endTime" class="form-label">{{ 'SALES_PLAN.END_TIME' | translate }}</label>
+            <input
+              type="time"
+              id="endTime"
+              class="form-control"
+              formControlName="endTime"
+              [ngClass]="{ 'is-invalid': salesPlanForm.hasError('invalidTimeRange') && salesPlanForm.touched }"
+            />
+          </div>
+        </div>
+
+        
+        <div *ngIf="salesPlanForm.errors?.['invalidTimeRange']" class="text-danger small mt-2">
+          {{ 'SALES_PLAN.INVALID_TIME_RANGE' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end mt-4 gap-3">
+      <button type="submit" class="btn btn-primary" [disabled]="salesPlanForm.invalid || isLoading">
+        <span *ngIf="!isLoading">{{ 'COMMON.SAVE' | translate }}</span>
+        <span *ngIf="isLoading">
+          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          {{ 'LOADING_BUTTON_TEXT' | translate }}
+        </span>
+      </button>
+
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" [disabled]="isLoading">
+        {{ 'COMMON.CANCEL' | translate }}
+      </button>
+    </div>
+  </form>
+</div>
