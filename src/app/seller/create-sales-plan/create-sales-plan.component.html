@@ -1,7 +1,13 @@
 <div class="container mt-5">
   <h2 class="mb-4">{{ 'SALES_PLAN.CREATE_TITLE' | translate }}</h2>
 
-  <form [formGroup]="salesPlanForm" (ngSubmit)="onSubmit()" class="mb-5">
+  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center my-5" style="min-height: 200px;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <form *ngIf="!isLoading" [formGroup]="salesPlanForm" (ngSubmit)="onSubmit()" class="mb-5">
     <div class="row">
 
       <div class="col-md-6">
