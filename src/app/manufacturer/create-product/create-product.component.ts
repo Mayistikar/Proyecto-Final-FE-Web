@@ -28,7 +28,7 @@ import { Product } from '../../models/product.model';
     MatNativeDateModule,
     MatButtonModule,
     MatSnackBarModule,
-    TranslateModule
+    TranslateModule,
   ],
   templateUrl: './create-product.component.html',
   styleUrls: ['./create-product.component.scss']

@@ -163,5 +163,26 @@ describe('SellerService', () => {
     expect(req.request.method).toBe('DELETE');
     req.flush({ message: 'Database deleted' });
   });
+
+  it('should send GET request to fetch seller by ID', () => {
+    const mockSellerId = faker.string.uuid();
+    const mockSellerResponse = {
+      id: mockSellerId,
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      phone: '3' + faker.string.numeric(9),
+      address: faker.location.streetAddress(),
+      zone: 'Zona Centro',
+      specialty: faker.person.jobTitle()
+    };
+  
+    service.getById(mockSellerId).subscribe(response => {
+      expect(response).toEqual(mockSellerResponse);
+    });
+  
+    const req = httpMock.expectOne(`${BASE_URL}/api/sellers/${mockSellerId}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockSellerResponse);
+  });
   
 });

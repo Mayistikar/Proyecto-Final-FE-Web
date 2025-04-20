@@ -109,6 +109,46 @@ describe('SalesPlanService', () => {
 
       httpMock.expectNone(`${baseUrl}/sales-plans/mock-id`);
     });
+
+    it('should return mocked sales plan on create() error', () => {
+      service.create(mockPlan).subscribe(response => {
+        expect(response).toEqual({ ...MOCK_SALES_PLAN, ...mockPlan });
+      });
+    
+      const req = httpMock.expectOne(`${baseUrl}/sales-plans`);
+      expect(req.request.method).toBe('POST');
+      req.error(new ErrorEvent('Network error'));
+    });
+
+    it('should return MOCK_SALES_PLAN on getSalesPlansBySeller() error', () => {
+      service.getSalesPlansBySeller(mockPlan.sellerId).subscribe(response => {
+        expect(response).toEqual([MOCK_SALES_PLAN]);
+      });
+    
+      const req = httpMock.expectOne(`${baseUrl}/sales-plans/seller/${mockPlan.sellerId}`);
+      expect(req.request.method).toBe('GET');
+      req.error(new ErrorEvent('Network error'));
+    });
+
+    it('should return MOCK_SALES_PLAN on getById() error (non-mock-id)', () => {
+      service.getById('some-real-id').subscribe(response => {
+        expect(response).toEqual(MOCK_SALES_PLAN);
+      });
+    
+      const req = httpMock.expectOne(`${baseUrl}/sales-plans/some-real-id`);
+      expect(req.request.method).toBe('GET');
+      req.error(new ErrorEvent('Network error'));
+    });
+
+    it('should return original plan on update() error', () => {
+      service.update(mockPlan.id, mockPlan).subscribe(response => {
+        expect(response).toEqual(mockPlan);
+      });
+    
+      const req = httpMock.expectOne(`${baseUrl}/sales-plans/${mockPlan.id}`);
+      expect(req.request.method).toBe('PUT');
+      req.error(new ErrorEvent('Network error'));
+    });
   
 
   });
