@@ -65,7 +65,7 @@ export class SellerDashboardComponent implements OnInit {
   viewSalesPlanDetail(planId: string): void {
     this.router.navigate([`/seller/sales-plan-detail/${planId}`]);
   }
-
+ 
   createSalesPlan(): void {
     this.router.navigate(['/seller/sales-plans/create']);
   }
