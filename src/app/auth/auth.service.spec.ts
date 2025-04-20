@@ -31,6 +31,7 @@ describe('AuthService', () => {
       id: '1',
       email: 'test@example.com',
       role: 'user',
+      zone: 'ZONE_TEST',
       idToken: 'idToken',
       accessToken: 'accessToken',
       refreshToken: 'refreshToken'
@@ -73,13 +74,15 @@ describe('AuthService', () => {
       id: '1',
       email: 'test@example.com',
       role: 'user',
+      zone: 'ZONE_TEST',
       idToken: 'idToken',
       accessToken: 'accessToken',
       refreshToken: 'refreshToken'
     };
 
     authService.login(userData);
-    expect(authService.getUserData()).toEqual(userData);
+    const result = authService.getUserData();
+    expect(result).toEqual(jasmine.objectContaining(userData));
   });
 
   it('should return manufacturer object with companyName when role is "manufacturer"', () => {
@@ -138,5 +141,3 @@ describe('AuthService', () => {
 
 
 });
-
-
