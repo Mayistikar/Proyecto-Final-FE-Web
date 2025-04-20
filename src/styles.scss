@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
-@import 'assets/styles/toastr.css';
 
 html, body { height: 100%; padding: 5px; overflow-x: hidden; }
 html, body, app-root {

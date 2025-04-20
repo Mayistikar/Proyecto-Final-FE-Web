@@ -5,6 +5,10 @@
 
   <h4 class="mb-3">{{ 'SELLER_SALES_PLANS_TITLE' | translate }}</h4>
 
+  <div *ngIf="usedMock" class="alert alert-warning" role="alert">
+    {{ 'SALES_PLAN.MOCK_NOTICE' | translate }}
+  </div>
+
   <div *ngIf="loading" class="d-flex justify-content-center align-items-center my-5" style="min-height: 180px;">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
@@ -33,3 +37,4 @@
     </button>
   </div>
 </div>
+
