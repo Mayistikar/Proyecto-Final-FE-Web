@@ -1,0 +1,29 @@
+/* src/assets/styles/toastr.css */
+.toast-success {
+    background-color: #51A351 !important;
+    color: #fff;
+  }
+  
+  .toast-error {
+    background-color: #BD362F !important;
+    color: #fff;
+  }
+  
+  .toast-info {
+    background-color: #2F96B4 !important;
+    color: #fff;
+  }
+  
+  .toast-warning {
+    background-color: #F89406 !important;
+    color: #fff;
+  }
+  
+  .toast {
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
