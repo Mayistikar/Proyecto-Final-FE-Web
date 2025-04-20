@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SalesPlan } from '../../models/sales-plan.model';
+import { of } from 'rxjs';
+import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +22,11 @@ export class SalesPlanService {
   }
 
   getById(id: string): Observable<SalesPlan> {
+    if (id === 'mock-id') {
+      console.warn('[DEV] Devolviendo MOCK_SALES_PLAN desde el servicio.');
+      return of(MOCK_SALES_PLAN);
+    }
+
     return this.http.get<SalesPlan>(`${this.baseUrl}/sales-plans/${id}`);
   }
 
