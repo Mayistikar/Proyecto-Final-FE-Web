@@ -1,5 +1,4 @@
 /* tslint:disable:no-unused-variable */
-/* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
@@ -185,5 +184,28 @@ describe('CreateSalesPlanComponent', () => {
   it('should navigate to dashboard on cancel', () => {
     component.onCancel();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
+  });
+  
+  it('should navigate to login if getUserId returns null on submit', () => {
+    mockAuthService.getUserData.and.returnValue(sellerUser);
+    mockAuthService.getUserId.and.returnValue(null);
+  
+    fixture.detectChanges();
+  
+    component.salesPlanForm.setValue({
+      name: 'Plan sin seller',
+      description: '',
+      visitRoute: 'Route ABC',
+      dailyGoal: 5,
+      weeklyGoal: 25,
+      startTime: '09:00',
+      endTime: '17:00',
+      strategy: 'DIRECT_PROMOTION',
+      event: 'LOCAL_CONCERT'
+    });
+  
+    component.onSubmit();
+  
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
   });
 });
