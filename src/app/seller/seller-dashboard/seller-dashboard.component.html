@@ -1,21 +1,29 @@
 <div class="container mt-5">
-  <h2 class="mb-4">{{ 'SELLER_DASHBOARD_TITLE' | translate:{ name: sellerName } }}</h2>
+  <h2 class="mb-4">
+    {{ 'SELLER_DASHBOARD_TITLE' | translate:{ name: sellerName } }}
+  </h2>
 
   <h4 class="mb-3">{{ 'SELLER_SALES_PLANS_TITLE' | translate }}</h4>
+
+  <div *ngIf="salesPlans.length === 0 && !loading" class="alert alert-info">
+    {{ 'SELLER_NO_SALES_PLANS' | translate }}
+  </div>
 
   <div class="list-group mb-4">
     <div *ngFor="let plan of salesPlans" class="list-group-item d-flex justify-content-between align-items-center">
       <div>
-        <strong>{{ plan.name | translate }}</strong><br />
-        <span>{{ plan.description | translate }}</span>
+        <strong>{{ plan.name }}</strong><br />
+        <span>{{ plan.description }}</span>
       </div>
-      <button class="btn btn-outline-secondary btn-sm">
+      <button class="btn btn-outline-secondary btn-sm" [routerLink]="['/seller/sales-plan-detail', plan.id]">
         {{ 'SELLER_VIEW_DETAILS' | translate }}
       </button>
     </div>
   </div>
 
-  <button class="btn btn-primary float-end">
-    {{ 'SELLER_CREATE_PLAN' | translate }}
-  </button>
+  <div class="d-flex justify-content-end gap-2">
+    <button class="btn btn-primary" [routerLink]="['/seller/sales-plans/create']">
+      {{ 'SELLER_CREATE_PLAN' | translate }}
+    </button>
+  </div>
 </div>
