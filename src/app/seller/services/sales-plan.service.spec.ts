@@ -4,6 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { SalesPlanService } from './sales-plan.service';
 import { SalesPlan } from '../../models/sales-plan.model';
 import { faker } from '@faker-js/faker';
+import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
 
 describe('SalesPlanService', () => {
     let service: SalesPlanService;
@@ -98,6 +99,15 @@ describe('SalesPlanService', () => {
       const req = httpMock.expectOne(`${baseUrl}/sales-plans/${mockPlan.id}`);
       expect(req.request.method).toBe('PUT');
       req.flush(updated);
+    });
+
+
+    it('should return MOCK_SALES_PLAN if id is "mock-id"', () => {
+      service.getById('mock-id').subscribe(response => {
+        expect(response).toEqual(MOCK_SALES_PLAN);
+      });
+
+      httpMock.expectNone(`${baseUrl}/sales-plans/mock-id`);
     });
   
 
