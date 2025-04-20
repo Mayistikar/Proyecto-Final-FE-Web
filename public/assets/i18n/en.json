@@ -315,6 +315,13 @@
   "SALES_PLAN.EDIT_TITLE": "Edit Sales Plan",
   "SALES_PLAN.UPDATED_SUCCESS": "The sales plan was updated successfully.",
   "SALES_PLAN.UPDATED_ERROR": "An error occurred while updating the sales plan.",
-  "COMMON.UPDATE": "Update"
+  "COMMON.UPDATE": "Update", 
+
+  "SALES_PLAN.LOAD_ERROR": "Sales plans could not be loaded. Simulated data will be shown.",
+  "SALES_PLAN.DAILY_GOAL_HINT": "Expected average daily sales.",
+  "SALES_PLAN.WEEKLY_GOAL_HINT": "Total expected sales for the week.",
+  "SALES_PLAN.INVALID_TIME_RANGE": "Start time must be earlier than end time.",
+  "ERROR.SELLER_INVALID": "Your session is invalid. Please log in again."
+
   
 }

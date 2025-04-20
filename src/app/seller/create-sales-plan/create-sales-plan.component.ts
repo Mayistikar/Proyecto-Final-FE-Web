@@ -103,7 +103,8 @@ export class CreateSalesPlanComponent implements OnInit {
     const sellerId = this.authService.getUserId();
 
     if (!sellerId) {
-      this.router.navigate(['/login']);
+      this.translate.get('ERROR.SELLER_INVALID').subscribe(msg => this.toastr.error(msg));
+      this.isLoading = false;
       return;
     }
 
