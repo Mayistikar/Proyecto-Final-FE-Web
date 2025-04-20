@@ -31,6 +31,10 @@ export class SellerService {
     return this.http.post(`${BASE_URL}/auth/login`, credentials);
   }
 
+  getById(id: string): Observable<any> {
+    return this.http.get(`${BASE_URL}/api/sellers/${id}`);
+  }
+  
   getAllUsers(): Observable<any> {
     return this.http.get(`${BASE_URL}/auth/users`);
   }

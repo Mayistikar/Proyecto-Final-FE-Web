@@ -6,6 +6,7 @@ export interface UserData {
   id: string;
   email: string;
   role: string;
+  zone?: string; 
   idToken: string;
   accessToken: string;
   refreshToken: string;
@@ -24,6 +25,10 @@ export class AuthService {
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_email', userData.email);
       localStorage.setItem('user_role', userData.role);
+
+      if (userData.zone) {
+        localStorage.setItem('user_zone', userData.zone);
+      }
       localStorage.setItem('id_token', userData.idToken);
       localStorage.setItem('access_token', userData.accessToken);
       localStorage.setItem('refresh_token', userData.refreshToken);
@@ -36,6 +41,7 @@ export class AuthService {
     localStorage.removeItem('user_id');
     localStorage.removeItem('user_email');
     localStorage.removeItem('user_role');
+    localStorage.removeItem('user_zone'); 
     localStorage.removeItem('id_token');
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
@@ -68,6 +74,10 @@ export class AuthService {
     return localStorage.getItem('user_role');
   }
 
+  getUserZone(): string | undefined {
+    return localStorage.getItem('user_zone') ?? undefined;
+  }
+
   getAccessToken(): string | null {
     return localStorage.getItem('access_token');
   }
@@ -84,12 +94,13 @@ export class AuthService {
     const id = this.getUserId();
     const email = this.getUserEmail();
     const role = this.getUserRole();
+    const zone = this.getUserZone();
     const idToken = this.getIdToken();
     const accessToken = this.getAccessToken();
     const refreshToken = this.getRefreshToken();
 
     if (id && email && role && idToken && accessToken && refreshToken) {
-      return { id, email, role, idToken, accessToken, refreshToken };
+      return { id, email, role, zone, idToken, accessToken, refreshToken };
     }
 
     return null;

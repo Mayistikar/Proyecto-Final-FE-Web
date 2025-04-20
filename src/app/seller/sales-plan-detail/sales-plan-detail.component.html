@@ -1,0 +1,61 @@
+<div class="container mt-5" *ngIf="salesPlan; else loadingSpinner">
+  <h2 class="mb-4">
+    {{ 'SELLER_SALES_PLANS_TITLE' | translate }}
+  </h2>
+
+  <div class="row">
+
+    <div class="col-md-4">
+      <div class="card p-3 text-center">
+        <img src="https://assetsccp.s3.us-east-1.amazonaws.com/como-hacer-plan-ventas.jpg" class="img-fluid rounded-start card-image" alt="Sales Plan Image">
+        <h4>{{ salesPlan.name }}</h4>
+        <p>{{ salesPlan.description || '-' }}</p>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card p-4">
+        <h5 class="mb-3">{{ salesPlan.name }}</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <strong>{{ 'SALES_PLAN.NAME' | translate }}:</strong> {{ salesPlan.name }}
+          </li>
+          <li class="list-group-item">
+            <strong>{{ 'SALES_PLAN.DESCRIPTION' | translate }}:</strong> {{ salesPlan.description || '-' }}
+          </li>
+          <li class="list-group-item">
+            <strong>{{ 'SALES_PLAN.ROUTE' | translate }}:</strong> {{ 'SALES_PLAN.' + salesPlan.visitRoute | translate }}
+          </li>
+          <li class="list-group-item">
+            <strong>{{ 'SALES_PLAN.STRATEGY' | translate }}:</strong> {{ 'SALES_PLAN.STRATEGIES.' + salesPlan.strategy | translate }}
+          </li>
+          <li class="list-group-item">
+            <strong>{{ 'SALES_PLAN.EVENT' | translate }}:</strong> {{ 'SALES_PLAN.EVENTS.' + salesPlan.event | translate }}
+          </li>
+          <li class="list-group-item">
+            <strong>{{ 'SALES_PLAN.DAILY_GOAL' | translate }}:</strong> {{ salesPlan.dailyGoal }}
+          </li>
+          <li class="list-group-item">
+            <strong>{{ 'SALES_PLAN.WEEKLY_GOAL' | translate }}:</strong> {{ salesPlan.weeklyGoal }}
+          </li>
+          <li class="list-group-item">
+            <strong>{{ 'SALES_PLAN.START_TIME' | translate }}:</strong> {{ salesPlan.startTime }}
+          </li>
+          <li class="list-group-item">
+            <strong>{{ 'SALES_PLAN.END_TIME' | translate }}:</strong> {{ salesPlan.endTime }}
+          </li>
+        </ul>
+
+        <div class="mt-4 d-flex justify-content-end">
+          <button class="btn btn-primary" (click)="editPlan()">{{ 'BUTTON_EDIT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingSpinner>
+  <div class="text-center mt-5">
+    <mat-spinner></mat-spinner>
+    <p>{{ 'LOADING_BUTTON_TEXT' | translate }}</p>
+  </div>
+</ng-template>
