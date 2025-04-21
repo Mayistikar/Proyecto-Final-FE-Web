@@ -4,13 +4,13 @@ import { TranslateModule, TranslateLoader, TranslateService, TranslateStore } fr
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TranslateFakeLoader } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { UserData } from '../../auth/auth.service';
-import { SalesPlan } from '../../models/sales-plan.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
+import { ToastrModule } from 'ngx-toastr'
 
 describe('SellerDashboardComponent', () => {
   let component: SellerDashboardComponent;
@@ -38,6 +38,7 @@ describe('SellerDashboardComponent', () => {
         SellerDashboardComponent,
         HttpClientTestingModule,
         BrowserAnimationsModule,
+        ToastrModule.forRoot(),
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
@@ -83,36 +84,27 @@ describe('SellerDashboardComponent', () => {
 
   it('should load sales plans if seller is authenticated', () => {
     authServiceSpy.getUserData.and.returnValue(mockSeller);
-    salesPlanServiceSpy.getSalesPlansBySeller.and.returnValue(of([MOCK_SALES_PLAN]));
+    salesPlanServiceSpy.getSalesPlansBySeller.and.returnValue(of({ data: [MOCK_SALES_PLAN], usedMock: false }));
 
     component.ngOnInit();
 
     expect(component.salesPlans.length).toBe(1);
     expect(component.salesPlans[0].id).toBe(MOCK_SALES_PLAN.id);
+    expect(component.usedMock).toBeFalse();
     expect(component.loading).toBeFalse();
   });
 
-  it('should fallback to mock plan if backend returns empty array', () => {
+  it('should handle usedMock=true if backend fails and returns mock', () => {
     authServiceSpy.getUserData.and.returnValue(mockSeller);
-    salesPlanServiceSpy.getSalesPlansBySeller.and.returnValue(of([]));
+    salesPlanServiceSpy.getSalesPlansBySeller.and.returnValue(of({ data: [MOCK_SALES_PLAN], usedMock: true }));
 
     component.ngOnInit();
 
     expect(component.salesPlans.length).toBe(1);
-    expect(component.salesPlans[0].id).toBe(MOCK_SALES_PLAN.id);
+    expect(component.usedMock).toBeTrue();
   });
 
-  it('should fallback to mock plan if backend fails', () => {
-    authServiceSpy.getUserData.and.returnValue(mockSeller);
-    salesPlanServiceSpy.getSalesPlansBySeller.and.returnValue(throwError(() => new Error('Network error')));
-
-    component.ngOnInit();
-
-    expect(component.salesPlans.length).toBe(1);
-    expect(component.salesPlans[0].id).toBe(MOCK_SALES_PLAN.id);
-  });
-
-  it('should navigate to root if no user', () => {
+  it('should navigate to root if no user is returned', () => {
     authServiceSpy.getUserData.and.returnValue(null);
     component.ngOnInit();
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);

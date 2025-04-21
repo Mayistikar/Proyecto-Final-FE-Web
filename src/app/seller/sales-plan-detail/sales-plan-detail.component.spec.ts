@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
+/* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { SalesPlanDetailComponent } from './sales-plan-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 import { SalesPlanService } from '../services/sales-plan.service';
-import { SalesPlan } from '../../models/sales-plan.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
 
@@ -13,27 +13,15 @@ class MockSalesPlanService {
   getById = jasmine.createSpy('getById');
 }
 
-class MockActivatedRoute {
-  snapshot = {
-    paramMap: {
-      get: (key: string) => 'plan-123'
-    }
-  };
-}
-
-class MockRouter {
-  navigate = jasmine.createSpy('navigate');
-}
-
 describe('SalesPlanDetailComponent', () => {
   let component: SalesPlanDetailComponent;
   let fixture: ComponentFixture<SalesPlanDetailComponent>;
   let salesPlanService: MockSalesPlanService;
-  let router: MockRouter;
+  let router: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     salesPlanService = new MockSalesPlanService();
-    router = new MockRouter();
+    router = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -45,7 +33,16 @@ describe('SalesPlanDetailComponent', () => {
       ],
       providers: [
         { provide: SalesPlanService, useValue: salesPlanService },
-        { provide: ActivatedRoute, useClass: MockActivatedRoute },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: (key: string) => (key === 'id' ? 'plan-123' : null)
+              }
+            }
+          }
+        },
         { provide: Router, useValue: router }
       ]
     }).compileComponents();
@@ -82,20 +79,23 @@ describe('SalesPlanDetailComponent', () => {
   it('should navigate to edit page on editPlan()', () => {
     component.salesPlan = { ...MOCK_SALES_PLAN };
     component.editPlan();
+    expect(router.navigate).toHaveBeenCalledWith([`/seller/edit-sales-plan/${MOCK_SALES_PLAN.id}`]);
+  });
 
-    expect(router.navigate).toHaveBeenCalledWith([
-      `/seller/edit-sales-plan/${MOCK_SALES_PLAN.id}`
-    ]);
+  it('should navigate to dashboard on cancel', () => {
+    component.onCancel();
+    expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
   });
 
   it('should set error and stop loading if no planId in route', () => {
     const route = TestBed.inject(ActivatedRoute);
     spyOn(route.snapshot.paramMap, 'get').and.returnValue(null);
-  
+
     component.ngOnInit();
-  
+
     expect(component.error).toBeTrue();
     expect(component.loading).toBeFalse();
     expect(component.salesPlan).toBeUndefined();
   });
 });
+

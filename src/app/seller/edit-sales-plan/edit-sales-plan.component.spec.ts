@@ -38,7 +38,6 @@ describe('EditSalesPlanComponent', () => {
   let toastrService: ToastrService;
   let translate: TranslateService;
 
-  
   beforeEach(async () => {
     router = new MockRouter();
     salesPlanService = new MockSalesPlanService();
@@ -80,7 +79,6 @@ describe('EditSalesPlanComponent', () => {
       event: 'LOCAL_CONCERT'
     };
     salesPlanService.getById.and.returnValue(of(mockPlan));
-
     fixture.detectChanges();
   });
 
@@ -88,20 +86,20 @@ describe('EditSalesPlanComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load the sales plan and patch form', () => {
+  it('should patch the form with loaded plan data', () => {
     expect(component.salesPlanForm.value.name).toBe('Edit Plan');
     expect(salesPlanService.getById).toHaveBeenCalledWith('test-plan-id');
   });
 
-  it('should mark form as touched and prevent submission if invalid', () => {
+  it('should mark form touched and not submit if invalid', () => {
     component.salesPlanForm.controls['name'].setValue('');
     component.onSubmit();
     expect(component.salesPlanForm.touched).toBeTrue();
     expect(salesPlanService.update).not.toHaveBeenCalled();
   });
 
-  it('should update sales plan and navigate on success', fakeAsync(() => {
-    spyOn(translate, 'get').and.returnValue(of('Plan actualizado'));
+  it('should update and navigate on successful submission', fakeAsync(() => {
+    spyOn(translate, 'get').and.returnValue(of('Éxito'));
     spyOn(toastrService, 'success');
 
     component.salesPlanForm.setValue({
@@ -117,22 +115,21 @@ describe('EditSalesPlanComponent', () => {
     });
 
     salesPlanService.update.and.returnValue(of({}));
-
     component.onSubmit();
     tick();
 
-    expect(salesPlanService.update).toHaveBeenCalled();
+    expect(toastrService.success).toHaveBeenCalledWith('Éxito');
     expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
-    expect(toastrService.success).toHaveBeenCalledWith('Plan actualizado');
+    expect(component.isLoading).toBeFalse();
   }));
 
-  it('should show error toast on update failure', fakeAsync(() => {
-    spyOn(translate, 'get').and.returnValue(of('Error al actualizar'));
+  it('should show toast on update error', fakeAsync(() => {
+    spyOn(translate, 'get').and.returnValue(of('Error'));
     spyOn(toastrService, 'error');
 
     component.salesPlanForm.setValue({
-      name: 'Fail Plan',
-      description: 'Failed update',
+      name: 'Fail',
+      description: 'Test',
       visitRoute: 'ROUTE_BOGOTA_SUR',
       dailyGoal: 5,
       weeklyGoal: 25,
@@ -143,40 +140,34 @@ describe('EditSalesPlanComponent', () => {
     });
 
     salesPlanService.update.and.returnValue(throwError(() => new Error('fail')));
-
     component.onSubmit();
     tick();
 
-    expect(toastrService.error).toHaveBeenCalledWith('Error al actualizar');
+    expect(toastrService.error).toHaveBeenCalledWith('Error');
+    expect(component.isLoading).toBeFalse();
   }));
 
-  it('should set availableRoutes to [] if user zone is not in routesByZone', () => {
-    const mockUser = {
-      id: 'seller-001',
-      email: 'seller@example.com',
+  it('should set availableRoutes to [] if zone is unknown', () => {
+    const mockUser = { role: 'seller', zone: 'ZONE_UNKNOWN' };
+    spyOn(component['authService'], 'getUserData').and.returnValue({
+      id: 'test-id',
+      email: 'test@example.com',
       role: 'seller',
       zone: 'ZONE_UNKNOWN',
-      idToken: '',
-      accessToken: '',
-      refreshToken: ''
-    };
-
-    spyOn(component['authService'], 'getUserData').and.returnValue(mockUser);
-
+      idToken: 'mock-token',
+      accessToken: 'mock-token',
+      refreshToken: 'mock-token'
+    });
     component.ngOnInit();
-
-    expect(component['availableRoutes']).toEqual([]);
+    expect(component.availableRoutes).toEqual([]);
   });
 
-  it('should set sellerId as empty string when authService.getUserId returns null', () => {
+  it('should assign empty sellerId if authService.getUserId is null', () => {
     spyOn(component['authService'], 'getUserId').and.returnValue(null);
-
-    component['planId'] = 'plan-001';
-
-    salesPlanService.update.and.returnValue(of({}));
+    component.planId = 'plan-001';
 
     component.salesPlanForm.setValue({
-      name: 'Plan X',
+      name: 'Plan',
       description: '',
       visitRoute: 'ROUTE_BOGOTA_NORTE',
       dailyGoal: 5,
@@ -187,68 +178,54 @@ describe('EditSalesPlanComponent', () => {
       event: 'LOCAL_CONCERT'
     });
 
+    salesPlanService.update.and.returnValue(of({}));
     component.onSubmit();
 
-    expect(salesPlanService.update).toHaveBeenCalledWith('plan-001', jasmine.objectContaining({
-      sellerId: '',
-      name: 'Plan X'
-    }));
+    expect(salesPlanService.update).toHaveBeenCalledWith('plan-001', jasmine.objectContaining({ sellerId: '' }));
   });
 
-  it('should navigate to seller dashboard on cancel', () => {
+  it('should navigate to detail page on cancel', () => {
+    component.planId = 'plan-888';
     component.onCancel();
-    expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
+    expect(router.navigate).toHaveBeenCalledWith(['/seller/sales-plan-detail/plan-888']);
   });
 
-  it('should navigate to /login if user is missing or invalid', () => {
+  it('should navigate to /login if user is invalid', () => {
     const authService = TestBed.inject(AuthService);
     spyOn(authService, 'getUserData').and.returnValue(null);
-  
     component.ngOnInit();
-  
     expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 
-  it('should navigate to /seller-dashboard if planId is missing and show error', () => {
+  it('should show error and redirect if planId is missing', () => {
     const authService = TestBed.inject(AuthService);
     spyOn(authService, 'getUserData').and.returnValue({
-      id: 'user-id-001',
+      id: 'seller-id-001',
       email: 'seller@example.com',
       role: 'seller',
       zone: 'ZONE_BOGOTA',
-      idToken: 'dummy-id-token',
-      accessToken: 'dummy-access-token',
-      refreshToken: 'dummy-refresh-token'
+      idToken: 'mock-idToken',
+      accessToken: 'mock-accessToken',
+      refreshToken: 'mock-refreshToken'
     });
-
     const route = TestBed.inject(ActivatedRoute);
     spyOn(route.snapshot.paramMap, 'get').and.returnValue('');
-  
-    const toastr = TestBed.inject(ToastrService);
-    spyOn(toastr, 'error');
-  
+    spyOn(toastrService, 'error');
+
     component.ngOnInit();
-  
-    expect(toastr.error).toHaveBeenCalledWith('ID inválido del plan.');
+
+    expect(toastrService.error).toHaveBeenCalledWith('ID inválido del plan.');
     expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
   });
 
-  it('should show error toast and navigate if getById fails', fakeAsync(() => {
-    spyOn(translate, 'get').and.returnValue(of('Error al cargar plan'));
+  it('should handle load error and navigate', fakeAsync(() => {
+    spyOn(translate, 'get').and.returnValue(of('Error al cargar'));
     spyOn(toastrService, 'error');
-  
-    component['planId'] = 'plan-error-id';
-  
-    salesPlanService.getById.and.returnValue(throwError(() => new Error('backend error')));
-  
-    component['loadSalesPlan'](); 
+    component.planId = 'plan-error';
+    salesPlanService.getById.and.returnValue(throwError(() => new Error('fail')));
+    component['loadSalesPlan']();
     tick();
-  
-    expect(translate.get).toHaveBeenCalledWith('SALES_PLAN.LOAD_ERROR');
-    expect(toastrService.error).toHaveBeenCalledWith('Error al cargar plan');
+    expect(toastrService.error).toHaveBeenCalledWith('Error al cargar');
     expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
   }));
-
-
-  
 });

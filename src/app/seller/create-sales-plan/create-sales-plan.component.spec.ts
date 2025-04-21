@@ -80,17 +80,14 @@ describe('CreateSalesPlanComponent', () => {
 
   it('should redirect to login if user is missing or invalid', () => {
     mockAuthService.getUserData.and.returnValue(null);
-  
-    component.ngOnInit(); 
-  
+    component.ngOnInit();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
   });
 
-  it('should initialize form with correct default values and empty route list for unknown zone', () => {
+  it('should initialize form and empty route list for unknown zone', () => {
     const fakeZone = 'ZONE_FAKE';
     mockAuthService.getUserData.and.returnValue({ ...sellerUser, zone: fakeZone });
     fixture.detectChanges();
-
     expect(component.salesPlanForm).toBeTruthy();
     expect(component.sellerZone).toBe(fakeZone);
     expect(component.availableRoutes).toEqual([]);
@@ -149,10 +146,11 @@ describe('CreateSalesPlanComponent', () => {
 
     expect(mockSalesPlanService.create).toHaveBeenCalled();
     expect(toastr.success).toHaveBeenCalled();
+    expect(component.isLoading).toBeFalse();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
   }));
 
-  it('should show error toast and set loading to false on failure', fakeAsync(() => {
+  it('should show error toast and stop loading on failure', fakeAsync(() => {
     mockAuthService.getUserData.and.returnValue(sellerUser);
     mockAuthService.getUserId.and.returnValue(sellerUser.id);
     mockSalesPlanService.create.and.returnValue(throwError(() => new Error('Simulated error')));
@@ -185,13 +183,14 @@ describe('CreateSalesPlanComponent', () => {
     component.onCancel();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
   });
-  
-  it('should navigate to login if getUserId returns null on submit', () => {
+
+  it('should show toast if getUserId returns null on submit', () => {
     mockAuthService.getUserData.and.returnValue(sellerUser);
     mockAuthService.getUserId.and.returnValue(null);
-  
     fixture.detectChanges();
-  
+
+    spyOn(toastr, 'error');
+
     component.salesPlanForm.setValue({
       name: 'Plan sin seller',
       description: '',
@@ -203,9 +202,11 @@ describe('CreateSalesPlanComponent', () => {
       strategy: 'DIRECT_PROMOTION',
       event: 'LOCAL_CONCERT'
     });
-  
+
     component.onSubmit();
-  
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
+
+    expect(toastr.error).toHaveBeenCalled();
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
+    expect(component.isLoading).toBeFalse();
   });
 });
