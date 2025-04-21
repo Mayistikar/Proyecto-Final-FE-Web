@@ -17,6 +17,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { routesByZone, zoneToCountryMap } from '../../models/sales-plan-routes';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-edit-sales-plan',
@@ -130,32 +132,32 @@ export class EditSalesPlanComponent implements OnInit {
       this.salesPlanForm.markAllAsTouched();
       return;
     }
-
+  
     this.isLoading = true;
-
+  
     const updatedPlan: SalesPlan = {
       ...this.salesPlanForm.value,
       id: this.planId,
       sellerId: this.authService.getUserId() || '',
       createdAt: new Date().toISOString()
     };
-
-    this.salesPlanService.update(this.planId, updatedPlan).subscribe({
+  
+    this.salesPlanService.update(this.planId, updatedPlan).pipe(
+      finalize(() => this.isLoading = false) 
+    ).subscribe({
       next: () => {
         this.translate.get('SALES_PLAN.UPDATED_SUCCESS').subscribe(msg => this.toastr.success(msg));
         this.router.navigate(['/seller-dashboard']);
       },
-      error: () => {
+      error: (err) => {
+        console.error('❌ Error real del backend:', err);
         this.translate.get('SALES_PLAN.UPDATED_ERROR').subscribe(msg => this.toastr.error(msg));
-        this.isLoading = false;
-      },
-      complete: () => {
-        this.isLoading = false;
       }
     });
   }
 
+  
   onCancel(): void {
-    this.router.navigate(['/seller-dashboard']);
+    this.router.navigate([`/seller/sales-plan-detail/${this.planId}`]);
   }
 }

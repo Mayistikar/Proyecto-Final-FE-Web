@@ -3,12 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../auth/auth.service';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { SalesPlan } from '../../models/sales-plan.model';
 import { catchError, of } from 'rxjs';
 import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-seller-dashboard',
@@ -25,11 +26,14 @@ export class SellerDashboardComponent implements OnInit {
   sellerName: string = '';
   salesPlans: SalesPlan[] = [];
   loading = false;
+  usedMock = false;
 
   constructor(
     private authService: AuthService,
     private salesPlanService: SalesPlanService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService, 
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -43,25 +47,18 @@ export class SellerDashboardComponent implements OnInit {
 
     this.sellerName = seller.email.split('@')[0];
 
-    this.salesPlanService.getSalesPlansBySeller(seller.id).pipe(
-      catchError((error) => {
-        console.warn('❗ No se pudieron cargar los planes de venta:', error);
-        // fallback visual si el backend falla
-        this.salesPlans = [MOCK_SALES_PLAN];
-        this.loading = false;
-        return of([]);
-      })
-    ).subscribe((plans) => {
-      if (!plans || plans.length === 0) {
-        console.warn('🔍 No se encontraron planes, usando mock temporal.');
-        this.salesPlans = [MOCK_SALES_PLAN];
-      } else {
-        this.salesPlans = plans;
+    this.salesPlanService.getSalesPlansBySeller(seller.id).subscribe((response) => {
+      this.salesPlans = response.data;
+      this.usedMock = response.usedMock;
+    
+      if (this.usedMock) {
+        this.translate.get('SALES_PLAN.MOCK_NOTICE').subscribe(msg => this.toastr.info(msg));
       }
+    
       this.loading = false;
     });
   }
-
+  
   viewSalesPlanDetail(planId: string): void {
     this.router.navigate([`/seller/sales-plan-detail/${planId}`]);
   }

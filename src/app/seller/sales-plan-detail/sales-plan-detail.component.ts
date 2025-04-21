@@ -57,4 +57,10 @@ export class SalesPlanDetailComponent implements OnInit {
   editPlan(): void {
     this.router.navigate([`/seller/edit-sales-plan/${this.salesPlan.id}`]);
   }
+  
+
+  onCancel(): void {
+    this.router.navigate(['/seller-dashboard']);
+  }
+
 }

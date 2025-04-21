@@ -317,5 +317,13 @@
   "SALES_PLAN.EDIT_TITLE": "Editar Plan de Venta",
   "SALES_PLAN.UPDATED_SUCCESS": "El plan de ventas se actualizó exitosamente.",
   "SALES_PLAN.UPDATED_ERROR": "Ocurrió un error al actualizar el plan de ventas.",
-  "COMMON.UPDATE": "Actualizar"
+  "COMMON.UPDATE": "Actualizar", 
+
+  "SALES_PLAN.LOAD_ERROR": "No se pudieron cargar los planes de venta. Se mostrará información simulada.",
+  "SALES_PLAN.DAILY_GOAL_HINT": "Meta promedio diaria esperada.",
+  "SALES_PLAN.WEEKLY_GOAL_HINT": "Meta total de ventas durante la semana.",
+  "SALES_PLAN.INVALID_TIME_RANGE": "La hora de inicio debe ser menor que la hora de finalización.",
+  "ERROR.SELLER_INVALID": "Tu sesión es inválida. Por favor, inicia sesión nuevamente.",
+
+  "SALES_PLAN.MOCK_NOTICE": "Se están mostrando datos simulados por falta de conexión con el servidor."
 }
