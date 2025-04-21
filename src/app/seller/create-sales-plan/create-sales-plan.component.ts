@@ -18,6 +18,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { routesByZone, zoneToCountryMap } from '../../models/sales-plan-routes';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-create-sales-plan',
@@ -98,33 +100,32 @@ export class CreateSalesPlanComponent implements OnInit {
       this.salesPlanForm.markAllAsTouched();
       return;
     }
-
+  
     this.isLoading = true;
     const sellerId = this.authService.getUserId();
-
+  
     if (!sellerId) {
       this.translate.get('ERROR.SELLER_INVALID').subscribe(msg => this.toastr.error(msg));
       this.isLoading = false;
       return;
     }
-
+  
     const salesPlan: SalesPlan = {
       ...this.salesPlanForm.value,
       sellerId,
       createdAt: new Date().toISOString()
     };
-
-    this.salesPlanService.create(salesPlan).subscribe({
+  
+    this.salesPlanService.create(salesPlan).pipe(
+      finalize(() => this.isLoading = false)  
+    ).subscribe({
       next: () => {
         this.translate.get('SALES_PLAN.CREATED_SUCCESS').subscribe(msg => this.toastr.success(msg));
-        this.isLoading = false;
+        this.router.navigate(['/seller-dashboard']);
       },
-      error: () => {
+      error: (err) => {
+        console.error('❌ Error al crear plan:', err);
         this.translate.get('SALES_PLAN.CREATED_ERROR').subscribe(msg => this.toastr.error(msg));
-        this.isLoading = false;
-      },
-      complete: () => {
-        this.isLoading = false;
       }
     });
   }

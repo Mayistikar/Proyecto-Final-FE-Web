@@ -4,6 +4,7 @@ import { SalesPlan } from '../../models/sales-plan.model';
 import { Observable, catchError, of } from 'rxjs';
 import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
 import { map } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,7 @@ export class SalesPlanService {
   constructor(private http: HttpClient) {}
 
   create(plan: SalesPlan): Observable<SalesPlan> {
-    return this.http.post<SalesPlan>(`${this.baseUrl}/sales-plans`, plan).pipe(
-      catchError((error) => {
-        console.warn('[DEV] ❌ create() falló, usando MOCK_SALES_PLAN:', error);
-        const mocked = { ...MOCK_SALES_PLAN, ...plan };
-        return of(mocked);
-      })
-    );
+    return this.http.post<SalesPlan>(`${this.baseUrl}/sales-plans`, plan);
   }
 
   getSalesPlansBySeller(sellerId: string): Observable<{ data: SalesPlan[]; usedMock: boolean }> {
@@ -39,20 +34,10 @@ export class SalesPlanService {
       return of(MOCK_SALES_PLAN);
     }
 
-    return this.http.get<SalesPlan>(`${this.baseUrl}/sales-plans/${id}`).pipe(
-      catchError((error) => {
-        console.warn('[DEV] ❌ getById() falló, usando MOCK:', error);
-        return of(MOCK_SALES_PLAN);
-      })
-    );
+    return this.http.get<SalesPlan>(`${this.baseUrl}/sales-plans/${id}`);
   }
 
   update(id: string, plan: SalesPlan): Observable<SalesPlan> {
-    return this.http.put<SalesPlan>(`${this.baseUrl}/sales-plans/${id}`, plan).pipe(
-      catchError((error) => {
-        console.warn('[DEV] ❌ update() falló, devolviendo plan original como MOCK:', error);
-        return of(plan);
-      })
-    );
+    return this.http.put<SalesPlan>(`${this.baseUrl}/sales-plans/${id}`, plan);
   }
 }
