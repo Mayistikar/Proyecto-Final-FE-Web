@@ -6,6 +6,7 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { ToastrModule } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideAnimations(),
+    provideToastr(),
     importProvidersFrom(
       ToastrModule.forRoot({
         positionClass: 'toast-top-right',

@@ -47,28 +47,18 @@ export class SellerDashboardComponent implements OnInit {
 
     this.sellerName = seller.email.split('@')[0];
 
-    this.salesPlanService.getSalesPlansBySeller(seller.id).pipe(
-      catchError((error) => {
-        console.warn('❗ No se pudieron cargar los planes de venta:', error);
-        this.translate.get('SALES_PLAN.LOAD_ERROR').subscribe(msg => this.toastr.error(msg));
-        this.salesPlans = [MOCK_SALES_PLAN];
-        this.usedMock = true;
-        this.loading = false;
-        return of([]);
-      })
-    ).subscribe((plans) => {
-      if (!plans || plans.length === 0) {
-        console.warn('🔍 No se encontraron planes, usando mock temporal.');
-        this.salesPlans = [MOCK_SALES_PLAN];
-        this.usedMock = true;
-      } else {
-        this.salesPlans = plans;
-        this.usedMock = false;
+    this.salesPlanService.getSalesPlansBySeller(seller.id).subscribe((response) => {
+      this.salesPlans = response.data;
+      this.usedMock = response.usedMock;
+    
+      if (this.usedMock) {
+        this.translate.get('SALES_PLAN.MOCK_NOTICE').subscribe(msg => this.toastr.info(msg));
       }
+    
       this.loading = false;
     });
   }
-
+  
   viewSalesPlanDetail(planId: string): void {
     this.router.navigate([`/seller/sales-plan-detail/${planId}`]);
   }
