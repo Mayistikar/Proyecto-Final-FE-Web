@@ -117,7 +117,7 @@ export class CreateSalesPlanComponent implements OnInit {
     this.salesPlanService.create(salesPlan).subscribe({
       next: () => {
         this.translate.get('SALES_PLAN.CREATED_SUCCESS').subscribe(msg => this.toastr.success(msg));
-        this.router.navigate(['/seller-dashboard']);
+        this.isLoading = false;
       },
       error: () => {
         this.translate.get('SALES_PLAN.CREATED_ERROR').subscribe(msg => this.toastr.error(msg));

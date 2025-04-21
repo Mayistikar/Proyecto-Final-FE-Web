@@ -323,6 +323,7 @@
   "SALES_PLAN.DAILY_GOAL_HINT": "Meta promedio diaria esperada.",
   "SALES_PLAN.WEEKLY_GOAL_HINT": "Meta total de ventas durante la semana.",
   "SALES_PLAN.INVALID_TIME_RANGE": "La hora de inicio debe ser menor que la hora de finalización.",
-  "ERROR.SELLER_INVALID": "Tu sesión es inválida. Por favor, inicia sesión nuevamente."
+  "ERROR.SELLER_INVALID": "Tu sesión es inválida. Por favor, inicia sesión nuevamente.",
 
+  "SALES_PLAN.MOCK_NOTICE": "Se están mostrando datos simulados por falta de conexión con el servidor."
 }

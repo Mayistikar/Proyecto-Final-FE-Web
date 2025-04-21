@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { SalesPlan } from '../../models/sales-plan.model';
 import { Observable, catchError, of } from 'rxjs';
 import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +23,12 @@ export class SalesPlanService {
     );
   }
 
-  getSalesPlansBySeller(sellerId: string): Observable<SalesPlan[]> {
+  getSalesPlansBySeller(sellerId: string): Observable<{ data: SalesPlan[]; usedMock: boolean }> {
     return this.http.get<SalesPlan[]>(`${this.baseUrl}/sales-plans/seller/${sellerId}`).pipe(
+      map((data) => ({ data, usedMock: false })),
       catchError((error) => {
         console.warn('[DEV] ❌ getSalesPlansBySeller() falló, usando MOCK:', error);
-        return of([MOCK_SALES_PLAN]);
+        return of({ data: [MOCK_SALES_PLAN], usedMock: true });
       })
     );
   }

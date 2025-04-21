@@ -321,7 +321,8 @@
   "SALES_PLAN.DAILY_GOAL_HINT": "Expected average daily sales.",
   "SALES_PLAN.WEEKLY_GOAL_HINT": "Total expected sales for the week.",
   "SALES_PLAN.INVALID_TIME_RANGE": "Start time must be earlier than end time.",
-  "ERROR.SELLER_INVALID": "Your session is invalid. Please log in again."
+  "ERROR.SELLER_INVALID": "Your session is invalid. Please log in again.",
 
-  
+  "SALES_PLAN.MOCK_NOTICE": "Mock data is being shown due to server error."
+
 }
