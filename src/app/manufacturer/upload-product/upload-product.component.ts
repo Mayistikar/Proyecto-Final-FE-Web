@@ -4,7 +4,7 @@ import { KeyValuePipe, CommonModule } from '@angular/common';
 import { ProductService } from '../services/product.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-upload-product',
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
     CommonModule,
     MatSnackBarModule,
     TranslateModule,
+    RouterLink,
   ],
   templateUrl: './upload-product.component.html',
   styleUrl: './upload-product.component.css'
@@ -152,4 +153,11 @@ export class UploadProductComponent {
     });
 
     return { isValid: errors.length === 0, errors };
-  }}
+  }
+
+  deleteFile() {
+    this.jsonData = [];
+    this.fileErrors = [];
+    this.isFileUploaded = false;
+  }
+}

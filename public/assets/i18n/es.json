@@ -347,5 +347,6 @@
   "FILE_VALIDATION_SUCCESS_MESSAGE": "El archivo se ha validado correctamente y está listo para ser procesado.",
   "MANUFACTURER_UPLOAD_NEW_PRODUCTS": "Cargar Nuevos Productos",
   "FILE_UPLOAD_SUCCESS": "Archivo cargado exitosamente.",
-  "FILE_UPLOAD_ERROR": "Algo salió mal al cargar el archivo. Por favor intenta nuevamente."
+  "FILE_UPLOAD_ERROR": "Algo salió mal al cargar el archivo. Por favor intenta nuevamente.",
+  "MANUFACTURER_UPLOAD_DELETE_FILE": "Limpiar Archivo"
 }

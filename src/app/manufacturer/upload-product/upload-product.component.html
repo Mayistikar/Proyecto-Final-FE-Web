@@ -53,9 +53,15 @@
     <div class="card-footer">
       <div class="d-flex justify-content-end">
 
-        <button class="btn btn-secondary me-2" (click)="clean()" [disabled]="isUploading">
+        <button class="btn btn-secondary me-2" routerLink="/manufacturer-dashboard" [disabled]="isUploading">
           {{ 'COMMON.CANCEL' | translate }}
         </button>
+
+        <button class="btn btn-danger me-2" (click)="deleteFile()" [disabled]="isUploading">
+          <i class="bi bi-trash me-2"></i>
+          {{ 'MANUFACTURER_UPLOAD_DELETE_FILE' | translate }}
+        </button>
+
         <label class="btn btn-success" *ngIf="!isFileUploaded && fileErrors.length === 0">
           <i class="bi bi-upload me-2"></i>
           {{ 'MANUFACTURER_UPLOAD_LOAD_FILE' | translate }}
@@ -68,6 +74,7 @@
 
         <button class="btn btn-primary me-2" (click)="uploadProducts()" *ngIf="isFileUploaded && fileErrors.length === 0" [disabled]="isUploading">
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isUploading"></span>
+          <i class="bi bi-check-circle me-2" *ngIf="!isUploading"></i>
           {{ 'MANUFACTURER_UPLOAD_SEND_FILE' | translate }}
         </button>
 

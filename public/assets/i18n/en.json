@@ -346,5 +346,6 @@
   "FILE_VALIDATION_SUCCESS_MESSAGE": "The file has been successfully validated and is ready to be processed.",
   "MANUFACTURER_UPLOAD_NEW_PRODUCTS": "Upload New Products",
   "FILE_UPLOAD_SUCCESS": "File uploaded successfully.",
-  "FILE_UPLOAD_ERROR": "Error uploading the file. Please try again."
+  "FILE_UPLOAD_ERROR": "Error uploading the file. Please try again.",
+  "MANUFACTURER_UPLOAD_DELETE_FILE": "Clean File Data"
 }
