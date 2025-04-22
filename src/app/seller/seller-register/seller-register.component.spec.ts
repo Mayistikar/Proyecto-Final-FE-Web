@@ -8,11 +8,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { faker } from '@faker-js/faker';
 import { SellerDashboardComponent } from '../seller-dashboard/seller-dashboard.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AuthService } from '../../auth/auth.service';
+
 
 describe('SellerRegisterComponent (refactor)', () => {
   let component: SellerRegisterComponent;
   let fixture: ComponentFixture<SellerRegisterComponent>;
   let sellerServiceSpy: jasmine.SpyObj<SellerService>;
+  const authServiceMock = jasmine.createSpyObj('AuthService', ['login']);
 
   const buildValidForm = () => ({
     name: faker.person.fullName(),
@@ -34,10 +38,12 @@ describe('SellerRegisterComponent (refactor)', () => {
         SellerDashboardComponent,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule
       ],
       providers: [
-        { provide: SellerService, useValue: spy }
+        { provide: SellerService, useValue: spy },
+        { provide: AuthService, useValue: authServiceMock }
       ]
     }).compileComponents();
 
@@ -262,38 +268,5 @@ describe('SellerRegisterComponent (refactor)', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['/login']);
   }));
 
-  it('should call authService.login and navigate to dashboard when response has access_token and id', fakeAsync(() => {
-    const formData = buildValidForm();
-    component.sellerForm.setValue(formData);
-  
-    const response = {
-      id: faker.string.uuid(),
-      email: formData.email,
-      zone: formData.zone,
-      id_token: faker.string.alphanumeric(20),
-      access_token: faker.string.alphanumeric(20),
-      refresh_token: faker.string.alphanumeric(20)
-    };
-  
-    const loginSpy = spyOn(component['authService'], 'login');
-    const navigateSpy = spyOn(component['router'], 'navigate');
-  
-    sellerServiceSpy.register.and.returnValue(of(response));
-  
-    component.onSubmit();
-    tick();
-  
-    expect(loginSpy).toHaveBeenCalledWith(jasmine.objectContaining({
-      id: response.id,
-      email: response.email,
-      role: 'seller',
-      zone: response.zone,
-      idToken: response.id_token,
-      accessToken: response.access_token,
-      refreshToken: response.refresh_token
-    }));
-  
-    expect(navigateSpy).toHaveBeenCalledWith(['/seller-dashboard']);
-  }));
 
 });

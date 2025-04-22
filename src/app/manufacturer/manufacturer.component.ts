@@ -87,8 +87,6 @@ export class ManufacturerComponent {
     console.log('Submit button clicked');
 
     if (!this.manufacturerForm.valid || !this.passwordsMatch) {
-      console.warn('Form is invalid');
-      console.table(this.manufacturerForm.value);
       return;
     }
 
@@ -107,9 +105,7 @@ export class ManufacturerComponent {
       operation_country: this.companyCountry.value,
       tax_id: this.manufacturerRUC.value || null
     };
-
-    console.log('Payload to send:', payload);
-
+    
     this.manufacturerService.register(payload).subscribe({
       next: () => {
         this.successMessageVisible = true;

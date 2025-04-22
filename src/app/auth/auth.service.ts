@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import {Manufacturer, Users} from './user.interface';
+import { HttpClient } from '@angular/common/http';
 
 export interface UserData {
   id: string;
   email: string;
   role: string;
-  zone?: string; 
+  zone?: string;
   idToken: string;
   accessToken: string;
   refreshToken: string;
@@ -18,7 +20,10 @@ export interface UserData {
 export class AuthService {
   private _isAuthenticated = new BehaviorSubject<boolean>(this.hasValidToken());
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   login(userData?: UserData) {
     if (userData) {
@@ -41,7 +46,7 @@ export class AuthService {
     localStorage.removeItem('user_id');
     localStorage.removeItem('user_email');
     localStorage.removeItem('user_role');
-    localStorage.removeItem('user_zone'); 
+    localStorage.removeItem('user_zone');
     localStorage.removeItem('id_token');
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
@@ -110,7 +115,7 @@ export class AuthService {
     const id = this.getUserId();
     const email = this.getUserEmail();
     const role = this.getUserRole();
-  
+
     if (id && email && role === 'manufacturer') {
       return {
         id,
@@ -119,7 +124,17 @@ export class AuthService {
         companyName: email.split('@')[0]  // Simple fallback: usar parte del correo
       };
     }
-  
+
     return null;
   }
+
+  getUsers() {
+    return this.http.get<Users>('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/auth/users?role=manufacturer');
+  }
+
+  authorizeUser(user: Manufacturer) {
+    return this.http.put(`https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/auth/manufacturer/${user.id}/authorize`, {});
+  }
 }
+
+

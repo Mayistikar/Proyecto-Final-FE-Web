@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AuthService, UserData } from './auth.service';
+import {HttpClient} from '@angular/common/http';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -14,7 +15,8 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({
       providers: [
         AuthService,
-        { provide: Router, useValue: routerMock }
+        { provide: Router, useValue: routerMock },
+        { provide: HttpClient, useValue: {} }
       ]
     });
 
@@ -96,7 +98,7 @@ describe('AuthService', () => {
       id: 'm‑123',
       email: 'maker@widgets.com',
       role: 'manufacturer',
-      companyName: 'maker'    
+      companyName: 'maker'
     });
   });
 
@@ -108,35 +110,38 @@ describe('AuthService', () => {
     expect(authService.getCurrentManufacturer()).toBeNull();
 
     localStorage.clear();
-    localStorage.setItem('user_role', 'manufacturer');   
+    localStorage.setItem('user_role', 'manufacturer');
     expect(authService.getCurrentManufacturer()).toBeNull();
   });
 
   it('isAuthenticated observable should emit the correct sequence (fresh instance)', () => {
     localStorage.clear();
-  
-    const freshService = new AuthService(TestBed.inject(Router));
-  
+
+    const freshService = new AuthService(
+      TestBed.inject(Router),
+      TestBed.inject(HttpClient)
+    );
+
     const emitted: boolean[] = [];
     const sub = freshService.isAuthenticated.subscribe(v => emitted.push(v));
-  
+
     expect(emitted).toEqual([false]);
-  
-    freshService.login();             
+
+    freshService.login();
     expect(emitted[emitted.length - 1]).toBeTrue();
-  
+
     freshService.logout();
     expect(emitted[emitted.length - 1]).toBeFalse();
-  
+
     sub.unsubscribe();
   });
 
   it('should return null when not all user tokens are present', () => {
-    localStorage.clear();                      
-    localStorage.setItem('user_id', '1');    
-  
-    const result = authService.getUserData();   
-    expect(result).toBeNull();                  
+    localStorage.clear();
+    localStorage.setItem('user_id', '1');
+
+    const result = authService.getUserData();
+    expect(result).toBeNull();
     });
 
 

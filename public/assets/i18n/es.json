@@ -348,5 +348,16 @@
   "MANUFACTURER_UPLOAD_NEW_PRODUCTS": "Cargar Nuevos Productos",
   "FILE_UPLOAD_SUCCESS": "Archivo cargado exitosamente.",
   "FILE_UPLOAD_ERROR": "Algo salió mal al cargar el archivo. Por favor intenta nuevamente.",
-  "MANUFACTURER_UPLOAD_DELETE_FILE": "Limpiar Archivo"
+  "MANUFACTURER_UPLOAD_DELETE_FILE": "Limpiar Archivo",
+  "ADMIN_SEARCH_MANS": "Buscar Fabricantes",
+  "ADMIN_SEARCH_USERS": "Buscar Usuarios",
+  "ADMIN_TABLE_HEADER_EMAIL": "Email",
+  "ADMIN_TABLE_HEADER_NAME": "Nombre",
+  "ADMIN_TABLE_HEADER_ROLE": "Rol",
+  "ADMIN_TABLE_HEADER_STATUS": "Estado",
+  "ADMIN_TABLE_HEADER_ACTION": "Acciones",
+  "ADMIN_AUTHORIZE_BUTTON": "Autorizar",
+  "ADMIN_TABLE_HEADER_AUTHORIZED":  "Autorizado",
+  "ADMIN_ERROR_AUTHORIZED": "Error autorizando el usuario.",
+  "ADMIN_SUCCESS_AUTHORIZED": "User authorized successfully."
 }
