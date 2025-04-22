@@ -85,7 +85,7 @@ export class ManufacturerComponent {
 
   onSubmit() {
     console.log('Submit button clicked');
-  
+
     if (!this.manufacturerForm.valid || !this.passwordsMatch) {
       console.warn('Form is invalid');
       console.table(this.manufacturerForm.value);
@@ -93,9 +93,9 @@ export class ManufacturerComponent {
     }
 
     this.isSubmitting = true;
-  
+
     const form = this.manufacturerForm.value;
-  
+
     const payload = {
       email: this.manufacturerEmail.value,
       password: this.password.value,
@@ -107,9 +107,9 @@ export class ManufacturerComponent {
       operation_country: this.companyCountry.value,
       tax_id: this.manufacturerRUC.value || null
     };
-  
+
     console.log('Payload to send:', payload);
-  
+
     this.manufacturerService.register(payload).subscribe({
       next: () => {
         this.successMessageVisible = true;
@@ -126,6 +126,7 @@ export class ManufacturerComponent {
       },
       error: () => {
         this.errorMessageVisible = true;
+        this.isSubmitting = false;
         setTimeout(() => this.errorMessageVisible = false, 5000);
       }
     });

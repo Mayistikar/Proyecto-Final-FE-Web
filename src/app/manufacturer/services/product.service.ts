@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Product } from '../../models/product.model';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -55,5 +54,11 @@ export class ProductService {
 
   getProductsByManufacturer(manufacturerId: string): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.baseUrl}/products?manufacturerId=${manufacturerId}`);
+  }
+
+  sendProducts(products: any[]): Observable<any> {
+      return this.http.post(`${this.baseUrl}/products/bulk`, products, {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      });
   }
 }
