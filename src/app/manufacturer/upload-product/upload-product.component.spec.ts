@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UploadProductComponent } from './upload-product.component';
 import { ProductService } from '../services/product.service';
+import {of} from "rxjs";
 
 describe('UploadProductComponent', () => {
   let component: UploadProductComponent;
@@ -69,6 +70,64 @@ describe('UploadProductComponent', () => {
 
     expect(invalidResult.isValid).toBeFalse();
     expect(invalidResult.errors.length).toBeGreaterThan(0);
+  });
+
+  it('should process a valid CSV file and set jsonData', () => {
+    const mockEvent = {
+      target: {
+        files: [new Blob(['name;description;category;price;currency;stock;sku;expirationDate;deliveryTime;storageConditions;commercialConditions;isPerishable\nProduct A;Description A;Category A;10.5;USD;100;SKU001;2023-12-31;5;Dry;FOB;TRUE'], { type: 'text/csv' })]
+      }
+    } as unknown as Event;
+
+    component.uploadFile(mockEvent);
+
+    expect(component.jsonData).toEqual([]);
+  });
+
+  it('should alert if there are no products to upload', () => {
+    spyOn(window, 'alert');
+    component.jsonData = []; // No products to upload
+
+    component.uploadProducts();
+
+    expect(window.alert).toHaveBeenCalledWith('No products to upload.');
+    expect(productService.sendProducts).not.toHaveBeenCalled();
+  });
+
+  it('should reset jsonData, fileErrors, and isFileUploaded when deleteFile() is called', () => {
+    component.jsonData = [{ name: 'Test Product' }];
+    component.fileErrors = ['Error 1'];
+    component.isFileUploaded = true;
+
+    component.deleteFile();
+
+    expect(component.jsonData).toEqual([]);
+    expect(component.fileErrors).toEqual([]);
+    expect(component.isFileUploaded).toBeFalse();
+  });
+
+  it('should alert when jsonData is empty', () => {
+    spyOn(window, 'alert');
+    component.jsonData = []; // No products to upload
+
+    component.uploadProducts();
+
+    expect(window.alert).toHaveBeenCalledWith('No products to upload.');
+    expect(productService.sendProducts).not.toHaveBeenCalled();
+  });
+
+  it('should call productService.sendProducts and handle success and error cases', () => {
+    const mockJsonData = [{ name: 'Test Product' }];
+    component.jsonData = mockJsonData;
+
+    const sendProductsSpy = productService.sendProducts.and.returnValue(of({})); // Simula éxito
+
+    component.uploadProducts();
+
+    expect(component.isUploading).toBeFalse();
+    expect(sendProductsSpy).toHaveBeenCalledWith(mockJsonData);
+
+    expect(component.isUploading).toBeFalse();
   });
 
 });
