@@ -150,9 +150,9 @@
   "PRODUCT_2_NAME": "Orange Juice 500ml",
   "PRODUCT_2_DESC": "Natural juice with no preservatives.",
   "PRODUCT_3_NAME": "Cola-flavored Soda 500ml",
-  "PRODUCT_3_DESC": "Refreshing drink with classic cola flavor.", 
+  "PRODUCT_3_DESC": "Refreshing drink with classic cola flavor.",
 
-  "LOADING_BUTTON_TEXT": "Processing...", 
+  "LOADING_BUTTON_TEXT": "Processing...",
 
   "MANUFACTURER_CREATE_PRODUCT_TITLE": "Create New Product",
 
@@ -183,7 +183,7 @@
   "FORM.INVALID": "Please complete all required fields.",
   "BUTTON_SAVE": "Save",
   "BUTTON_CANCEL": "Cancel",
-  "BUTTON_EDIT": "Edit", 
+  "BUTTON_EDIT": "Edit",
   "BUTTON_UPDATE": "Update",
 
   "PRODUCT_SUCCESS_TITLE": "Product Successfully Created!",
@@ -204,7 +204,7 @@
   "PRODUCT_FIELD_IMAGE": "Product Image",
   "PRODUCT_PERISHABLE_YES": "Yes",
   "PRODUCT_PERISHABLE_NO": "No",
-  "PRODUCT_BACK_TO_DASHBOARD": "Back to Dashboard", 
+  "PRODUCT_BACK_TO_DASHBOARD": "Back to Dashboard",
 
   "MANUFACTURER_EDIT_PRODUCT_TITLE": "Edit Product",
   "PRODUCT_SAVE_SUCCESS": "Product updated successfully.",
@@ -213,7 +213,7 @@
   "PRODUCT_DETAIL_TITLE": "Product Details",
   "PRODUCT_IMAGE_ALT": "Product image",
   "PRODUCT_FIELD_IMAGE_URL": "Image URL",
-  "PRODUCT_FIELD_EDIT_BUTTON": "Edit product", 
+  "PRODUCT_FIELD_EDIT_BUTTON": "Edit product",
 
   "SALES_PLAN.NAME": "Sales Plan Name *",
   "SALES_PLAN.NAME_PLACEHOLDER": "e.g., July Promotion Plan for North Zone",
@@ -223,7 +223,7 @@
   "SALES_PLAN.CREATED_ERROR": "An error occurred while creating the sales plan.",
   "SALES_PLAN.SELECT_ROUTE": "Select the visit route",
   "SALES_PLAN.SELECT_STRATEGY": "Select a strategy",
-  "SALES_PLAN.SELECT_EVENT": "Select a relevant event", 
+  "SALES_PLAN.SELECT_EVENT": "Select a relevant event",
 
   "SALES_PLAN.CREATE_TITLE": "Create Sales Plan",
   "SALES_PLAN.EVENT": "Event",
@@ -241,7 +241,7 @@
   "SALES_PLAN.STRATEGIES.BULK_DISCOUNT": "Bulk Discount",
   "SALES_PLAN.EVENTS.LOCAL_CONCERT": "Local Concert",
   "SALES_PLAN.EVENTS.REGIONAL_FAIR": "Regional Fair",
-  "SALES_PLAN.EVENTS.SPORT_EVENT": "Sport Event", 
+  "SALES_PLAN.EVENTS.SPORT_EVENT": "Sport Event",
   "SALES_PLAN.ROUTE": "Visit Route",
   "SALES_PLAN.ROUTE_PLACEHOLDER": "Select the visit route",
   "SALES_PLAN.STRATEGY": "Sales Strategy",
@@ -250,7 +250,7 @@
   "COMMON.CANCEL": "Cancel",
   "COMMON.SAVE": "Save",
 
-  "SELLER_NO_SALES_PLANS": "You have no sales plans yet. Create one to get started!", 
+  "SELLER_NO_SALES_PLANS": "You have no sales plans yet. Create one to get started!",
 
   "SALES_PLAN.ROUTE_BOGOTA_NORTE": "Bogotá North",
   "SALES_PLAN.ROUTE_BOGOTA_SUR": "Bogotá South",
@@ -306,16 +306,16 @@
   "SALES_PLAN.ROUTE_FL_TAMPA": "Florida Tampa",
   "SALES_PLAN.ROUTE_FL_JACKSONVILLE": "Florida Jacksonville",
   "SALES_PLAN.ROUTE_FL_NAPLES": "Florida Naples",
-  "SALES_PLAN.ROUTE_FL_FORT_LAUDERDALE": "Florida Fort Lauderdale", 
+  "SALES_PLAN.ROUTE_FL_FORT_LAUDERDALE": "Florida Fort Lauderdale",
 
   "SALES_PLAN.NAME_REQUIRED": "Sales plan name is required.",
   "SALES_PLAN.ROUTE_REQUIRED": "Visit route is required.",
-  "SALES_PLAN.STRATEGY_REQUIRED": "Strategy is required.", 
+  "SALES_PLAN.STRATEGY_REQUIRED": "Strategy is required.",
 
   "SALES_PLAN.EDIT_TITLE": "Edit Sales Plan",
   "SALES_PLAN.UPDATED_SUCCESS": "The sales plan was updated successfully.",
   "SALES_PLAN.UPDATED_ERROR": "An error occurred while updating the sales plan.",
-  "COMMON.UPDATE": "Update", 
+  "COMMON.UPDATE": "Update",
 
   "SALES_PLAN.LOAD_ERROR": "Sales plans could not be loaded. Simulated data will be shown.",
   "SALES_PLAN.DAILY_GOAL_HINT": "Expected average daily sales.",
@@ -323,6 +323,29 @@
   "SALES_PLAN.INVALID_TIME_RANGE": "Start time must be earlier than end time.",
   "ERROR.SELLER_INVALID": "Your session is invalid. Please log in again.",
 
-  "SALES_PLAN.MOCK_NOTICE": "Mock data is being shown due to server error."
+  "SALES_PLAN.MOCK_NOTICE": "Mock data is being shown due to server error.",
 
+  "MANUFACTURER_DOWNLOAD_TEMPLATE": "Download Template",
+  "MANUFACTURER_UPLOAD_LOAD_FILE": "Load File",
+  "MANUFACTURER_UPLOAD_SEND_FILE": "Upload Products",
+  "PRODUCT.NAME": "Name",
+  "PRODUCT.DESCRIPTION": "Description",
+  "PRODUCT.CATEGORY": "Category",
+  "PRODUCT.PRICE": "Price",
+  "PRODUCT.CURRENCY": "Currency",
+  "PRODUCT.STOCK": "Stock",
+  "PRODUCT.SKU": "SKU",
+  "PRODUCT.EXPIRATION_DATE": "Expiration Date",
+  "PRODUCT.DELIVERY_TIME": "Delivery Time",
+  "PRODUCT.STORAGE_CONDITIONS": "Storage Conditions",
+  "PRODUCT.COMMERCIAL_CONDITIONS": "Commercial Conditions",
+  "PRODUCT.IS_PERISHABLE": "Is Perishable",
+  "FILE_ERROR": "Invalid file format",
+  "FILE_VALIDATION_MESSAGE": "Please make sure the file is in CSV format and contains the required columns.",
+  "FILE_SUCCESS": "Valid file.",
+  "FILE_VALIDATION_SUCCESS_MESSAGE": "The file has been successfully validated and is ready to be processed.",
+  "MANUFACTURER_UPLOAD_NEW_PRODUCTS": "Upload New Products",
+  "FILE_UPLOAD_SUCCESS": "File uploaded successfully.",
+  "FILE_UPLOAD_ERROR": "Error uploading the file. Please try again.",
+  "MANUFACTURER_UPLOAD_DELETE_FILE": "Clean File Data"
 }

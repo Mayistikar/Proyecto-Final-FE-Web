@@ -151,7 +151,7 @@
   "PRODUCT_2_NAME": "Jugo de naranja 500ml",
   "PRODUCT_2_DESC": "Jugo natural sin conservantes.",
   "PRODUCT_3_NAME": "Gaseosa sabor cola 500ml",
-  "PRODUCT_3_DESC": "Bebida refrescante con sabor clásico de cola.", 
+  "PRODUCT_3_DESC": "Bebida refrescante con sabor clásico de cola.",
 
   "LOADING_BUTTON_TEXT": "Procesando...",
 
@@ -225,7 +225,7 @@
   "SALES_PLAN.CREATED_ERROR": "Ocurrió un error al crear el plan de ventas.",
   "SALES_PLAN.SELECT_ROUTE": "Seleccione la ruta de visitas",
   "SALES_PLAN.SELECT_STRATEGY": "Seleccione una estrategia",
-  "SALES_PLAN.SELECT_EVENT": "Seleccione un evento relevante", 
+  "SALES_PLAN.SELECT_EVENT": "Seleccione un evento relevante",
 
   "SALES_PLAN.CREATE_TITLE": "Crear Plan de Venta",
   "SALES_PLAN.EVENT": "Evento",
@@ -252,8 +252,8 @@
   "COMMON.CANCEL": "Cancelar",
   "COMMON.SAVE": "Guardar",
 
-  "SELLER_NO_SALES_PLANS": "No tienes planes de venta aún. ¡Crea uno para comenzar!", 
-  
+  "SELLER_NO_SALES_PLANS": "No tienes planes de venta aún. ¡Crea uno para comenzar!",
+
   "SALES_PLAN.ROUTE_BOGOTA_NORTE": "Bogotá Norte",
   "SALES_PLAN.ROUTE_BOGOTA_SUR": "Bogotá Sur",
   "SALES_PLAN.ROUTE_BOGOTA_CHAPINERO": "Bogotá Chapinero",
@@ -308,16 +308,16 @@
   "SALES_PLAN.ROUTE_FL_TAMPA": "Florida Tampa",
   "SALES_PLAN.ROUTE_FL_JACKSONVILLE": "Florida Jacksonville",
   "SALES_PLAN.ROUTE_FL_NAPLES": "Florida Naples",
-  "SALES_PLAN.ROUTE_FL_FORT_LAUDERDALE": "Florida Fort Lauderdale", 
+  "SALES_PLAN.ROUTE_FL_FORT_LAUDERDALE": "Florida Fort Lauderdale",
 
   "SALES_PLAN.NAME_REQUIRED": "El nombre del plan es obligatorio.",
   "SALES_PLAN.ROUTE_REQUIRED": "La ruta de visita es obligatoria.",
-  "SALES_PLAN.STRATEGY_REQUIRED": "La estrategia es obligatoria.", 
+  "SALES_PLAN.STRATEGY_REQUIRED": "La estrategia es obligatoria.",
 
   "SALES_PLAN.EDIT_TITLE": "Editar Plan de Venta",
   "SALES_PLAN.UPDATED_SUCCESS": "El plan de ventas se actualizó exitosamente.",
   "SALES_PLAN.UPDATED_ERROR": "Ocurrió un error al actualizar el plan de ventas.",
-  "COMMON.UPDATE": "Actualizar", 
+  "COMMON.UPDATE": "Actualizar",
 
   "SALES_PLAN.LOAD_ERROR": "No se pudieron cargar los planes de venta. Se mostrará información simulada.",
   "SALES_PLAN.DAILY_GOAL_HINT": "Meta promedio diaria esperada.",
@@ -325,5 +325,28 @@
   "SALES_PLAN.INVALID_TIME_RANGE": "La hora de inicio debe ser menor que la hora de finalización.",
   "ERROR.SELLER_INVALID": "Tu sesión es inválida. Por favor, inicia sesión nuevamente.",
 
-  "SALES_PLAN.MOCK_NOTICE": "Se están mostrando datos simulados por falta de conexión con el servidor."
+  "SALES_PLAN.MOCK_NOTICE": "Se están mostrando datos simulados por falta de conexión con el servidor.",
+  "MANUFACTURER_DOWNLOAD_TEMPLATE": "Descargar Plantilla",
+  "MANUFACTURER_UPLOAD_LOAD_FILE": "Cargar Archivo",
+  "MANUFACTURER_UPLOAD_SEND_FILE": "Cargar Productos",
+  "PRODUCT.NAME": "Nombre",
+  "PRODUCT.DESCRIPTION": "Descripción",
+  "PRODUCT.CATEGORY": "Categoría",
+  "PRODUCT.PRICE": "Precio",
+  "PRODUCT.CURRENCY": "Moneda",
+  "PRODUCT.STOCK": "Inventario",
+  "PRODUCT.SKU": "SKU",
+  "PRODUCT.EXPIRATION_DATE": "Fecha de Expiración",
+  "PRODUCT.DELIVERY_TIME": "Tiempo de Entrega",
+  "PRODUCT.STORAGE_CONDITIONS": "Condiciones de Almacenamiento",
+  "PRODUCT.COMMERCIAL_CONDITIONS": "Condiciones Comerciales",
+  "PRODUCT.IS_PERISHABLE": "Es Perecedero",
+  "FILE_ERROR": "Formato de archivo no válido.",
+  "FILE_VALIDATION_MESSAGE": "Por favor verifica que el archivo tenga el formato correcto y que todos los campos requeridos estén completos.",
+  "FILE_SUCCESS": "Archivo válido.",
+  "FILE_VALIDATION_SUCCESS_MESSAGE": "El archivo se ha validado correctamente y está listo para ser procesado.",
+  "MANUFACTURER_UPLOAD_NEW_PRODUCTS": "Cargar Nuevos Productos",
+  "FILE_UPLOAD_SUCCESS": "Archivo cargado exitosamente.",
+  "FILE_UPLOAD_ERROR": "Algo salió mal al cargar el archivo. Por favor intenta nuevamente.",
+  "MANUFACTURER_UPLOAD_DELETE_FILE": "Limpiar Archivo"
 }
