@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { of, throwError } from 'rxjs';
 import { UploadProductComponent } from './upload-product.component';
 import { ProductService } from '../services/product.service';
 
@@ -19,6 +18,7 @@ describe('UploadProductComponent', () => {
     const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const translateServiceSpy = jasmine.createSpyObj('TranslateService', ['instant']);
+    const activatedRouteSpy = { snapshot: { params: {} } }; // Mock ActivatedRoute
 
     await TestBed.configureTestingModule({
       imports: [UploadProductComponent], // Add the standalone component here
@@ -27,6 +27,7 @@ describe('UploadProductComponent', () => {
         { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: Router, useValue: routerSpy },
         { provide: TranslateService, useValue: translateServiceSpy },
+        { provide: ActivatedRoute, useValue: activatedRouteSpy }, // Provide mock ActivatedRoute
       ],
     }).compileComponents();
 
