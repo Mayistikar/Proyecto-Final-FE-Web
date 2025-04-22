@@ -12,6 +12,7 @@ import { CreateSalesPlanComponent } from './seller/create-sales-plan/create-sale
 import { SalesPlanDetailComponent } from './seller/sales-plan-detail/sales-plan-detail.component';
 import { EditSalesPlanComponent } from './seller/edit-sales-plan/edit-sales-plan.component';
 import { UploadProductComponent } from './manufacturer/upload-product/upload-product.component';
+import { AdminComponent } from './admin/admin.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,5 +27,6 @@ export const routes: Routes = [
   { path: 'seller/sales-plans/create', component: CreateSalesPlanComponent, canActivate: [AuthGuard] },
   { path: 'seller/sales-plan-detail/:id', component: SalesPlanDetailComponent, canActivate: [AuthGuard] },
   { path: 'seller/edit-sales-plan/:id', component: EditSalesPlanComponent, canActivate: [AuthGuard] },
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];
