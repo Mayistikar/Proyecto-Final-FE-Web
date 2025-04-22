@@ -20,7 +20,10 @@ export interface UserData {
 export class AuthService {
   private _isAuthenticated = new BehaviorSubject<boolean>(this.hasValidToken());
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   login(userData?: UserData) {
     if (userData) {
