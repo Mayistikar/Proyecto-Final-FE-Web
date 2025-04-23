@@ -101,6 +101,8 @@ export class HomeComponent {
           this.router.navigate(['/manufacturer-dashboard']);
         } else if (response.role === 'seller') {
           this.router.navigate(['/seller-dashboard']);
+        } else if (response.role === 'admin') {
+          this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/home']);
         }
