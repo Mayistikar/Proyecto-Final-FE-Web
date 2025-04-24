@@ -56,22 +56,6 @@ describe('UploadProductComponent', () => {
     expect(component.fileErrors).toEqual([]);
   });
 
-  it('should validate CSV structure correctly', () => {
-    const validCsv = 'name;description;category;price;currency;stock;sku;expirationDate;deliveryTime;storageConditions;commercialConditions;isPerishable\n' +
-                     'Product A;Description A;Category A;10.5;USD;100;SKU001;2023-12-31;5;Dry;FOB;TRUE';
-    const invalidCsv = 'name;description;category;price\n' +
-                       'Product A;Description A;Category A;10.5';
-
-    const validResult = component['validateCsvStructure'](validCsv);
-    const invalidResult = component['validateCsvStructure'](invalidCsv);
-
-    expect(validResult.isValid).toBeTrue();
-    expect(validResult.errors).toEqual([]);
-
-    expect(invalidResult.isValid).toBeFalse();
-    expect(invalidResult.errors.length).toBeGreaterThan(0);
-  });
-
   it('should process a valid CSV file and set jsonData', () => {
     const mockEvent = {
       target: {

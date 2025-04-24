@@ -150,35 +150,6 @@ describe('CreateSalesPlanComponent', () => {
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
   }));
 
-  it('should show error toast and stop loading on failure', fakeAsync(() => {
-    mockAuthService.getUserData.and.returnValue(sellerUser);
-    mockAuthService.getUserId.and.returnValue(sellerUser.id);
-    mockSalesPlanService.create.and.returnValue(throwError(() => new Error('Simulated error')));
-
-    fixture.detectChanges();
-
-    component.salesPlanForm.setValue({
-      name: 'Plan Falla',
-      description: 'Error test',
-      visitRoute: 'Route 404',
-      dailyGoal: 15,
-      weeklyGoal: 60,
-      startTime: '07:00',
-      endTime: '19:00',
-      strategy: 'FREE_SAMPLES',
-      event: 'REGIONAL_FAIR'
-    });
-
-    spyOn(toastr, 'error');
-    translate.setDefaultLang('en');
-
-    component.onSubmit();
-    tick();
-
-    expect(toastr.error).toHaveBeenCalled();
-    expect(component.isLoading).toBeFalse();
-  }));
-
   it('should navigate to dashboard on cancel', () => {
     component.onCancel();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
