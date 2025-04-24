@@ -154,7 +154,7 @@ describe('HomeComponent', () => {
     await component.onSubmit();
 
     expect(component.authService.login).toHaveBeenCalled();
-    expect(component.router.navigate).toHaveBeenCalledWith(['/home']);
+    expect(component.router.navigate).toHaveBeenCalledWith(['/admin']);
   });
 
   it('should handle login error with status 401', async () => {
