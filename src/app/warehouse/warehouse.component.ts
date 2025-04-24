@@ -31,14 +31,14 @@ export class WarehouseComponent {
 
 
   isLoading = true;
-  skeletonRows = Array(5); // Número de filas de skeleton a mostrar
+  skeletonRows = Array(5);
 
   ngOnInit(): void {
     this.fetchProducts();
   }
 
   fetchProducts(): void {
-    this.http.get<any[]>('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/api/products')
+    this.http.get<any[]>('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/api/products/search')
       .subscribe({
         next: (data) => {
           this.products = data;
