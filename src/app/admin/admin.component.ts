@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import {TranslatePipe} from "@ngx-translate/core";
+import { TranslatePipe } from "@ngx-translate/core";
 import { AuthService } from '../auth/auth.service';
-import {Observable} from 'rxjs';
-import {Manufacturer} from '../auth/user.interface';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { Manufacturer } from '../auth/user.interface';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin',
@@ -64,6 +63,7 @@ export class AdminComponent {
   closeSuccessMessage(): void {
     this.successMessageVisible = false;
   }
+
   closeErrorMessage(): void {
     this.errorMessageVisible = false;
   }

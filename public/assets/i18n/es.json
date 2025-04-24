@@ -359,5 +359,15 @@
   "ADMIN_AUTHORIZE_BUTTON": "Autorizar",
   "ADMIN_TABLE_HEADER_AUTHORIZED":  "Autorizado",
   "ADMIN_ERROR_AUTHORIZED": "Error autorizando el usuario.",
-  "ADMIN_SUCCESS_AUTHORIZED": "User authorized successfully."
+  "ADMIN_SUCCESS_AUTHORIZED": "User authorized successfully.",
+  "MENU_PRODUCTS": "Productos",
+  "MENU_AUTHORIZATIONS": "Autorizaciones",
+  "ADMIN_PRODUCTS_TABLE_IMAGE": "Imagen",
+  "ADMIN_PRODUCTS_TABLE_NAME": "Nombre",
+  "ADMIN_PRODUCTS_TABLE_DESCRIPTION": "Descripción",
+  "ADMIN_PRODUCTS_TABLE_CATEGORY": "Categoría",
+  "ADMIN_PRODUCTS_TABLE_PRICE": "Precio",
+  "ADMIN_PRODUCTS_TABLE_STOCK": "Stock",
+  "ADMIN_PRODUCTS_TABLE_DATE": "Fecha Creación",
+  "ADMIN_PRODUCTS_SEARCH": "Buscar Productos"
 }

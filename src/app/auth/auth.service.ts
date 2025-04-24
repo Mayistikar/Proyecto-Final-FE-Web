@@ -19,6 +19,7 @@ export interface UserData {
 })
 export class AuthService {
   private _isAuthenticated = new BehaviorSubject<boolean>(this.hasValidToken());
+  private _userData = new BehaviorSubject<UserData | null>(this.getUserData());
 
   constructor(
     private router: Router,
@@ -27,6 +28,7 @@ export class AuthService {
 
   login(userData?: UserData) {
     if (userData) {
+      this._userData.next(userData || null);
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_email', userData.email);
       localStorage.setItem('user_role', userData.role);
@@ -109,6 +111,10 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  get userData$() {
+    return this._userData.asObservable();
   }
 
   getCurrentManufacturer(): { id: string; email: string; role: string; companyName?: string } | null {
