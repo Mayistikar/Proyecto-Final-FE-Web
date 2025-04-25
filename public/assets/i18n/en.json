@@ -368,5 +368,12 @@
   "ADMIN_PRODUCTS_TABLE_PRICE": "Price",
   "ADMIN_PRODUCTS_TABLE_STOCK": "Stock",
   "ADMIN_PRODUCTS_TABLE_DATE": "Creation Date",
-  "ADMIN_PRODUCTS_SEARCH": "Search products"
+  "ADMIN_PRODUCTS_SEARCH": "Search products", 
+
+  "PRODUCT_CURRENCY": "Currency *",
+  "PRODUCT_CURRENCY_PLACEHOLDER": "Select currency",
+  "PRODUCT_WAREHOUSE": "Storage Warehouse *",
+  "PRODUCT_WAREHOUSE_PLACEHOLDER": "Select a warehouse",
+  "WAREHOUSE.LOAD_ERROR": "Failed to load warehouses. Please try again later."
+
 }

@@ -61,4 +61,11 @@ export class ProductService {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       });
   }
+  
+  getWarehouses(): Observable<{ id: string; name: string; country: string }[]> {
+    return this.http.get<{ id: string; name: string; country: string }[]>(
+      `${this.baseUrl}/warehouses`
+    );
+  }
+  
 }

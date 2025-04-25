@@ -13,6 +13,9 @@ export class Product {
     storageConditions: string;
     commercialConditions: string;
     isPerishable: boolean;
+    currency: string;
+    warehouse: string;
+    manufacturerId: string;
   
     constructor(
       id: string = '',
@@ -27,7 +30,10 @@ export class Product {
       deliveryTime: number = 0,
       storageConditions: string = '',
       commercialConditions: string = '',
-      isPerishable: boolean = false
+      isPerishable: boolean = false,
+      currency: string = 'COP',
+      warehouse: string = '',
+      manufacturerId: string = ''
     ) {
       this.id = id;
       this.name = name;
@@ -42,5 +48,8 @@ export class Product {
       this.storageConditions = storageConditions;
       this.commercialConditions = commercialConditions;
       this.isPerishable = isPerishable;
+      this.currency = currency;
+      this.warehouse = warehouse;
+      this.manufacturerId = manufacturerId;
     }
   }  

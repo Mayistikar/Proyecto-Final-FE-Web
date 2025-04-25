@@ -13,6 +13,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductService } from '../services/product.service';
 import { Product } from '../../models/product.model';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-create-product',
@@ -38,11 +39,14 @@ export class CreateProductComponent implements OnInit {
   loading = false;
   imagePreview: string | ArrayBuffer | null = null;
   isPerishable = false;
-  selectedImageFile: File | null = null; // Add this property
+  selectedImageFile: File | null = null; 
+  warehouses: { id: string; name: string; country: string }[] = [];
+  currencies = ['COP', 'USD'];
 
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
+    private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
     private translate: TranslateService
@@ -62,6 +66,9 @@ export class CreateProductComponent implements OnInit {
       storageConditions: ['', Validators.required],
       commercialConditions: ['', Validators.required],
       perishable: [false],
+      currency: ['COP', Validators.required],
+      warehouse: ['', Validators.required],
+      country: ['Colombia']
     });
 
     this.productForm.get('perishable')?.valueChanges.subscribe((isPerishable) => {
@@ -75,16 +82,20 @@ export class CreateProductComponent implements OnInit {
       }
       expirationDateControl?.updateValueAndValidity();
     });
+
+    this.productService.getWarehouses().subscribe({
+      next: (data) => this.warehouses = data,
+      error: () => this.snackBar.open(this.translate.instant('WAREHOUSE.LOAD_ERROR'), 'OK', { duration: 3000 }),
+    });
   }
+
 
   onImageChange(event: Event): void {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
 
-    // Store the selected file
     this.selectedImageFile = file;
 
-    // Create local preview using FileReader
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result;
@@ -101,28 +112,33 @@ export class CreateProductComponent implements OnInit {
 
     this.loading = true;
 
+    const manufacturerId = this.authService.getUserId();
     const formValue = this.productForm.value;
-    const product = new Product(
-      '',
-      formValue.name,
-      formValue.description,
-      formValue.category,
-      formValue.price,
-      formValue.imageUrl,
-      formValue.stock,
-      formValue.sku,
-      formValue.expirationDate,
-      formValue.deliveryTime,
-      formValue.storageConditions,
-      formValue.commercialConditions,
-      formValue.perishable
-    );
 
-    this.productService.createProduct(product, this.selectedImageFile || undefined).subscribe({
+    const payload = {
+      name: formValue.name,
+      description: formValue.description,
+      price: formValue.price,
+      category: formValue.category,
+      is_perishable: formValue.perishable,
+      stock: formValue.stock,
+      expiration_date: formValue.expirationDate,
+      delivery_time: formValue.deliveryTime,
+      storage_conditions: formValue.storageConditions,
+      image: formValue.imageUrl,
+      commercial_conditions: formValue.commercialConditions,
+      currency: formValue.currency,
+      manufacturer_id: this.authService.getUserId(),
+      country: formValue.country,
+      sku: formValue.sku,
+      warehouse: formValue.warehouse
+    };
+
+    this.productService.createProduct(payload, this.selectedImageFile || undefined).subscribe({
       next: () => {
         this.snackBar.open(this.translate.instant('PRODUCT.CREATED_SUCCESS'), 'OK', { duration: 3000 });
         console.log({ formValue });
-        console.log({ product });
+        console.log({ payload});
         this.loading = false;
         // this.router.navigate(['manufacturer-dashboard']);
       },
