@@ -23,6 +23,12 @@
           <input id="price" type="number" class="form-control" formControlName="price" placeholder="{{ 'PRODUCT_PRICE_PLACEHOLDER' | translate }}" />
         </div>
         <div class="mb-3">
+          <label for="currency" class="form-label">{{ 'PRODUCT_CURRENCY' | translate }}</label>
+          <select id="currency" class="form-select" formControlName="currency">
+            <option *ngFor="let curr of currencies" [value]="curr">{{ curr }}</option>
+          </select>
+        </div>
+        <div class="mb-3">
           <label for="stock" class="form-label">{{ 'PRODUCT_STOCK' | translate }}</label>
           <input id="stock" type="number" class="form-control" formControlName="stock" placeholder="{{ 'PRODUCT_STOCK_PLACEHOLDER' | translate }}" />
         </div>
@@ -62,6 +68,14 @@
           <input id="commercialConditions" class="form-control" formControlName="commercialConditions" placeholder="{{ 'PRODUCT_COMMERCIAL_PLACEHOLDER' | translate }}" />
         </div>
 
+        <div class="mb-3">
+          <label for="warehouse" class="form-label">{{ 'PRODUCT_WAREHOUSE' | translate }}</label>
+          <select id="warehouse" class="form-select" formControlName="warehouse">
+            <option value="" disabled selected>{{ 'PRODUCT_WAREHOUSE_PLACEHOLDER' | translate }}</option>
+            <option *ngFor="let w of warehouses" [value]="w.id">{{ w.name }} - {{ w.country }}</option>
+          </select>
+        </div>
+
         <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" id="perishable" formControlName="perishable" />
           <label class="form-check-label" for="perishable">{{ 'PRODUCT_IS_PERISHABLE' | translate }}</label>
@@ -79,7 +93,5 @@
         </div>
       </div>
     </div>
-
-
   </form>
 </div>

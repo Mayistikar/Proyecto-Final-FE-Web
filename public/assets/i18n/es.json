@@ -369,5 +369,11 @@
   "ADMIN_PRODUCTS_TABLE_PRICE": "Precio",
   "ADMIN_PRODUCTS_TABLE_STOCK": "Stock",
   "ADMIN_PRODUCTS_TABLE_DATE": "Fecha Creación",
-  "ADMIN_PRODUCTS_SEARCH": "Buscar Productos"
+  "ADMIN_PRODUCTS_SEARCH": "Buscar Productos", 
+
+  "PRODUCT_CURRENCY": "Moneda *",
+  "PRODUCT_CURRENCY_PLACEHOLDER": "Seleccione la moneda",
+  "PRODUCT_WAREHOUSE": "Bodega de almacenamiento *",
+  "PRODUCT_WAREHOUSE_PLACEHOLDER": "Seleccione una bodega", 
+  "WAREHOUSE.LOAD_ERROR": "Error al cargar las bodegas. Intente nuevamente más tarde."
 }
