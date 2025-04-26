@@ -2,7 +2,7 @@
   <span class="ccp-title" style="cursor: pointer;" (click)="goHome()">CPP</span>
 
   <div>
-    <span (click)="goWarehouse()" *ngIf="userData?.role === 'admin'">
+    <span (click)="goWarehouse()" *ngIf="userData != null && userData?.role === 'admin'">
       <i class="bi bi-house-door-fill"></i>
       {{ 'MENU_PRODUCTS' | translate }}
     </span>&nbsp;
