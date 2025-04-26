@@ -381,6 +381,7 @@
   "WAREHOUSE.LOAD_ERROR": "Error al cargar las bodegas. Intente nuevamente más tarde.",
   "PRODUCT_FIELD_WAREHOUSE": "Bodega Todas",
   "PRODUCT_FIELD_COUNTRY": "País Todos",
+  "UPLOAD_PRODUCTS_SELECT_WAREHOUSE": "Seleccione la bodega de almacenamiento",
   "COMMON.SUCCESS": "Éxito",
   "COMMON.ERROR": "Error",
   "FORM.NO_CHANGES": "No se detectaron cambios para actualizar.",
@@ -388,6 +389,6 @@
   "PRODUCT_LOAD_SUCCESS": "Producto cargado correctamente",
   "PRODUCT_DAYS": "días",
   "BUTTON_BACK": "Volver",
-  "PRODUCT_LOAD_ERROR": "No se pudo cargar el producto."
-
+  "PRODUCT_LOAD_ERROR": "No se pudo cargar el producto.",
+  "UPLOAD_FILE_MESSAGE": "Error cargando productos"
 }

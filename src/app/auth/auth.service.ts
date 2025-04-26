@@ -26,13 +26,13 @@ export class AuthService {
     private http: HttpClient
   ) {}
 
-  login(userData?: UserData) {
+  login(userData?: any) {
     if (userData) {
       this._userData.next(userData || null);
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_email', userData.email);
       localStorage.setItem('user_role', userData.role);
-
+      localStorage.setItem('user_country', userData.country);
       if (userData.zone) {
         localStorage.setItem('user_zone', userData.zone);
       }
@@ -52,6 +52,7 @@ export class AuthService {
     localStorage.removeItem('id_token');
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user');
 
     this._isAuthenticated.next(false);
     this.router.navigate(['/']);
@@ -75,6 +76,10 @@ export class AuthService {
 
   getUserEmail(): string | null {
     return localStorage.getItem('user_email');
+  }
+
+  getUserCountry(): string | null {
+    return localStorage.getItem('user_country');
   }
 
   getUserRole(): string | null {
@@ -117,6 +122,10 @@ export class AuthService {
     return this._userData.asObservable();
   }
 
+  getUser() {
+    return this._userData.value;
+  }
+
   getCurrentManufacturer(): { id: string; email: string; role: string; companyName?: string } | null {
     const id = this.getUserId();
     const email = this.getUserEmail();
@@ -143,4 +152,51 @@ export class AuthService {
   }
 }
 
+
+export class MockAuthService {
+  private userData: UserData | null = null;
+
+  login(userData: UserData): void {
+    this.userData = userData;
+  }
+
+  logout(): void {
+    this.userData = null;
+  }
+
+  isLoggedIn(): boolean {
+    return this.userData !== null;
+  }
+
+  getUserData(): UserData | null {
+    return this.userData;
+  }
+
+  getCurrentManufacturer(): { id: string; email: string; role: string; companyName: string } | null {
+    if (this.userData?.role === 'manufacturer') {
+      return {
+        id: this.userData.id,
+        email: this.userData.email,
+        role: this.userData.role,
+        companyName: this.userData.email.split('@')[0], // Simula el companyName
+      };
+    }
+    return null;
+  }
+
+  isAuthenticated = {
+    subscribe: (callback: (value: boolean) => void) => {
+      callback(this.isLoggedIn());
+      return { unsubscribe: () => {} };
+    },
+  };
+
+  getUserCountry() {
+    return 'Colombia';
+  }
+
+  getUserId() {
+    return '12345';
+  }
+}
 

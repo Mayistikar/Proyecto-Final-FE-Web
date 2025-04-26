@@ -380,6 +380,7 @@
   "WAREHOUSE.LOAD_ERROR": "Failed to load warehouses. Please try again later.",
   "PRODUCT_FIELD_WAREHOUSE": "Warehouse All",
   "PRODUCT_FIELD_COUNTRY": "Country All",
+  "UPLOAD_PRODUCTS_SELECT_WAREHOUSE": "Select Warehouse",
   "COMMON.SUCCESS": "Success",
   "COMMON.ERROR": "Error",
   "FORM.NO_CHANGES": "No changes detected to update.",
@@ -387,8 +388,6 @@
   "PRODUCT_LOAD_SUCCESS": "Product loaded successfully",
   "PRODUCT_DAYS": "days",
   "BUTTON_BACK": "Back",
-  "PRODUCT_LOAD_ERROR": "Failed to load product."
-
-
-
+  "PRODUCT_LOAD_ERROR": "Failed to load product.",
+  "UPLOAD_FILE_MESSAGE": "Error uploading products"
 }

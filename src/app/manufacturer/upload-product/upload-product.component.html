@@ -1,25 +1,41 @@
 <div class="container mt-5">
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>{{ 'MANUFACTURER_UPLOAD_PRODUCTS' | translate }}</h2>
-    <a class="btn btn-primary btn-lg" style="background: #03A9F4" (click)="downloadFile()">
-      {{ 'MANUFACTURER_DOWNLOAD_TEMPLATE' | translate }}
-    </a>
-  </div>
-
-  <div class="alert alert-danger" role="alert" *ngIf="fileErrors.length > 0">
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="fileErrors.length > 0">
     <h4 class="alert-heading">{{ 'FILE_ERROR' | translate }}</h4>
     <p *ngFor="let err of fileErrors">{{ err }}</p>
     <hr>
     <p class="mb-0">{{ 'FILE_VALIDATION_MESSAGE' | translate }}</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 
-  <div class="alert alert-success" role="alert" *ngIf="fileErrors.length === 0 && isFileUploaded">
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="uploadErrors.length > 0">
+    <strong class="mb-0">{{ 'UPLOAD_FILE_MESSAGE' | translate }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="uploadErrors=[]"></button>
+  </div>
+
+  <div class="alert alert-success  alert-dismissible fade show" role="alert" *ngIf="fileErrors.length === 0 && isFileUploaded">
     <h4 class="alert-heading">{{ 'FILE_SUCCESS' | translate }}</h4>
     <p>{{ 'FILE_VALIDATION_SUCCESS_MESSAGE' | translate }}</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 
-  <div class="card">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>{{ 'MANUFACTURER_UPLOAD_PRODUCTS' | translate }}</h2>
+    <a class="btn btn-primary btn-lg" (click)="downloadFile()">
+      {{ 'MANUFACTURER_DOWNLOAD_TEMPLATE' | translate }}
+    </a>
+  </div>
+
+  <div class="mb-3">
+    <label for="countryFilter" class="form-label">
+      {{ 'UPLOAD_PRODUCTS_SELECT_WAREHOUSE' | translate }}
+    </label>
+    <select id="countryFilter" class="form-select" [(ngModel)]="warehouseSelected">
+      <option *ngFor="let warehouse of warehouses" [value]="warehouse.id">{{ warehouse.name }}</option>
+    </select>
+  </div>
+
+  <div class="card" *ngIf="warehouseSelected">
     <div class="card-header">
       {{ 'MANUFACTURER_UPLOAD_NEW_PRODUCTS' | translate }}
     </div>
@@ -76,5 +92,4 @@
       </div>
     </div>
   </div>
-
 </div>

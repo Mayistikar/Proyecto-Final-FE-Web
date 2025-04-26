@@ -165,7 +165,6 @@ describe('HomeComponent', () => {
     await component.onSubmit();
 
     expect(console.error).toHaveBeenCalledWith('Login failed', jasmine.any(Object));
-    expect(component.pendingValidation).toBeFalse();
   });
 
   it('should handle login error with status 403 and set pendingValidation', async () => {

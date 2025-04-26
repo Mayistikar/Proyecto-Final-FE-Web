@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
-import { KeyValuePipe, CommonModule } from '@angular/common';
-import { ProductService } from '../services/product.service';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {Component} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
+import {KeyValuePipe, CommonModule} from '@angular/common';
+import {ProductService} from '../services/product.service';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {Router, RouterLink} from '@angular/router';
+import {AuthService} from '../../auth/auth.service';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-upload-product',
@@ -15,6 +17,8 @@ import {Router, RouterLink} from '@angular/router';
     MatSnackBarModule,
     TranslateModule,
     RouterLink,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   templateUrl: './upload-product.component.html',
   styleUrl: './upload-product.component.css'
@@ -24,14 +28,26 @@ export class UploadProductComponent {
   jsonData: any[] = [];
   isFileUploaded: boolean = false;
   isUploading: boolean = false;
-  fileErrors : string[] = [];
+  fileErrors: string[] = [];
+  uploadErrors: string[] = [];
+  userCountry?: string | null = '';
+  userId?: string | null = '';
+  warehouses: any[] = [];
+  warehouseSelected: any;
 
   constructor(
     private productService: ProductService,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthService,
+  ) {
+    this.userCountry = this.authService.getUserCountry();
+    this.userId = this.authService.getUserId();
+    this.productService.getWarehouses(this.userCountry?.toLowerCase()).subscribe((warehouses) => {
+      this.warehouses = warehouses;
+    });
+  }
 
   downloadFile(): void {
     const link = document.createElement('a');
@@ -73,13 +89,15 @@ export class UploadProductComponent {
     const lines = csv.split('\n');
     const headers = lines[0].split(';');
 
-    return lines.slice(1).map((line) => {
-      const values = line.split(';');
-      return headers.reduce((acc, header, index) => {
-        acc[header.trim()] = values[index]?.trim();
-        return acc;
-      }, {} as Record<string, string>);
-    });
+    return lines.slice(1)
+      .filter((line) => line.trim() !== '') // Filtrar filas vacías
+      .map((line) => {
+        const values = line.split(';');
+        return headers.reduce((acc, header, index) => {
+          acc[header.trim()] = values[index]?.trim();
+          return acc;
+        }, {} as Record<string, string>);
+      });
   }
 
   clean() {
@@ -94,19 +112,40 @@ export class UploadProductComponent {
       return;
     }
 
+    if (this.warehouseSelected === undefined) {
+      this.snackBar.open(this.translate.instant('SELECT_WAREHOUSE'), 'OK', {
+        duration: 3000,
+        panelClass: 'snackbar-error'
+      });
+      return;
+    }
+
+    this.jsonData = this.jsonData.map((item => {
+      return {
+        ...item,
+        warehouse: this.warehouseSelected,
+        manufacturer_id: this.userId
+      };
+    }));
+
     this.isUploading = true;
     this.productService.sendProducts(this.jsonData).subscribe({
       next: (response) => {
-        this.snackBar.open(this.translate.instant('FILE_UPLOAD_SUCCESS'), 'OK', { duration: 3000, panelClass: 'snackbar-success' });
+        this.snackBar.open(this.translate.instant('FILE_UPLOAD_SUCCESS'), 'OK', {
+          duration: 3000,
+          panelClass: 'snackbar-success'
+        });
         this.isUploading = false;
         this.clean();
         this.router.navigate(['manufacturer-dashboard']);
       },
       error: (error) => {
-        this.snackBar.open(this.translate.instant('FILE_UPLOAD_ERROR'), 'OK', { duration: 3000, panelClass: 'snackbar-error' });
+        this.uploadErrors.push( this.translate.instant('FILE_UPLOAD_SUCCESS') );
         this.isUploading = false;
       }
     });
+
+    console.log({ errors: this.uploadErrors })
   }
 
   private validateCsvStructure(csv: string): { isValid: boolean; errors: string[] } {
@@ -119,13 +158,11 @@ export class UploadProductComponent {
     const headers = lines[0].split(';').map(header => header.trim());
     const errors: string[] = [];
 
-    // Validate headers
     if (headers.length !== expectedHeaders.length || !headers.every((header, index) => header === expectedHeaders[index])) {
       errors.push(`Expected Headers: ${expectedHeaders.join('\n')}`);
-      return { isValid: false, errors };
+      return {isValid: false, errors};
     }
 
-    // Validate rows
     lines.slice(1).forEach((line, rowIndex) => {
       const values = line.split(';');
       if (values.length !== expectedHeaders.length) {
@@ -151,7 +188,7 @@ export class UploadProductComponent {
       }
     });
 
-    return { isValid: errors.length === 0, errors };
+    return {isValid: errors.length === 0, errors};
   }
 
   deleteFile() {

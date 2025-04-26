@@ -1,7 +1,7 @@
 // src/app/services/product.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import {count, forkJoin, mergeMap, Observable, of} from 'rxjs';
 import { Product } from '../../models/product.model';
 
 @Injectable({
@@ -57,15 +57,71 @@ export class ProductService {
   }
 
   sendProducts(products: any[]): Observable<any> {
-      return this.http.post(`${this.baseUrl}/products/bulk`, products, {
+    const requests = products.map(product =>
+      this.http.post(`${this.baseUrl}/products`, product, {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      });
+      })
+    );
+
+    return of(requests).pipe(
+      mergeMap(reqs => forkJoin(reqs))
+    );
   }
-  
-  getWarehouses(): Observable<{ id: string; name: string; country: string }[]> {
-    return this.http.get<{ id: string; name: string; country: string }[]>(
+
+  getWarehouses(country?: string): Observable<{ id: string; name: string; country: string; location: string; description: string }[]> {
+    if (country) {
+      return this.http.get<{ id: string; name: string; country: string; location: string; description: string }[]>(
+        `${this.baseUrl}/warehouses?country=${country}`
+      );
+    }
+    return this.http.get<{ id: string; name: string; country: string; location: string; description: string }[]>(
       `${this.baseUrl}/warehouses`
     );
   }
-  
+
+}
+
+export class MockProductService {
+  private baseUrl = 'https://mock-api.com';
+
+  createProduct(product: any, imageFile?: File): Observable<any> {
+    return of({ success: true, product });
+  }
+
+  getProducts(): Observable<any> {
+    return of([]);
+  }
+
+  getProductById(productId: string): Observable<any> {
+    return of({ id: productId, name: 'Mock Product' });
+  }
+
+  updateProduct(productId: string, product: any): Observable<any> {
+    return of({ success: true });
+  }
+
+  getPresignedUrl(fileName: string): Observable<{ uploadUrl: string; publicUrl: string }> {
+    return of({
+      uploadUrl: `https://mock-s3.com/${fileName}`,
+      publicUrl: `https://mock-s3.com/${fileName}`,
+    });
+  }
+
+  uploadToS3(uploadUrl: string, file: File): Observable<any> {
+    return of({ success: true });
+  }
+
+  getProductsByManufacturer(manufacturerId: string): Observable<Product[]> {
+    return of([]);
+  }
+
+  sendProducts(products: any[]): Observable<any> {
+    return of(products.map(product => ({ success: true, product })));
+  }
+
+  getWarehouses(): Observable<any> {
+    return of([
+      { id: '1', name: 'Mock Warehouse', country: 'Mock Country', location: 'Mock Location', description: 'Mock Description' },
+    ]);
+  }
 }
