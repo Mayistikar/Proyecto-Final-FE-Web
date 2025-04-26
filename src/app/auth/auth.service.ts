@@ -26,13 +26,13 @@ export class AuthService {
     private http: HttpClient
   ) {}
 
-  login(userData?: UserData) {
+  login(userData?: any) {
     if (userData) {
       this._userData.next(userData || null);
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_email', userData.email);
       localStorage.setItem('user_role', userData.role);
-
+      localStorage.setItem('user_country', userData.country);
       if (userData.zone) {
         localStorage.setItem('user_zone', userData.zone);
       }
@@ -52,6 +52,7 @@ export class AuthService {
     localStorage.removeItem('id_token');
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user');
 
     this._isAuthenticated.next(false);
     this.router.navigate(['/']);
@@ -75,6 +76,10 @@ export class AuthService {
 
   getUserEmail(): string | null {
     return localStorage.getItem('user_email');
+  }
+
+  getUserCountry(): string | null {
+    return localStorage.getItem('user_country');
   }
 
   getUserRole(): string | null {
@@ -115,6 +120,10 @@ export class AuthService {
 
   get userData$() {
     return this._userData.asObservable();
+  }
+
+  getUser() {
+    return this._userData.value;
   }
 
   getCurrentManufacturer(): { id: string; email: string; role: string; companyName?: string } | null {
