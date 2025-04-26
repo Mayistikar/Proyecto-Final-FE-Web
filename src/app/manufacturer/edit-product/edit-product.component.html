@@ -24,6 +24,13 @@
         </div>
 
         <div class="mb-3">
+          <label for="currency" class="form-label">{{ 'PRODUCT_CURRENCY' | translate }}</label>
+          <select id="currency" class="form-select" formControlName="currency">
+            <option *ngFor="let curr of currencies" [value]="curr">{{ curr }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
           <label for="stock" class="form-label">{{ 'PRODUCT_STOCK' | translate }}</label>
           <input id="stock" type="number" class="form-control" formControlName="stock" placeholder="{{ 'PRODUCT_STOCK_PLACEHOLDER' | translate }}" />
         </div>
@@ -45,9 +52,13 @@
       </div>
   
       <div class="col-md-6">
-        <div class="card p-3">
+        <div class="card p-3 mb-3">
           <label class="form-label">{{ 'PRODUCT_IMAGE_LABEL' | translate }}</label>
-          <img [src]="imagePreview || 'https://assetsccp.s3.us-east-1.amazonaws.com/placeholder-image.png'" class="img-fluid rounded mb-2" alt="preview" />
+          <img
+            [src]="imagePreview || 'https://backend-service-images.s3.us-east-1.amazonaws.com/products/placeholder-image.png'"
+            class="img-fluid rounded mb-2"
+            alt="preview"
+          />
           <input type="file" class="form-control" (change)="onImageChange($event)" />
         </div>
   
@@ -59,6 +70,14 @@
         <div class="mb-3">
           <label for="commercialConditions" class="form-label">{{ 'PRODUCT_COMMERCIAL_CONDITIONS' | translate }}</label>
           <input id="commercialConditions" class="form-control" formControlName="commercialConditions" placeholder="{{ 'PRODUCT_COMMERCIAL_PLACEHOLDER' | translate }}" />
+        </div>
+
+        <div class="mb-3">
+          <label for="warehouse" class="form-label">{{ 'PRODUCT_WAREHOUSE' | translate }}</label>
+          <select id="warehouse" class="form-select" formControlName="warehouse">
+            <option value="" disabled>{{ 'PRODUCT_WAREHOUSE_PLACEHOLDER' | translate }}</option>
+            <option *ngFor="let w of warehouses" [value]="w.id">{{ w.name }} - {{ w.country }}</option>
+          </select>
         </div>
   
         <div class="form-check form-switch">
