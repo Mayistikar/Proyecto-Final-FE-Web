@@ -37,7 +37,7 @@ export class ProductService {
   }
 
   getPresignedUrl(fileName: string): Observable<{ uploadUrl: string; publicUrl: string }> {
-    const url = `https://assetsccp.s3.us-east-1.amazonaws.com/${fileName}`;
+    const url = `https://backend-service-images.s3.us-east-1.amazonaws.com/products/${fileName}`;
     return of({
       uploadUrl: url,
       publicUrl: url,

@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProductService } from '../services/product.service';
 import { Product } from '../../models/product.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr'; 
 
 @Component({
   selector: 'app-product-detail',
@@ -26,12 +27,14 @@ export class ProductDetailComponent implements OnInit {
   productId!: string;
   product!: Product;
   loading = true;
+  loadError = false;
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private router: Router,
-    public translate: TranslateService
+    private translate: TranslateService,
+    private toastr: ToastrService 
   ) {}
 
   ngOnInit(): void {
@@ -39,8 +42,10 @@ export class ProductDetailComponent implements OnInit {
 
     this.productService.getProductById(this.productId).subscribe({
       next: (data) => {
-
-        console.log('[DEBUG] Product from backend:', data);
+        if (!data) {
+          this.handleLoadError();
+          return;
+        }
         this.product = {
           id: data.id,
           name: data.name,
@@ -59,15 +64,27 @@ export class ProductDetailComponent implements OnInit {
           manufacturerId: data.manufacturer_id,
           warehouse: data.warehouse,
         };
-
-
-
         this.loading = false;
+        this.toastr.success(
+          this.translate.instant('PRODUCT_LOAD_SUCCESS'),
+          this.translate.instant('COMMON.SUCCESS'),
+          { timeOut: 3000 }
+        );
       },
       error: () => {
-        this.loading = false;
+        this.handleLoadError();
       }
     });
+  }
+
+  private handleLoadError(): void {
+    this.loadError = true;
+    this.loading = false;
+    this.toastr.error(
+      this.translate.instant('PRODUCT_LOAD_ERROR'),
+      this.translate.instant('COMMON.ERROR'),
+      { timeOut: 4000 }
+    );
   }
 
   editProduct(): void {

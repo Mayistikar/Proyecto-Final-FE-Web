@@ -374,6 +374,17 @@
   "PRODUCT_CURRENCY_PLACEHOLDER": "Select currency",
   "PRODUCT_WAREHOUSE": "Storage Warehouse *",
   "PRODUCT_WAREHOUSE_PLACEHOLDER": "Select a warehouse",
-  "WAREHOUSE.LOAD_ERROR": "Failed to load warehouses. Please try again later."
+  "WAREHOUSE.LOAD_ERROR": "Failed to load warehouses. Please try again later.",
+  "PRODUCT_FIELD_WAREHOUSE": "Warehouse", 
+  "COMMON.SUCCESS": "Success", 
+  "COMMON.ERROR": "Error", 
+  "FORM.NO_CHANGES": "No changes detected to update.",
+  "COMMON.INFO": "Info", 
+  "PRODUCT_LOAD_SUCCESS": "Product loaded successfully", 
+  "PRODUCT_DAYS": "days",
+  "BUTTON_BACK": "Back",
+  "PRODUCT_LOAD_ERROR": "Failed to load product."
+
+
 
 }

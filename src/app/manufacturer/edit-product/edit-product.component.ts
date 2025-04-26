@@ -14,6 +14,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductService } from '../services/product.service';
 import { Product } from '../../models/product.model';
 import { AuthService } from '../../auth/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-product',
@@ -41,6 +42,9 @@ export class EditProductComponent implements OnInit {
   productId!: string;
   warehouses: { id: string; name: string; country: string }[] = [];
   currencies = ['COP', 'USD'];
+  minExpirationDate: Date = new Date();
+  isPerishable = false;
+  initialProductData: any; 
 
   constructor(
     private fb: FormBuilder,
@@ -49,7 +53,8 @@ export class EditProductComponent implements OnInit {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService, 
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +62,7 @@ export class EditProductComponent implements OnInit {
     this.initForm();
 
     this.productService.getProductById(this.productId).subscribe(product => {
-      this.productForm.patchValue({
+      const normalized = {
         name: product.name,
         description: product.description,
         category: product.category,
@@ -72,27 +77,35 @@ export class EditProductComponent implements OnInit {
         warehouse: product.warehouse,
         perishable: product.is_perishable,
         imageUrl: product.image
-      });
+      };
+      this.productForm.patchValue(normalized);
+      this.initialProductData = normalized; 
       this.imagePreview = product.image;
+      this.isPerishable = product.is_perishable;
     });
 
     this.productService.getWarehouses().subscribe({
-      next: (data) => this.warehouses = data,
-      error: () => this.snackBar.open(this.translate.instant('WAREHOUSE.LOAD_ERROR'), 'OK', { duration: 3000 })
+      next: (data) => (this.warehouses = data),
+      error: () =>
+        this.toastr.error(
+          this.translate.instant('WAREHOUSE.LOAD_ERROR'),
+          this.translate.instant('COMMON.ERROR'),
+          { timeOut: 3000 }
+        ),
     });
   }
 
   initForm(): void {
     this.productForm = this.fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
       category: ['', Validators.required],
       price: [null, [Validators.required, Validators.min(0.01)]],
       currency: ['COP', Validators.required],
       stock: [null, [Validators.required, Validators.min(0)]],
       sku: ['', Validators.required],
       expirationDate: [''],
-      deliveryTime: [null, Validators.required],
+      deliveryTime: [null, [Validators.required, Validators.min(1)]],
       storageConditions: ['', Validators.required],
       commercialConditions: ['', Validators.required],
       warehouse: ['', Validators.required],
@@ -110,6 +123,22 @@ export class EditProductComponent implements OnInit {
       }
       exp?.updateValueAndValidity();
     });
+
+    this.productForm.get('expirationDate')?.valueChanges.subscribe(value => {
+      if (value) {
+        const selectedDate = new Date(value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate < today) {
+          this.productForm.get('expirationDate')?.setErrors({ invalidDate: true });
+        }
+      }
+    });
+  }
+
+  fieldIsInvalid(field: string): boolean {
+    const control = this.productForm.get(field);
+    return !!(control && control.invalid && (control.dirty || control.touched));
   }
 
   onImageChange(event: Event): void {
@@ -124,9 +153,28 @@ export class EditProductComponent implements OnInit {
     }
   }
 
+  private isFormChanged(): boolean {
+    const current = this.productForm.getRawValue();
+    return JSON.stringify(current) !== JSON.stringify(this.initialProductData);
+  }
+
   onSubmit(): void {
     if (this.productForm.invalid) {
-      this.snackBar.open(this.translate.instant('FORM.INVALID'), 'OK', { duration: 3000 });
+      this.markAllFieldsAsTouched();
+      this.toastr.error(
+        this.translate.instant('FORM.INVALID'),
+        this.translate.instant('COMMON.ERROR'),
+        { timeOut: 3000 }
+      );
+      return;
+    }
+
+    if (!this.isFormChanged()) {
+      this.toastr.info(
+        this.translate.instant('FORM.NO_CHANGES'),
+        this.translate.instant('COMMON.INFO'),
+        { timeOut: 3000 }
+      );
       return;
     }
 
@@ -154,13 +202,31 @@ export class EditProductComponent implements OnInit {
 
     this.productService.updateProduct(this.productId, payload).subscribe({
       next: () => {
-        this.snackBar.open(this.translate.instant('PRODUCT_SAVE_SUCCESS'), 'OK', { duration: 3000 });
-        this.router.navigate(['manufacturer-dashboard']);
+        this.toastr.success(
+          this.translate.instant('PRODUCT_SAVE_SUCCESS'),
+          this.translate.instant('COMMON.SUCCESS'),
+          { timeOut: 3000 }
+        );
+        this.loading = false;
+        setTimeout(() => {
+          this.router.navigate(['manufacturer-dashboard']);
+        }, 2000);
       },
       error: () => {
-        this.snackBar.open(this.translate.instant('PRODUCT_SAVE_ERROR'), 'OK', { duration: 3000 });
+        this.toastr.error(
+          this.translate.instant('PRODUCT_SAVE_ERROR'),
+          this.translate.instant('COMMON.ERROR'),
+          { timeOut: 3000 }
+        );
         this.loading = false;
       }
+    });
+  }
+
+  markAllFieldsAsTouched(): void {
+    Object.keys(this.productForm.controls).forEach((field) => {
+      const control = this.productForm.get(field);
+      control?.markAsTouched({ onlySelf: true });
     });
   }
 
