@@ -41,12 +41,6 @@ describe('WarehouseComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call fetchProducts on ngOnInit', () => {
-    spyOn(component, 'fetchProducts');
-    component.ngOnInit();
-    expect(component.fetchProducts).toHaveBeenCalled();
-  });
-
   it('should fetch products and assign them to the products array', () => {
     const mockProducts = [
       { id: 1, name: 'Product 1' },

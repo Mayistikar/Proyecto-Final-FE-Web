@@ -84,8 +84,6 @@ export class ManufacturerComponent {
   }
 
   onSubmit() {
-    console.log('Submit button clicked');
-
     if (!this.manufacturerForm.valid || !this.passwordsMatch) {
       return;
     }
@@ -105,7 +103,7 @@ export class ManufacturerComponent {
       operation_country: this.companyCountry.value,
       tax_id: this.manufacturerRUC.value || null
     };
-    
+
     this.manufacturerService.register(payload).subscribe({
       next: () => {
         this.successMessageVisible = true;

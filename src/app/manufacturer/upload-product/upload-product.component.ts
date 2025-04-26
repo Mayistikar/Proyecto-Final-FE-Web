@@ -56,7 +56,6 @@ export class UploadProductComponent {
         }
 
         this.jsonData = this.csvToJson(csvData);
-        console.log('Converted JSON:', this.jsonData);
         this.isFileUploaded = true;
       };
 

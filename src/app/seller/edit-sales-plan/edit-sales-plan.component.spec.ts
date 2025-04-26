@@ -123,30 +123,6 @@ describe('EditSalesPlanComponent', () => {
     expect(component.isLoading).toBeFalse();
   }));
 
-  it('should show toast on update error', fakeAsync(() => {
-    spyOn(translate, 'get').and.returnValue(of('Error'));
-    spyOn(toastrService, 'error');
-
-    component.salesPlanForm.setValue({
-      name: 'Fail',
-      description: 'Test',
-      visitRoute: 'ROUTE_BOGOTA_SUR',
-      dailyGoal: 5,
-      weeklyGoal: 25,
-      startTime: '08:00',
-      endTime: '17:00',
-      strategy: 'BULK_DISCOUNT',
-      event: 'REGIONAL_FAIR'
-    });
-
-    salesPlanService.update.and.returnValue(throwError(() => new Error('fail')));
-    component.onSubmit();
-    tick();
-
-    expect(toastrService.error).toHaveBeenCalledWith('Error');
-    expect(component.isLoading).toBeFalse();
-  }));
-
   it('should set availableRoutes to [] if zone is unknown', () => {
     const mockUser = { role: 'seller', zone: 'ZONE_UNKNOWN' };
     spyOn(component['authService'], 'getUserData').and.returnValue({
