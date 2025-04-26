@@ -17,12 +17,15 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
+
 export class AdminComponent {
   userName: string = '';
   unauthorizedUsers: any[] = [];
   successMessageVisible = false;
   errorMessageVisible = false;
   searchTerm: string = '';
+  isLoading = true;
+  skeletonRows = Array.from({ length: 5 });
 
   constructor(private authService: AuthService) {}
 
@@ -30,12 +33,14 @@ export class AdminComponent {
     this.userName = this.authService.getUserData()?.email || '';
     this.authService.getUsers().subscribe({
       next: (data) => {
-      this.unauthorizedUsers = data.users
-                .filter((user: Manufacturer) => (user.role === 'manufacturer' || user.role === 'seller'))
-                .sort((a, b) => Number(a.authorized) - Number(b.authorized))
+        this.unauthorizedUsers = data.users
+                  .filter((user: Manufacturer) => (user.role === 'manufacturer' || user.role === 'seller'))
+                  .sort((a, b) => Number(a.authorized) - Number(b.authorized));
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching users:', error);
+        this.isLoading = false;
       }
     });
   }
