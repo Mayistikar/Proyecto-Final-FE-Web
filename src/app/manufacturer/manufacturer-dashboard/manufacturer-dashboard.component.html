@@ -1,26 +1,43 @@
 <div class="container mt-5">
-    <h2 class="mb-4">{{ 'MANUFACTURER_DASHBOARD_TITLE' | translate:{ name: manufacturerName } }}</h2>
+  <h2 class="mb-4">{{ 'MANUFACTURER_DASHBOARD_TITLE' | translate:{name: manufacturerName} }}</h2>
 
-    <h4 class="mb-3">{{ 'MANUFACTURER_PRODUCTS_TITLE' | translate }}</h4>
 
-    <div class="list-group mb-4">
-      <div *ngFor="let product of products" class="list-group-item d-flex justify-content-between align-items-center">
-        <div>
-          <strong>{{ product.name | translate }}</strong><br />
-          <span>{{ product.description | translate }}</span>
-        </div>
-        <button class="btn btn-outline-secondary btn-sm" [routerLink]="['/manufacturer/product', product.id]">
-          {{ 'MANUFACTURER_VIEW_DETAILS' | translate }}
+  <div class="row">
+    <div class="col-md-6">
+      <h4 class="mb-3">{{ 'ADMIN_PRODUCTS_SEARCH' | translate }}</h4>
+      <div class="mb-3">
+        <input type="text" class="form-control" placeholder="{{ 'ADMIN_PRODUCTS_SEARCH' | translate }}" [(ngModel)]="searchTerm">
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="d-flex justify-content-end gap-2">
+        <button class="btn btn-primary" [routerLink]="['/manufacturer/create-product']">
+          {{ 'MANUFACTURER_CREATE_PRODUCT' | translate }}
+        </button>
+        <button class="btn btn-primary" [routerLink]="['/manufacturer/upload-product' ]">
+          {{ 'MANUFACTURER_UPLOAD_PRODUCTS' | translate }}
         </button>
       </div>
     </div>
 
-    <div class="d-flex justify-content-end gap-2">
-      <button class="btn btn-primary" [routerLink]="['/manufacturer/create-product']">
-        {{ 'MANUFACTURER_CREATE_PRODUCT' | translate }}
-      </button>
-      <button class="btn btn-primary" [routerLink]="['/manufacturer/upload-product' ]">
-        {{ 'MANUFACTURER_UPLOAD_PRODUCTS' | translate }}
+  </div>
+
+  <div class="progress mt-4" *ngIf="loading" style="height: 20px;">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [attr.aria-valuenow]="loadingProductsValue" style="width: {{ loadingProductsValue }}%" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+
+  <div class="list-group mb-4 mt-4" style="max-height: 500px; overflow-y: auto;">
+    <div *ngFor="let product of filteredProducts" class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong>{{ product.name | translate }}</strong><br/>
+        <span>SKU: {{ product.sku | translate }}</span><br/>
+        <small class="text-truncate">{{ product.description | translate }}</small>
+      </div>
+      <button class="btn btn-outline-secondary btn-sm" [routerLink]="['/manufacturer/product', product.id]">
+        {{ 'MANUFACTURER_VIEW_DETAILS' | translate }}
       </button>
     </div>
   </div>
+
+</div>
