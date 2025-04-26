@@ -84,13 +84,23 @@ export class HomeComponent {
           headers: { 'Content-Type': 'application/json' }
         }));
 
+        /*
+        const data: any = await lastValueFrom(this.http.get('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/auth/users'))
+        console.log({ data })
+
+        const user: any = data?.users.find((usr: any) => usr.email === response.email);
+        console.log({ user })
+
+        console.log({ response })
+         */
+
         this.authService.login({
           id: response.id,
           email: response.email,
           role: response.role,
           idToken: response.id_token,
           accessToken: response.access_token,
-          refreshToken: response.refresh_token
+          refreshToken: response.refresh_token,
         });
 
         this.isLoading = false;
@@ -109,6 +119,7 @@ export class HomeComponent {
         console.error('Login failed', error);
 
         if (error.status === 401) {
+          this.pendingValidation = true;
         } else if (error.status === 403) {
           this.pendingValidation = true;
           this.email = this.loginForm.get('usuario')?.value;
