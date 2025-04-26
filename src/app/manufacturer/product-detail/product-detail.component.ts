@@ -36,9 +36,32 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.productId = this.route.snapshot.paramMap.get('id')!;
+
     this.productService.getProductById(this.productId).subscribe({
       next: (data) => {
-        this.product = data;
+
+        console.log('[DEBUG] Product from backend:', data);
+        this.product = {
+          id: data.id,
+          name: data.name,
+          description: data.description,
+          category: data.category,
+          price: data.price,
+          currency: data.currency,
+          stock: data.stock,
+          sku: data.sku,
+          expirationDate: data.expiration_date,
+          deliveryTime: data.delivery_time,
+          storageConditions: data.storage_conditions,
+          commercialConditions: data.commercial_conditions,
+          isPerishable: data.is_perishable,
+          imageUrl: data.image,
+          manufacturerId: data.manufacturer_id,
+          warehouse: data.warehouse,
+        };
+
+
+
         this.loading = false;
       },
       error: () => {
@@ -49,5 +72,9 @@ export class ProductDetailComponent implements OnInit {
 
   editProduct(): void {
     this.router.navigate([`/manufacturer/edit-product/${this.productId}`]);
+  }
+
+  cancel(): void {
+    this.router.navigate(['/manufacturer-dashboard']);
   }
 }

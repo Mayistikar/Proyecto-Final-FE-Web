@@ -13,6 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductService } from '../services/product.service';
 import { Product } from '../../models/product.model';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-edit-product',
@@ -36,12 +37,16 @@ export class EditProductComponent implements OnInit {
   productForm!: FormGroup;
   loading = false;
   imagePreview: string | ArrayBuffer | null = null;
+  selectedImageFile: File | null = null;
   productId!: string;
+  warehouses: { id: string; name: string; country: string }[] = [];
+  currencies = ['COP', 'USD'];
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private productService: ProductService,
+    private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
     private translate: TranslateService
@@ -52,8 +57,28 @@ export class EditProductComponent implements OnInit {
     this.initForm();
 
     this.productService.getProductById(this.productId).subscribe(product => {
-      this.productForm.patchValue(product);
-      this.imagePreview = product.imageUrl;
+      this.productForm.patchValue({
+        name: product.name,
+        description: product.description,
+        category: product.category,
+        price: product.price,
+        currency: product.currency,
+        stock: product.stock,
+        sku: product.sku,
+        expirationDate: product.expiration_date,
+        deliveryTime: product.delivery_time,
+        storageConditions: product.storage_conditions,
+        commercialConditions: product.commercial_conditions,
+        warehouse: product.warehouse,
+        perishable: product.is_perishable,
+        imageUrl: product.image
+      });
+      this.imagePreview = product.image;
+    });
+
+    this.productService.getWarehouses().subscribe({
+      next: (data) => this.warehouses = data,
+      error: () => this.snackBar.open(this.translate.instant('WAREHOUSE.LOAD_ERROR'), 'OK', { duration: 3000 })
     });
   }
 
@@ -63,12 +88,14 @@ export class EditProductComponent implements OnInit {
       description: ['', Validators.required],
       category: ['', Validators.required],
       price: [null, [Validators.required, Validators.min(0.01)]],
+      currency: ['COP', Validators.required],
       stock: [null, [Validators.required, Validators.min(0)]],
       sku: ['', Validators.required],
       expirationDate: [''],
       deliveryTime: [null, Validators.required],
       storageConditions: ['', Validators.required],
       commercialConditions: ['', Validators.required],
+      warehouse: ['', Validators.required],
       perishable: [false],
       imageUrl: ['']
     });
@@ -104,9 +131,28 @@ export class EditProductComponent implements OnInit {
     }
 
     this.loading = true;
-    const updatedProduct: Product = this.productForm.value;
+    const formValue = this.productForm.value;
 
-    this.productService.updateProduct(this.productId, updatedProduct).subscribe({
+    const payload = {
+      name: formValue.name,
+      description: formValue.description,
+      price: formValue.price,
+      category: formValue.category,
+      is_perishable: formValue.perishable,
+      stock: formValue.stock,
+      expiration_date: formValue.expirationDate,
+      delivery_time: formValue.deliveryTime,
+      storage_conditions: formValue.storageConditions,
+      image: formValue.imageUrl,
+      commercial_conditions: formValue.commercialConditions,
+      currency: formValue.currency,
+      manufacturer_id: this.authService.getUserId(),
+      country: 'Colombia',
+      sku: formValue.sku,
+      warehouse: formValue.warehouse
+    };
+
+    this.productService.updateProduct(this.productId, payload).subscribe({
       next: () => {
         this.snackBar.open(this.translate.instant('PRODUCT_SAVE_SUCCESS'), 'OK', { duration: 3000 });
         this.router.navigate(['manufacturer-dashboard']);
