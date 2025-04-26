@@ -8,42 +8,133 @@
 
         <div class="mb-3">
           <label for="name" class="form-label">{{ 'PRODUCT_NAME' | translate }}</label>
-          <input type="text" id="name" class="form-control" formControlName="name" placeholder="{{ 'PRODUCT_NAME_PLACEHOLDER' | translate }}" />
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            [class.is-valid]="productForm.get('name')?.valid && productForm.get('name')?.touched"
+            [class.is-invalid]="productForm.get('name')?.invalid && productForm.get('name')?.touched"
+            formControlName="name"
+            placeholder="{{ 'PRODUCT_NAME_PLACEHOLDER' | translate }}"
+          />
+          <div *ngIf="fieldIsInvalid('name')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
+
         <div class="mb-3">
           <label for="description" class="form-label">{{ 'PRODUCT_DESCRIPTION' | translate }}</label>
-          <textarea id="description" class="form-control" formControlName="description" placeholder="{{ 'PRODUCT_DESCRIPTION_PLACEHOLDER' | translate }}"></textarea>
+          <textarea
+            id="description"
+            class="form-control"
+            [class.is-valid]="productForm.get('description')?.valid && productForm.get('description')?.touched"
+            [class.is-invalid]="productForm.get('description')?.invalid && productForm.get('description')?.touched"
+            formControlName="description"
+            placeholder="{{ 'PRODUCT_DESCRIPTION_PLACEHOLDER' | translate }}"
+          ></textarea>
+          <div *ngIf="fieldIsInvalid('description')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
+
         <div class="mb-3">
           <label for="category" class="form-label">{{ 'PRODUCT_CATEGORY' | translate }}</label>
-          <input id="category" class="form-control" formControlName="category" placeholder="{{ 'PRODUCT_CATEGORY_PLACEHOLDER' | translate }}" />
+          <input
+            id="category"
+            class="form-control"
+            [class.is-valid]="productForm.get('category')?.valid && productForm.get('category')?.touched"
+            [class.is-invalid]="productForm.get('category')?.invalid && productForm.get('category')?.touched"
+            formControlName="category"
+            placeholder="{{ 'PRODUCT_CATEGORY_PLACEHOLDER' | translate }}"
+          />
+          <div *ngIf="fieldIsInvalid('category')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
+
         <div class="mb-3">
           <label for="price" class="form-label">{{ 'PRODUCT_PRICE' | translate }}</label>
-          <input id="price" type="number" class="form-control" formControlName="price" placeholder="{{ 'PRODUCT_PRICE_PLACEHOLDER' | translate }}" />
+          <input
+           id="price"
+           type="number"
+           min="0.01"
+           step="0.01"
+           class="form-control"
+           [class.is-valid]="productForm.get('price')?.valid && productForm.get('price')?.touched"
+           [class.is-invalid]="productForm.get('price')?.invalid && productForm.get('price')?.touched"
+           formControlName="price"
+           placeholder="{{ 'PRODUCT_PRICE_PLACEHOLDER' | translate }}"
+          />
+          <div *ngIf="fieldIsInvalid('price')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
+
         <div class="mb-3">
           <label for="currency" class="form-label">{{ 'PRODUCT_CURRENCY' | translate }}</label>
-          <select id="currency" class="form-select" formControlName="currency">
+          <select
+            id="currency"
+            class="form-select"
+            [class.is-valid]="productForm.get('currency')?.valid && productForm.get('currency')?.touched"
+            [class.is-invalid]="productForm.get('currency')?.invalid && productForm.get('currency')?.touched"
+            formControlName="currency"
+          >
             <option *ngFor="let curr of currencies" [value]="curr">{{ curr }}</option>
           </select>
+          <div *ngIf="fieldIsInvalid('currency')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
+
         <div class="mb-3">
           <label for="stock" class="form-label">{{ 'PRODUCT_STOCK' | translate }}</label>
-          <input id="stock" type="number" class="form-control" formControlName="stock" placeholder="{{ 'PRODUCT_STOCK_PLACEHOLDER' | translate }}" />
+          <input
+            id="stock"
+            type="number"
+            min="0"
+            step="1"
+            class="form-control"
+            [class.is-valid]="productForm.get('stock')?.valid && productForm.get('stock')?.touched"
+            [class.is-invalid]="productForm.get('stock')?.invalid && productForm.get('stock')?.touched"
+            formControlName="stock"
+            placeholder="{{ 'PRODUCT_STOCK_PLACEHOLDER' | translate }}"
+          />
+          <div *ngIf="fieldIsInvalid('stock')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
+
         <div class="mb-3">
           <label for="sku" class="form-label">{{ 'PRODUCT_SKU' | translate }}</label>
-          <input id="sku" class="form-control" formControlName="sku" placeholder="{{ 'PRODUCT_SKU_PLACEHOLDER' | translate }}" />
+          <input
+            id="sku"
+            class="form-control"
+            [class.is-valid]="productForm.get('sku')?.valid && productForm.get('sku')?.touched"
+            [class.is-invalid]="productForm.get('sku')?.invalid && productForm.get('sku')?.touched"
+            formControlName="sku"
+            placeholder="{{ 'PRODUCT_SKU_PLACEHOLDER' | translate }}"
+          />
+          <div *ngIf="fieldIsInvalid('sku')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
+
         <div class="mb-3">
           <label for="expirationDate" class="form-label">{{ 'PRODUCT_EXPIRATION_DATE' | translate }}</label>
-          <input id="expirationDate" type="date" class="form-control" formControlName="expirationDate" />
+          <input
+            id="expirationDate"
+            type="date"
+            class="form-control"
+            [class.is-valid]="productForm.get('expirationDate')?.valid && productForm.get('expirationDate')?.touched"
+            [class.is-invalid]="productForm.get('expirationDate')?.invalid && productForm.get('expirationDate')?.touched"
+            formControlName="expirationDate"
+            [min]="minExpirationDate | date:'yyyy-MM-dd'"
+          />
+          <div *ngIf="fieldIsInvalid('expirationDate')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
+
         <div class="mb-3">
           <label for="deliveryTime" class="form-label">{{ 'PRODUCT_DELIVERY_TIME' | translate }}</label>
-          <input id="deliveryTime" type="number" class="form-control" formControlName="deliveryTime" placeholder="{{ 'PRODUCT_DELIVERY_TIME_PLACEHOLDER' | translate }}" />
+          <input
+            id="deliveryTime"
+            type="number"
+            min="1"
+            step="1"
+            class="form-control"
+            [class.is-valid]="productForm.get('deliveryTime')?.valid && productForm.get('deliveryTime')?.touched"
+            [class.is-invalid]="productForm.get('deliveryTime')?.invalid && productForm.get('deliveryTime')?.touched"
+            formControlName="deliveryTime"
+            placeholder="{{ 'PRODUCT_DELIVERY_TIME_PLACEHOLDER' | translate }}"
+          />
+          <div *ngIf="fieldIsInvalid('deliveryTime')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
+
       </div>
 
       <div class="col-md-6">
@@ -56,32 +147,56 @@
             alt="preview"
           />
           <input type="file" class="form-control" (change)="onImageChange($event)" />
+          <div *ngIf="fieldIsInvalid('imageUrl')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
 
         <div class="mb-3">
           <label for="storageConditions" class="form-label">{{ 'PRODUCT_STORAGE_CONDITIONS' | translate }}</label>
-          <input id="storageConditions" class="form-control" formControlName="storageConditions" placeholder="{{ 'PRODUCT_STORAGE_PLACEHOLDER' | translate }}" />
+          <input
+            id="storageConditions"
+            class="form-control"
+            [class.is-valid]="productForm.get('storageConditions')?.valid && productForm.get('storageConditions')?.touched"
+            [class.is-invalid]="productForm.get('storageConditions')?.invalid && productForm.get('storageConditions')?.touched"
+            formControlName="storageConditions"
+            placeholder="{{ 'PRODUCT_STORAGE_PLACEHOLDER' | translate }}"
+          />
+          <div *ngIf="fieldIsInvalid('storageConditions')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
 
         <div class="mb-3">
           <label for="commercialConditions" class="form-label">{{ 'PRODUCT_COMMERCIAL_CONDITIONS' | translate }}</label>
-          <input id="commercialConditions" class="form-control" formControlName="commercialConditions" placeholder="{{ 'PRODUCT_COMMERCIAL_PLACEHOLDER' | translate }}" />
+          <input
+            id="commercialConditions"
+            class="form-control"
+            [class.is-valid]="productForm.get('commercialConditions')?.valid && productForm.get('commercialConditions')?.touched"
+            [class.is-invalid]="productForm.get('commercialConditions')?.invalid && productForm.get('commercialConditions')?.touched"
+            formControlName="commercialConditions"
+            placeholder="{{ 'PRODUCT_COMMERCIAL_PLACEHOLDER' | translate }}"
+          />
+          <div *ngIf="fieldIsInvalid('commercialConditions')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
 
         <div class="mb-3">
           <label for="warehouse" class="form-label">{{ 'PRODUCT_WAREHOUSE' | translate }}</label>
-          <select id="warehouse" class="form-select" formControlName="warehouse">
-            <option value="" disabled selected>{{ 'PRODUCT_WAREHOUSE_PLACEHOLDER' | translate }}</option>
+          <select
+            id="warehouse"
+            class="form-select"
+            [class.is-valid]="productForm.get('warehouse')?.valid && productForm.get('warehouse')?.touched"
+            [class.is-invalid]="productForm.get('warehouse')?.invalid && productForm.get('warehouse')?.touched"
+            formControlName="warehouse"
+          >
+            <option value="" disabled>{{ 'PRODUCT_WAREHOUSE_PLACEHOLDER' | translate }}</option>
             <option *ngFor="let w of warehouses" [value]="w.id">{{ w.name }} - {{ w.country }}</option>
           </select>
+          <div *ngIf="fieldIsInvalid('warehouse')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
 
-        <div class="form-check form-switch">
+        <div class="form-check form-switch mb-4">
           <input class="form-check-input" type="checkbox" id="perishable" formControlName="perishable" />
           <label class="form-check-label" for="perishable">{{ 'PRODUCT_IS_PERISHABLE' | translate }}</label>
         </div>
 
-        <div class="d-flex justify-content-end gap-2 mt-4">
+        <div class="d-flex justify-content-end gap-2">
           <button class="btn btn-secondary" style="width: 150px;" type="button" (click)="onCancel()">{{ 'BUTTON_CANCEL' | translate }}</button>
           <button class="btn btn-primary" style="width: 150px;" type="submit" [disabled]="productForm.invalid || loading">
             <ng-container *ngIf="!loading; else loadingTemplate">{{ 'BUTTON_SAVE' | translate }}</ng-container>
@@ -91,6 +206,7 @@
             </ng-template>
           </button>
         </div>
+
       </div>
     </div>
   </form>

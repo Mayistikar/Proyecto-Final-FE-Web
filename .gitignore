@@ -44,3 +44,5 @@ Thumbs.db
 # Coverage nyc files
 .nyc_output
 .qodo
+
+bash.exe.stackdump

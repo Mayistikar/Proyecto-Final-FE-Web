@@ -375,5 +375,15 @@
   "PRODUCT_CURRENCY_PLACEHOLDER": "Seleccione la moneda",
   "PRODUCT_WAREHOUSE": "Bodega de almacenamiento *",
   "PRODUCT_WAREHOUSE_PLACEHOLDER": "Seleccione una bodega", 
-  "WAREHOUSE.LOAD_ERROR": "Error al cargar las bodegas. Intente nuevamente más tarde."
+  "WAREHOUSE.LOAD_ERROR": "Error al cargar las bodegas. Intente nuevamente más tarde.", 
+  "PRODUCT_FIELD_WAREHOUSE": "Bodega", 
+  "COMMON.SUCCESS": "Éxito", 
+  "COMMON.ERROR": "Error", 
+  "FORM.NO_CHANGES": "No se detectaron cambios para actualizar.",
+  "COMMON.INFO": "Información", 
+  "PRODUCT_LOAD_SUCCESS": "Producto cargado correctamente", 
+  "PRODUCT_DAYS": "días",
+  "BUTTON_BACK": "Volver",
+  "PRODUCT_LOAD_ERROR": "No se pudo cargar el producto."
+
 }
