@@ -55,7 +55,7 @@ describe('WarehouseComponent', () => {
 
     component.fetchProducts();
 
-    const req = httpMock.expectOne('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/api/products');
+    const req = httpMock.expectOne('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/api/products/search');
     expect(req.request.method).toBe('GET');
     req.flush(mockProducts);
 

@@ -1,46 +1,102 @@
 <!-- product-detail.component.html -->
-<div class="container mt-5" *ngIf="!loading; else loadingSpinner">
-    <h2 class="mb-4">
-      {{ 'MANUFACTURER_DASHBOARD_TITLE' | translate:{ name: product.name } }}
-    </h2>
-  
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card p-3 text-center">
-          <img [src]="product.imageUrl || 'https://assetsccp.s3.us-east-1.amazonaws.com/placeholder-image.png'" class="img-fluid rounded mb-3" alt="Product Image" />
-          <h4>{{ product.name }}</h4>
-          <p>{{ product.description }}</p>
-        </div>
+<div class="container mt-5" *ngIf="!loading && !loadError; else loadingOrError">
+  <h2 class="mb-4">
+    {{ 'PRODUCT_DETAIL_TITLE' | translate }}
+  </h2>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card p-3 text-center">
+        <img
+          [src]="product.imageUrl || 'https://backend-service-images.s3.us-east-1.amazonaws.com/products/placeholder-image.png'"
+          class="img-fluid rounded mb-3"
+          alt="{{ 'PRODUCT_IMAGE_ALT' | translate }}"
+        />
+        <h4>{{ product.name }}</h4>
+        <p>{{ product.description }}</p>
       </div>
-  
-      <div class="col-md-8">
-        <div class="card p-4">
-          <h5 class="mb-3">{{ product.name }}</h5>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>{{ 'PRODUCT_NAME' | translate }}:</strong> {{ product.name }}</li>
-            <li class="list-group-item"><strong>{{ 'PRODUCT_DESCRIPTION' | translate }}:</strong> {{ product.description }}</li>
-            <li class="list-group-item"><strong>{{ 'PRODUCT_CATEGORY' | translate }}:</strong> {{ product.category }}</li>
-            <li class="list-group-item"><strong>{{ 'PRODUCT_PRICE' | translate }}:</strong> ${{ product.price }}</li>
-            <li class="list-group-item"><strong>{{ 'PRODUCT_STOCK' | translate }}:</strong> {{ product.stock }}</li>
-            <li class="list-group-item"><strong>{{ 'PRODUCT_SKU' | translate }}:</strong> {{ product.sku }}</li>
-            <li class="list-group-item" *ngIf="product.isPerishable"><strong>{{ 'PRODUCT_EXPIRATION_DATE' | translate }}:</strong> {{ product.expirationDate | date }}</li>
-            <li class="list-group-item"><strong>{{ 'PRODUCT_DELIVERY_TIME' | translate }}:</strong> {{ product.deliveryTime }} días</li>
-            <li class="list-group-item"><strong>{{ 'PRODUCT_STORAGE_CONDITIONS' | translate }}:</strong> {{ product.storageConditions }}</li>
-            <li class="list-group-item"><strong>{{ 'PRODUCT_COMMERCIAL_CONDITIONS' | translate }}:</strong> {{ product.commercialConditions }}</li>
-          </ul>
-  
-          <div class="mt-4 d-flex justify-content-end">
-            <button class="btn btn-primary" (click)="editProduct()">{{ 'BUTTON_EDIT' | translate }}</button>
-          </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card p-4">
+        <h5 class="mb-3">{{ product.name }}</h5>
+        <ul class="list-group list-group-flush">
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_NAME' | translate }}:</strong> {{ product.name }}
+          </li>
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_DESCRIPTION' | translate }}:</strong> {{ product.description }}
+          </li>
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_CATEGORY' | translate }}:</strong> {{ product.category }}
+          </li>
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_PRICE' | translate }}:</strong>
+            {{ product.price | currency:product.currency:true }}
+          </li>
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_STOCK' | translate }}:</strong> {{ product.stock }}
+          </li>
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_SKU' | translate }}:</strong> {{ product.sku }}
+          </li>
+
+          <li class="list-group-item" *ngIf="product.expirationDate">
+            <strong>{{ 'PRODUCT_FIELD_EXPIRATION' | translate }}:</strong>
+            {{ product.expirationDate | date:'yyyy-MM-dd' }}
+          </li>
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_DELIVERY' | translate }}:</strong>
+            {{ product.deliveryTime }} {{ 'PRODUCT_DAYS' | translate }}
+          </li>
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_STORAGE' | translate }}:</strong> {{ product.storageConditions }}
+          </li>
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_COMMERCIAL' | translate }}:</strong> {{ product.commercialConditions }}
+          </li>
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_PERISHABLE' | translate }}:</strong>
+            {{ product.isPerishable ? ( 'PRODUCT_PERISHABLE_YES' | translate ) : ( 'PRODUCT_PERISHABLE_NO' | translate ) }}
+          </li>
+
+          <li class="list-group-item">
+            <strong>{{ 'PRODUCT_FIELD_WAREHOUSE' | translate }}:</strong> {{ product.warehouse }}
+          </li>
+
+        </ul>
+
+        <div class="mt-4 d-flex justify-content-end gap-2">
+          <button class="btn btn-secondary" (click)="cancel()">{{ 'BUTTON_CANCEL' | translate }}</button>
+          <button class="btn btn-primary" (click)="editProduct()">{{ 'BUTTON_EDIT' | translate }}</button>
         </div>
       </div>
     </div>
   </div>
-  
-  <ng-template #loadingSpinner>
-    <div class="text-center mt-5">
-      <mat-spinner></mat-spinner>
-      <p>{{ 'LOADING_BUTTON_TEXT' | translate }}</p>
-    </div>
-  </ng-template>
-  
+</div>
+
+<!-- Manejo de carga o error -->
+<ng-template #loadingOrError>
+  <div class="d-flex flex-column align-items-center justify-content-center" style="height: 70vh;">
+    <ng-container *ngIf="loading; else errorTemplate">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p class="mt-3">{{ 'LOADING_BUTTON_TEXT' | translate }}</p>
+    </ng-container>
+    <ng-template #errorTemplate>
+      <div class="text-center">
+        <h4 class="text-danger">{{ 'PRODUCT_LOAD_ERROR' | translate }}</h4>
+        <button class="btn btn-primary mt-3" (click)="cancel()">{{ 'BUTTON_BACK' | translate }}</button>
+      </div>
+    </ng-template>
+  </div>
+</ng-template>

@@ -17,6 +17,8 @@ describe('Product Model', () => {
     expect(product.storageConditions).toBe('');
     expect(product.commercialConditions).toBe('');
     expect(product.isPerishable).toBeFalse();
+    expect(product.currency).toBe('COP');
+    expect(product.warehouse).toBe('');
   });
 
   it('should create an instance with provided values', () => {
@@ -33,7 +35,9 @@ describe('Product Model', () => {
       3,
       'Keep refrigerated',
       'Sold in bulk',
-      true
+      true,
+      'USD',
+      'bodega-001'
     );
 
     expect(product.id).toBe('123');
@@ -49,5 +53,7 @@ describe('Product Model', () => {
     expect(product.storageConditions).toBe('Keep refrigerated');
     expect(product.commercialConditions).toBe('Sold in bulk');
     expect(product.isPerishable).toBeTrue();
+    expect(product.currency).toBe('USD');
+    expect(product.warehouse).toBe('bodega-001');
   });
 });

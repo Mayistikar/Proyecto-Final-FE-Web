@@ -13,6 +13,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductService } from '../services/product.service';
 import { Product } from '../../models/product.model';
+import { AuthService } from '../../auth/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-product',
@@ -38,14 +40,20 @@ export class CreateProductComponent implements OnInit {
   loading = false;
   imagePreview: string | ArrayBuffer | null = null;
   isPerishable = false;
-  selectedImageFile: File | null = null; // Add this property
+  selectedImageFile: File | null = null; 
+  warehouses: { id: string; name: string; country: string }[] = [];
+  currencies = ['COP', 'USD'];
+  minExpirationDate: Date = new Date();
+  
 
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
+    private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService, 
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +70,9 @@ export class CreateProductComponent implements OnInit {
       storageConditions: ['', Validators.required],
       commercialConditions: ['', Validators.required],
       perishable: [false],
+      currency: ['COP', Validators.required],
+      warehouse: ['', Validators.required],
+      country: ['Colombia']
     });
 
     this.productForm.get('perishable')?.valueChanges.subscribe((isPerishable) => {
@@ -75,61 +86,111 @@ export class CreateProductComponent implements OnInit {
       }
       expirationDateControl?.updateValueAndValidity();
     });
+
+
+    this.productForm.get('expirationDate')?.valueChanges.subscribe(value => {
+      if (value) {
+        const selectedDate = new Date(value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (selectedDate < today) {
+          this.productForm.get('expirationDate')?.setErrors({ invalidDate: true });
+        }
+      }
+    });
+
+    this.productService.getWarehouses().subscribe({
+      next: (data) => this.warehouses = data,
+      error: () => {
+        this.toastr.error(
+          this.translate.instant('WAREHOUSE.LOAD_ERROR'),
+          this.translate.instant('COMMON.ERROR'),
+          { timeOut: 3000 }
+        );
+      }
+    });
+  }
+
+  fieldIsInvalid(field: string): boolean {
+    const control = this.productForm.get(field);
+    return !!(control && control.invalid && (control.dirty || control.touched));
   }
 
   onImageChange(event: Event): void {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
-
-    // Store the selected file
+  
     this.selectedImageFile = file;
-
-    // Create local preview using FileReader
+  
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result;
-      this.productForm.patchValue({ imageUrl: 'placeholder-url' }); // Set a placeholder URL or remove if not needed
+      this.productForm.patchValue({ imageUrl: file.name });
     };
     reader.readAsDataURL(file);
   }
 
   onSubmit(): void {
     if (this.productForm.invalid) {
-      this.snackBar.open(this.translate.instant('FORM.INVALID'), 'OK', { duration: 3000 });
+      this.markAllFieldsAsTouched();
+      this.toastr.error(this.translate.instant('FORM.INVALID'), this.translate.instant('COMMON.ERROR'), { timeOut: 3000 });
       return;
     }
-
+  
     this.loading = true;
-
+  
+    const manufacturerId = this.authService.getUserId();
     const formValue = this.productForm.value;
-    const product = new Product(
-      '',
-      formValue.name,
-      formValue.description,
-      formValue.category,
-      formValue.price,
-      formValue.imageUrl,
-      formValue.stock,
-      formValue.sku,
-      formValue.expirationDate,
-      formValue.deliveryTime,
-      formValue.storageConditions,
-      formValue.commercialConditions,
-      formValue.perishable
-    );
-
-    this.productService.createProduct(product, this.selectedImageFile || undefined).subscribe({
+  
+    const payload = {
+      name: formValue.name,
+      description: formValue.description,
+      price: formValue.price,
+      category: formValue.category,
+      is_perishable: formValue.perishable,
+      stock: formValue.stock,
+      expiration_date: formValue.expirationDate,
+      delivery_time: formValue.deliveryTime,
+      storage_conditions: formValue.storageConditions,
+      image: formValue.imageUrl,
+      commercial_conditions: formValue.commercialConditions,
+      currency: formValue.currency,
+      manufacturer_id: manufacturerId,
+      country: formValue.country,
+      sku: formValue.sku,
+      warehouse: formValue.warehouse
+    };
+  
+    this.productService.createProduct(payload, this.selectedImageFile || undefined).subscribe({
       next: () => {
-        this.snackBar.open(this.translate.instant('PRODUCT.CREATED_SUCCESS'), 'OK', { duration: 3000 });
+        this.toastr.success(
+          this.translate.instant('PRODUCT_CREATED_SUCCESS'),
+          this.translate.instant('COMMON.SUCCESS'), 
+          { timeOut: 3000 }
+        );
         console.log({ formValue });
-        console.log({ product });
+        console.log({ payload });
         this.loading = false;
-        // this.router.navigate(['manufacturer-dashboard']);
+        setTimeout(() => {
+          this.router.navigate(['manufacturer-dashboard']);
+        }, 2000); 
       },
       error: () => {
-        this.snackBar.open(this.translate.instant('PRODUCT.CREATED_ERROR'), 'OK', { duration: 3000 });
+        this.toastr.error(
+          this.translate.instant('PRODUCT_CREATED_ERROR'), 
+          this.translate.instant('COMMON.ERROR'), 
+          { timeOut: 3000 }
+        );
         this.loading = false;
       },
+    });
+  }
+
+  markAllFieldsAsTouched(): void {
+    Object.keys(this.productForm.controls).forEach(field => {
+      const control = this.productForm.get(field);
+      control?.markAsTouched({ onlySelf: true });
     });
   }
 
