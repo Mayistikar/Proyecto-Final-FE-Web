@@ -153,3 +153,50 @@ export class AuthService {
 }
 
 
+export class MockAuthService {
+  private userData: UserData | null = null;
+
+  login(userData: UserData): void {
+    this.userData = userData;
+  }
+
+  logout(): void {
+    this.userData = null;
+  }
+
+  isLoggedIn(): boolean {
+    return this.userData !== null;
+  }
+
+  getUserData(): UserData | null {
+    return this.userData;
+  }
+
+  getCurrentManufacturer(): { id: string; email: string; role: string; companyName: string } | null {
+    if (this.userData?.role === 'manufacturer') {
+      return {
+        id: this.userData.id,
+        email: this.userData.email,
+        role: this.userData.role,
+        companyName: this.userData.email.split('@')[0], // Simula el companyName
+      };
+    }
+    return null;
+  }
+
+  isAuthenticated = {
+    subscribe: (callback: (value: boolean) => void) => {
+      callback(this.isLoggedIn());
+      return { unsubscribe: () => {} };
+    },
+  };
+
+  getUserCountry() {
+    return 'Colombia';
+  }
+
+  getUserId() {
+    return '12345';
+  }
+}
+
