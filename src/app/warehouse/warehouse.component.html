@@ -1,7 +1,31 @@
 <div class="container mt-5">
   <div class="container mt-5">
     <h2 class="mb-4">{{ 'MANUFACTURER_DASHBOARD_TITLE' | translate: { name: userName } }}</h2>
-    <h4 class="mb-3">{{ 'ADMIN_PRODUCTS_SEARCH' | translate }}</h4>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h4 class="mb-3">{{ 'ADMIN_PRODUCTS_SEARCH' | translate }}</h4>
+        <div class="mb-3">
+          <input type="text" class="form-control" placeholder="{{ 'ADMIN_PRODUCTS_SEARCH' | translate }}" [(ngModel)]="searchTerm">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <h4 class="mb-3">{{ 'ADMIN_PRODUCTS_FILTER' | translate }}</h4>
+        <div class="mb-3">
+          <select id="countryFilter" class="form-control" [(ngModel)]="selectedCountry">
+            <option value="">{{ 'PRODUCT_FIELD_COUNTRY' | translate }}</option>
+            <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <select id="warehouseFilter" class="form-control" [(ngModel)]="selectedWarehouse">
+            <option value="">{{ 'PRODUCT_FIELD_WAREHOUSE' | translate }}</option>
+            <option *ngFor="let warehouse of warehouses | keyvalue" [value]="warehouse.key">{{ warehouse.value.name }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
     <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
       <table class="table">
@@ -13,6 +37,8 @@
             <th>{{ 'ADMIN_PRODUCTS_TABLE_CATEGORY' | translate }}</th>
             <th>{{ 'ADMIN_PRODUCTS_TABLE_PRICE' | translate }}</th>
             <th>{{ 'ADMIN_PRODUCTS_TABLE_STOCK' | translate }}</th>
+            <th>{{ 'ADMIN_PRODUCTS_TABLE_WAREHOUSE' | translate }}</th>
+            <th>{{ 'ADMIN_PRODUCTS_TABLE_COUNTRY' | translate }}</th>
             <th>{{ 'ADMIN_PRODUCTS_TABLE_DATE' | translate }}</th>
           </tr>
         </thead>
@@ -26,10 +52,11 @@
               <td><div class="skeleton skeleton-text"></div></td>
               <td><div class="skeleton skeleton-text"></div></td>
               <td><div class="skeleton skeleton-text"></div></td>
+              <td><div class="skeleton skeleton-text"></div></td>
             </tr>
           </ng-container>
           <ng-template #productRows>
-            <tr *ngFor="let product of products">
+            <tr *ngFor="let product of filteredProducts">
               <td>
                 <img [src]="product.image || 'https://assetsccp.s3.us-east-1.amazonaws.com/no_image_product.png'" alt="{{ product.name }}" style="width: 50px; height: 50px; object-fit: cover;">
               </td>
@@ -38,6 +65,8 @@
               <td>{{ product.category }}</td>
               <td>{{ product.price | currency }}</td>
               <td>{{ product.stock }}</td>
+              <td>{{ getWarehouseName(product.warehouse) }}</td>
+              <td>{{ product.country.toLowerCase() === 'colombia' ? '🇨🇴' : '🇺🇸' }}</td>
               <td>{{ product.created_at | date: 'short' }}</td>
             </tr>
           </ng-template>

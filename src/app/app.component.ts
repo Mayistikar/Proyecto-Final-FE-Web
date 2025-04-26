@@ -37,7 +37,6 @@ export class AppComponent {
     translate.addLangs(['en', 'es']);
     translate.setDefaultLang('en');
     this.user = <string>localStorage.getItem('user_rol');
-    console.log({ user: this.user });
   }
 
   ngOnInit() {

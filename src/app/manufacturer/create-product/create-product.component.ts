@@ -40,11 +40,11 @@ export class CreateProductComponent implements OnInit {
   loading = false;
   imagePreview: string | ArrayBuffer | null = null;
   isPerishable = false;
-  selectedImageFile: File | null = null; 
+  selectedImageFile: File | null = null;
   warehouses: { id: string; name: string; country: string }[] = [];
   currencies = ['COP', 'USD'];
   minExpirationDate: Date = new Date();
-  
+
 
   constructor(
     private fb: FormBuilder,
@@ -52,7 +52,7 @@ export class CreateProductComponent implements OnInit {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private translate: TranslateService, 
+    private translate: TranslateService,
     private toastr: ToastrService
   ) {}
 
@@ -120,9 +120,9 @@ export class CreateProductComponent implements OnInit {
   onImageChange(event: Event): void {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
-  
+
     this.selectedImageFile = file;
-  
+
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result;
@@ -137,12 +137,12 @@ export class CreateProductComponent implements OnInit {
       this.toastr.error(this.translate.instant('FORM.INVALID'), this.translate.instant('COMMON.ERROR'), { timeOut: 3000 });
       return;
     }
-  
+
     this.loading = true;
-  
+
     const manufacturerId = this.authService.getUserId();
     const formValue = this.productForm.value;
-  
+
     const payload = {
       name: formValue.name,
       description: formValue.description,
@@ -161,25 +161,23 @@ export class CreateProductComponent implements OnInit {
       sku: formValue.sku,
       warehouse: formValue.warehouse
     };
-  
+
     this.productService.createProduct(payload, this.selectedImageFile || undefined).subscribe({
       next: () => {
         this.toastr.success(
           this.translate.instant('PRODUCT_CREATED_SUCCESS'),
-          this.translate.instant('COMMON.SUCCESS'), 
+          this.translate.instant('COMMON.SUCCESS'),
           { timeOut: 3000 }
         );
-        console.log({ formValue });
-        console.log({ payload });
         this.loading = false;
         setTimeout(() => {
           this.router.navigate(['manufacturer-dashboard']);
-        }, 2000); 
+        }, 2000);
       },
       error: () => {
         this.toastr.error(
-          this.translate.instant('PRODUCT_CREATED_ERROR'), 
-          this.translate.instant('COMMON.ERROR'), 
+          this.translate.instant('PRODUCT_CREATED_ERROR'),
+          this.translate.instant('COMMON.ERROR'),
           { timeOut: 3000 }
         );
         this.loading = false;

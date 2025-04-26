@@ -83,7 +83,6 @@ export class HomeComponent {
         const response: any = await lastValueFrom(this.http.post('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/auth/login', loginData, {
           headers: { 'Content-Type': 'application/json' }
         }));
-        console.log('Login successful', response);
 
         this.authService.login({
           id: response.id,
