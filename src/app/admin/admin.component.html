@@ -9,39 +9,48 @@
 
     <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
 
-    <table class="table">
-      <thead class="table-light" style="position: sticky; top: 0; z-index: 1;">
-
-            <tr>
-              <th>{{ 'ADMIN_TABLE_HEADER_AUTHORIZED' | translate }}</th>
-              <th>{{ 'ADMIN_TABLE_HEADER_EMAIL' | translate }}</th>
-              <th>{{ 'ADMIN_TABLE_HEADER_ROLE' | translate }}</th>
-              <th>{{ 'ADMIN_TABLE_HEADER_ACTION' | translate }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let user of filteredUsers">
-              <td>
-                <small *ngIf="!user.authorized">⚠️</small>
-                <small *ngIf="user.authorized">✅</small>
-              </td>
-              <td>{{ user.email }}</td>
-              <td>
-                <small *ngIf="user.role === 'admin'">⚙️</small>
-                <small *ngIf="user.role === 'user'">👤</small>
-                <small *ngIf="user.role === 'seller'">👨🏽‍💼</small>
-                <small *ngIf="user.role === 'manufacturer'">👷🏻</small>
-                {{ user.role }}
-              </td>
-              <td>
-                <button class="btn" [ngClass]="{'btn-success': !user.authorized, 'btn-secondary': user.authorized}" (click)="authorize(user)" [disabled]="user.authorized">
-                  <i class="bi bi-check-circle"></i>
-                  {{ 'ADMIN_AUTHORIZE_BUTTON' | translate }}
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <table class="table">
+        <thead class="table-light" style="position: sticky; top: 0; z-index: 1;">
+        <tr>
+          <th>{{ 'ADMIN_TABLE_HEADER_AUTHORIZED' | translate }}</th>
+          <th>{{ 'ADMIN_TABLE_HEADER_EMAIL' | translate }}</th>
+          <th>{{ 'ADMIN_TABLE_HEADER_ROLE' | translate }}</th>
+          <th>{{ 'ADMIN_TABLE_HEADER_ACTION' | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngIf="isLoading; else userRows">
+          <tr *ngFor="let _ of skeletonRows">
+            <td><div class="skeleton skeleton-image"></div></td>
+            <td><div class="skeleton skeleton-text"></div></td>
+            <td><div class="skeleton skeleton-text"></div></td>
+            <td><div class="skeleton skeleton-text"></div></td>
+          </tr>
+        </ng-container>
+        <ng-template #userRows>
+          <tr *ngFor="let user of filteredUsers">
+            <td>
+              <small *ngIf="!user.authorized">⚠️</small>
+              <small *ngIf="user.authorized">✅</small>
+            </td>
+            <td>{{ user.email }}</td>
+            <td>
+              <small *ngIf="user.role === 'admin'">⚙️</small>
+              <small *ngIf="user.role === 'user'">👤</small>
+              <small *ngIf="user.role === 'seller'">👨🏽‍💼</small>
+              <small *ngIf="user.role === 'manufacturer'">👷🏻</small>
+              {{ user.role }}
+            </td>
+            <td>
+              <button class="btn" [ngClass]="{'btn-success': !user.authorized, 'btn-secondary': user.authorized}" (click)="authorize(user)" [disabled]="user.authorized">
+                <i class="bi bi-check-circle"></i>
+                {{ 'ADMIN_AUTHORIZE_BUTTON' | translate }}
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+        </tbody>
+      </table>
       </div>
   </div>
 
