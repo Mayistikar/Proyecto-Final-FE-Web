@@ -1,5 +1,5 @@
 <!-- create-product.component.html -->
-<div class="container mt-5">
+<div class="container mt-3">
   <h2 class="mb-4">{{ 'MANUFACTURER_CREATE_PRODUCT_TITLE' | translate }}</h2>
 
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
@@ -119,6 +119,21 @@
           <div *ngIf="fieldIsInvalid('expirationDate')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
 
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="card p-3 mb-3">
+          <label class="form-label">{{ 'PRODUCT_IMAGE_LABEL' | translate }}</label>
+          <img
+            [src]="imagePreview || 'https://assetsccp.s3.us-east-1.amazonaws.com/no_image_product.png'"
+            class="img-fluid rounded mb-2 product-image"
+            alt="preview"
+          />
+          <input type="file" class="form-control" (change)="onImageChange($event)" />
+          <div *ngIf="fieldIsInvalid('imageUrl')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
+        </div>
+
         <div class="mb-3">
           <label for="deliveryTime" class="form-label">{{ 'PRODUCT_DELIVERY_TIME' | translate }}</label>
           <input
@@ -133,21 +148,6 @@
             placeholder="{{ 'PRODUCT_DELIVERY_TIME_PLACEHOLDER' | translate }}"
           />
           <div *ngIf="fieldIsInvalid('deliveryTime')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
-        </div>
-
-      </div>
-
-      <div class="col-md-6">
-
-        <div class="card p-3 mb-3">
-          <label class="form-label">{{ 'PRODUCT_IMAGE_LABEL' | translate }}</label>
-          <img
-            [src]="imagePreview || 'https://assetsccp.s3.us-east-1.amazonaws.com/no_image_product.png'"
-            class="img-fluid rounded mb-2 product-image"
-            alt="preview"
-          />
-          <input type="file" class="form-control" (change)="onImageChange($event)" />
-          <div *ngIf="fieldIsInvalid('imageUrl')" class="text-danger small mt-1">{{ 'FORM.INVALID' | translate }}</div>
         </div>
 
         <div class="mb-3">
