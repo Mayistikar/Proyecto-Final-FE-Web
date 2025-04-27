@@ -314,6 +314,13 @@
   "SALES_PLAN.ROUTE_REQUIRED": "La ruta de visita es obligatoria.",
   "SALES_PLAN.STRATEGY_REQUIRED": "La estrategia es obligatoria.",
 
+  "SALES_PLAN.NORTH_ROUTE": "Ruta Norte",
+  "SALES_PLAN.SOUTH_ROUTE": "Ruta Sur",
+  "SALES_PLAN.EAST_ROUTE": "Ruta Este",
+  "SALES_PLAN.WEST_ROUTE": "Ruta Oeste",
+  "SALES_PLAN.DOWNTOWN": "Centro",
+  "SALES_PLAN.RURAL_AREA": "Zona Rural",
+
   "SALES_PLAN.EDIT_TITLE": "Editar Plan de Venta",
   "SALES_PLAN.UPDATED_SUCCESS": "El plan de ventas se actualizó exitosamente.",
   "SALES_PLAN.UPDATED_ERROR": "Ocurrió un error al actualizar el plan de ventas.",
