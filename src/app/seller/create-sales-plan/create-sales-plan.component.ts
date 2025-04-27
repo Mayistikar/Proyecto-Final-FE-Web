@@ -67,6 +67,8 @@ export class CreateSalesPlanComponent implements OnInit {
     this.sellerCountry = zoneToCountryMap[this.sellerZone] || '';
     this.availableRoutes = routesByZone[this.sellerZone] || [];
 
+    console.log('[CreatePlan] zone      →', this.sellerZone);
+    console.log('[CreatePlan] routes    →', this.availableRoutes);
 
     this.salesPlanForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -137,18 +139,28 @@ export class CreateSalesPlanComponent implements OnInit {
     console.log('Payload enviado al backend:', payload);
 
     this.salesPlanService.create(payload).pipe(
-      finalize(() => this.isLoading = false)
+      finalize(() => (this.isLoading = false))   
     ).subscribe({
-      next: (response) => {
-        console.log('Respuesta del backend:', response);
-        this.translate.get('SALES_PLAN.CREATED_SUCCESS').subscribe(msg => {
-          this.toastr.success(msg);
-          timer(2000).subscribe(() => this.router.navigate(['/seller-dashboard']));
-        });
+      next: () => {
+        console.log('Plan de ventas creado correctamente');
+    
+        this.toastr.success(
+          this.translate.instant('SALES_PLAN.CREATED_SUCCESS'),
+          this.translate.instant('COMMON.SUCCESS'),
+          { timeOut: 3000 }
+        );
+    
+        setTimeout(() => this.router.navigate(['/seller-dashboard']), 1500);
       },
-      error: (error) => {
-        console.error('Error recibido del backend:', error); // 👈 Agregado para ver el error real
-        this.translate.get('SALES_PLAN.CREATED_ERROR').subscribe(msg => this.toastr.error(msg));
+    
+      error: (err) => {
+        console.error('[CreatePlan] error →', err);
+    
+        this.toastr.error(
+          this.translate.instant('SALES_PLAN.CREATED_ERROR'),
+          this.translate.instant('COMMON.ERROR'),
+          { timeOut: 3000 }
+        );
       }
     });
   }

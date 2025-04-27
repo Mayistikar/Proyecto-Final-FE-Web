@@ -23,7 +23,7 @@ export class SellerDashboardComponent implements OnInit {
   sellerName: string = '';
   salesPlans: SalesPlan[] = [];
   loading = false;
-  loadError = false; // 👈 corregido el nombre aquí
+  loadError = false; 
 
   constructor(
     private authService: AuthService,
@@ -50,9 +50,9 @@ export class SellerDashboardComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        console.error('❌ Error cargando planes de venta:', error);
+        console.error('Error cargando planes de venta:', error);
         this.loading = false;
-        this.loadError = true; // 👈 corregido el nombre aquí también
+        this.loadError = true; 
         this.translate.get('SALES_PLAN.LOAD_ERROR').subscribe(msg => this.toastr.error(msg));
       }
     });

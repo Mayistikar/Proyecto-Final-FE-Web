@@ -9,7 +9,6 @@ import { CreateSalesPlanComponent } from './create-sales-plan.component';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { AuthService, UserData } from '../../auth/auth.service';
 import { faker } from '@faker-js/faker';
-import { SalesPlan } from '../../models/sales-plan.model';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -32,21 +31,6 @@ describe('CreateSalesPlanComponent', () => {
     refreshToken: faker.string.alphanumeric(10)
   };
 
-  const mockSalesPlan: SalesPlan = {
-    id: faker.string.uuid(),
-    sellerId: sellerUser.id,
-    name: 'Plan Demo',
-    description: 'Push strategy',
-    visitRoute: 'Route XYZ',
-    dailyGoal: 10,
-    weeklyGoal: 50,
-    startTime: '08:00',
-    endTime: '18:00',
-    strategy: 'DIRECT_PROMOTION',
-    event: 'LOCAL_CONCERT',
-    createdAt: new Date().toISOString()
-  };
-
   beforeEach(async () => {
     mockSalesPlanService = jasmine.createSpyObj('SalesPlanService', ['create']);
     mockAuthService = jasmine.createSpyObj('AuthService', ['getUserData', 'getUserId']);
@@ -60,10 +44,7 @@ describe('CreateSalesPlanComponent', () => {
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
         TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useClass: TranslateFakeLoader
-          }
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
       ],
       providers: [
@@ -91,6 +72,14 @@ describe('CreateSalesPlanComponent', () => {
     mockAuthService.getUserData.and.returnValue(null);
     component.ngOnInit();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
+  });
+
+  it('should initialize available routes based on seller zone', () => {
+    mockAuthService.getUserData.and.returnValue(sellerUser);
+    fixture.detectChanges();
+
+    expect(component.sellerZone).toEqual('ZONE_TEST');
+    expect(Array.isArray(component.availableRoutes)).toBeTrue();
   });
 
   it('should mark form as touched and not submit if invalid', () => {
@@ -131,13 +120,26 @@ describe('CreateSalesPlanComponent', () => {
   it('should submit form successfully and navigate on success', fakeAsync(() => {
     mockAuthService.getUserData.and.returnValue(sellerUser);
     mockAuthService.getUserId.and.returnValue(sellerUser.id);
-    mockSalesPlanService.create.and.returnValue(of(mockSalesPlan));
-
+    mockSalesPlanService.create.and.returnValue(of({
+      id: faker.string.uuid(),
+      sellerId: sellerUser.id,
+      name: 'Plan Demo',
+      description: 'Push strategy description',
+      visitRoute: 'Route XYZ',
+      dailyGoal: 10,
+      weeklyGoal: 50,
+      startTime: '08:00',
+      endTime: '18:00',
+      strategy: 'DIRECT_PROMOTION',
+      event: 'LOCAL_CONCERT',
+      createdAt: new Date().toISOString()
+    }));
+  
     fixture.detectChanges();
-
+  
     component.salesPlanForm.setValue({
       name: 'Plan Demo',
-      description: 'Push strategy',
+      description: 'Push strategy description',
       visitRoute: 'Route XYZ',
       dailyGoal: 10,
       weeklyGoal: 50,
@@ -146,13 +148,13 @@ describe('CreateSalesPlanComponent', () => {
       strategy: 'DIRECT_PROMOTION',
       event: 'LOCAL_CONCERT'
     });
-
-    spyOn(toastr, 'success');
-    translate.setDefaultLang('en');
-
+  
+    spyOn(toastr, 'success').and.callThrough();
+    spyOn(translate, 'instant').and.callFake((key: string) => key);
+  
     component.onSubmit();
-    tick(2000); // 👈 necesario porque en el componente hay timer de 2 segundos
-
+    tick(1500);
+  
     expect(mockSalesPlanService.create).toHaveBeenCalled();
     expect(toastr.success).toHaveBeenCalled();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
@@ -164,11 +166,12 @@ describe('CreateSalesPlanComponent', () => {
     mockAuthService.getUserId.and.returnValue(null);
     fixture.detectChanges();
 
-    spyOn(toastr, 'error');
+    spyOn(toastr, 'error').and.callThrough();
+    spyOn(translate, 'get').and.returnValue(of('Seller invalid'));
 
     component.salesPlanForm.setValue({
       name: 'Plan sin seller',
-      description: 'Some description',
+      description: 'Some valid description',
       visitRoute: 'Route ABC',
       dailyGoal: 5,
       weeklyGoal: 25,
@@ -179,7 +182,7 @@ describe('CreateSalesPlanComponent', () => {
     });
 
     component.onSubmit();
-    tick(); // 👈 importante
+    tick();
 
     expect(toastr.error).toHaveBeenCalled();
     expect(component.isLoading).toBeFalse();
@@ -189,13 +192,13 @@ describe('CreateSalesPlanComponent', () => {
   it('should show error toast on backend error', fakeAsync(() => {
     mockAuthService.getUserData.and.returnValue(sellerUser);
     mockAuthService.getUserId.and.returnValue(sellerUser.id);
-    mockSalesPlanService.create.and.returnValue(throwError(() => new Error('Error')));
+    mockSalesPlanService.create.and.returnValue(throwError(() => new Error('Backend error')));
 
     fixture.detectChanges();
 
     component.salesPlanForm.setValue({
       name: 'Plan Error',
-      description: 'Another description',
+      description: 'Another valid description',
       visitRoute: 'Route DEF',
       dailyGoal: 3,
       weeklyGoal: 15,
@@ -205,7 +208,8 @@ describe('CreateSalesPlanComponent', () => {
       event: 'LOCAL_CONCERT'
     });
 
-    spyOn(toastr, 'error');
+    spyOn(toastr, 'error').and.callThrough();
+    spyOn(translate, 'instant').and.callFake((key: string) => key);
 
     component.onSubmit();
     tick();

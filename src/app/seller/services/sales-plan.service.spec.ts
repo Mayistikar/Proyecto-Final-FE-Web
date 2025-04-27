@@ -88,11 +88,11 @@ describe('SalesPlanService', () => {
 
   it('should delete a sales plan', () => {
     service.delete(mockPlan.id).subscribe(response => {
-      expect(response).toBeUndefined(); // porque es void
+      expect(response).toBeNull(); 
     });
 
     const req = httpMock.expectOne(`${baseUrl}/sales-plans/${mockPlan.id}`);
     expect(req.request.method).toBe('DELETE');
-    req.flush(null); // porque no devuelve nada
+    req.flush(null); 
   });
 });

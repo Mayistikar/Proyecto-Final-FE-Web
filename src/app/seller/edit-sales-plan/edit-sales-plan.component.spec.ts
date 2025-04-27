@@ -11,6 +11,7 @@ import { of, throwError } from 'rxjs';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { AuthService } from '../../auth/auth.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormControl, FormGroup } from '@angular/forms';
 
 class MockSalesPlanService {
   getById = jasmine.createSpy('getById');
@@ -155,5 +156,84 @@ describe('EditSalesPlanComponent', () => {
     tick();
     expect(toastrService.error).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
+  }));
+
+  it('should handle null plan from API gracefully', fakeAsync(() => {
+    spyOn(toastrService, 'error');
+  
+    salesPlanService.getById.and.returnValue(of(null as any)); 
+  
+    component.ngOnInit();
+    tick();
+    fixture.detectChanges();
+  
+    expect(toastrService.error).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']); 
+  }));
+
+  it('should validate that startTime is before endTime', () => {
+    const form = new FormGroup({
+      startTime: new FormControl('10:00'),
+      endTime: new FormControl('09:00')
+    });
+  
+    const result = component.validateTimeRange(form);
+  
+    expect(result).toEqual({ invalidTimeRange: true });
+  });
+  
+
+  it('should fallback to empty zone/country/routes when user zone is missing', fakeAsync(() => {
+    const authSvc = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+    spyOn(authSvc, 'getUserData').and.returnValue({ role: 'seller' } as any);
+  
+    salesPlanService.getById.and.returnValue(of({
+      name: 'Plan sin Zona',
+      description: 'Desc',
+      visit_route: 'ROUTE_UNKNOWN',
+      strategy: 'DIRECT_PROMOTION',
+      event: 'LOCAL_CONCERT',
+      daily_goal: 5,
+      weekly_goal: 25,
+      start_time: '08:00',
+      end_time: '17:00'
+    } as any));
+  
+    component.ngOnInit();
+    tick();
+    fixture.detectChanges();
+  
+    expect(component.sellerZone).toBe('');      
+    expect(component.sellerCountry).toBe('');     
+    expect(component.availableRoutes).toEqual([]); 
+  }));
+
+
+  it('should show a toast if update fails', fakeAsync(() => {
+    component.salesPlanForm.setValue({
+      name: 'Plan con error',
+      description: 'Descripción nueva',
+      visitRoute: 'ROUTE_BOGOTA_NORTE',
+      dailyGoal: 11,
+      weeklyGoal: 55,
+      startTime: '09:00',
+      endTime:   '18:00',
+      strategy: 'DIRECT_PROMOTION',
+      event: 'LOCAL_CONCERT'
+    });
+    component.initialSalesPlanData = { ...component.salesPlanForm.value, name: 'Distinto' };
+  
+    spyOn(toastrService, 'error');
+  
+    salesPlanService.update.and.returnValue(
+      throwError(() => new Error('update fail'))
+    );
+  
+    component.onSubmit();
+    tick();      
+  
+    expect(toastrService.error).toHaveBeenCalled(); 
+    expect(router.navigate).not.toHaveBeenCalled(); 
+    expect(component.updating).toBeFalse();       
   }));
 });
