@@ -37,11 +37,11 @@ import { routesByZone, zoneToCountryMap } from '../../models/sales-plan-routes';
 })
 export class EditSalesPlanComponent implements OnInit {
   salesPlanForm!: FormGroup;
-  loading = false;    
-  updating = false;  
+  loading = false;
+  updating = false;
   salesPlanId!: string;
   initialSalesPlanData: any;
-  availableRoutes: string[] = [];
+  availableRoutes: string[] = ['NORTH_ROUTE', 'SOUTH_ROUTE', 'EAST_ROUTE', 'WEST_ROUTE', 'DOWNTOWN', 'RURAL_AREA'];
   strategies = ['DIRECT_PROMOTION', 'FREE_SAMPLES', 'BULK_DISCOUNT'];
   events = ['LOCAL_CONCERT', 'REGIONAL_FAIR', 'SPORT_EVENT'];
   sellerZone = '';
@@ -59,13 +59,11 @@ export class EditSalesPlanComponent implements OnInit {
 
   ngOnInit(): void {
     this.salesPlanId = this.route.snapshot.paramMap.get('id')!;
-    console.log('ID del Plan de Venta recibido:', this.salesPlanId);
     this.initForm();
     this.loadSalesPlan();
   }
 
   initForm(): void {
-    console.log('Creando Formulario de Edición');
     this.salesPlanForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
@@ -87,7 +85,6 @@ export class EditSalesPlanComponent implements OnInit {
   }
 
   loadSalesPlan(): void {
-    console.log('Cargando Plan de Venta desde el backend...');
     this.loading = true;
     this.salesPlanService.getById(this.salesPlanId).pipe(
       finalize(() => this.loading = false)
@@ -114,7 +111,6 @@ export class EditSalesPlanComponent implements OnInit {
         const user = this.authService.getUserData();
         this.sellerZone = user?.zone || '';
         this.sellerCountry = zoneToCountryMap[this.sellerZone] || '';
-        this.availableRoutes = routesByZone[this.sellerZone] || [];
       },
       error: () => this.handleLoadError()
     });
@@ -174,7 +170,7 @@ export class EditSalesPlanComponent implements OnInit {
       return;
     }
 
-    this.updating = true; 
+    this.updating = true;
     const payload = this.toSnakeCase(this.salesPlanForm.value);
 
     this.salesPlanService.update(this.salesPlanId, payload).pipe(

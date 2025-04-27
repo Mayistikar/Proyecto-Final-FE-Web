@@ -44,7 +44,6 @@ export class CreateSalesPlanComponent implements OnInit {
   strategies = ['DIRECT_PROMOTION', 'FREE_SAMPLES', 'BULK_DISCOUNT'];
   events = ['LOCAL_CONCERT', 'REGIONAL_FAIR', 'SPORT_EVENT'];
   sellerZone = '';
-  sellerCountry = '';
 
 
   constructor(
@@ -63,13 +62,6 @@ export class CreateSalesPlanComponent implements OnInit {
       return;
     }
 
-    this.sellerZone = user.zone || '';
-    this.sellerCountry = zoneToCountryMap[this.sellerZone] || '';
-    this.availableRoutes = routesByZone[this.sellerZone] || [];
-
-    console.log('[CreatePlan] zone      →', this.sellerZone);
-    console.log('[CreatePlan] routes    →', this.availableRoutes);
-
     this.salesPlanForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
@@ -86,9 +78,9 @@ export class CreateSalesPlanComponent implements OnInit {
   validateTimeRange(group: FormGroup): ValidationErrors | null {
     const start = group.get('startTime')?.value;
     const end = group.get('endTime')?.value;
-  
+
     if (!start || !end) return null;
-  
+
     return start < end ? null : { invalidTimeRange: true };
   }
 
@@ -139,23 +131,23 @@ export class CreateSalesPlanComponent implements OnInit {
     console.log('Payload enviado al backend:', payload);
 
     this.salesPlanService.create(payload).pipe(
-      finalize(() => (this.isLoading = false))   
+      finalize(() => (this.isLoading = false))
     ).subscribe({
       next: () => {
         console.log('Plan de ventas creado correctamente');
-    
+
         this.toastr.success(
           this.translate.instant('SALES_PLAN.CREATED_SUCCESS'),
           this.translate.instant('COMMON.SUCCESS'),
           { timeOut: 3000 }
         );
-    
+
         setTimeout(() => this.router.navigate(['/seller-dashboard']), 1500);
       },
-    
+
       error: (err) => {
         console.error('[CreatePlan] error →', err);
-    
+
         this.toastr.error(
           this.translate.instant('SALES_PLAN.CREATED_ERROR'),
           this.translate.instant('COMMON.ERROR'),

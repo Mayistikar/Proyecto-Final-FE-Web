@@ -74,14 +74,6 @@ describe('CreateSalesPlanComponent', () => {
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
   });
 
-  it('should initialize available routes based on seller zone', () => {
-    mockAuthService.getUserData.and.returnValue(sellerUser);
-    fixture.detectChanges();
-
-    expect(component.sellerZone).toEqual('ZONE_TEST');
-    expect(Array.isArray(component.availableRoutes)).toBeTrue();
-  });
-
   it('should mark form as touched and not submit if invalid', () => {
     mockAuthService.getUserData.and.returnValue(sellerUser);
     fixture.detectChanges();
@@ -134,9 +126,9 @@ describe('CreateSalesPlanComponent', () => {
       event: 'LOCAL_CONCERT',
       createdAt: new Date().toISOString()
     }));
-  
+
     fixture.detectChanges();
-  
+
     component.salesPlanForm.setValue({
       name: 'Plan Demo',
       description: 'Push strategy description',
@@ -148,13 +140,13 @@ describe('CreateSalesPlanComponent', () => {
       strategy: 'DIRECT_PROMOTION',
       event: 'LOCAL_CONCERT'
     });
-  
+
     spyOn(toastr, 'success').and.callThrough();
     spyOn(translate, 'instant').and.callFake((key: string) => key);
-  
+
     component.onSubmit();
     tick(1500);
-  
+
     expect(mockSalesPlanService.create).toHaveBeenCalled();
     expect(toastr.success).toHaveBeenCalled();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);

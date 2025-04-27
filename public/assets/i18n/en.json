@@ -400,7 +400,7 @@
   "PRODUCT_LOAD_ERROR": "Failed to load product.",
   "UPLOAD_FILE_MESSAGE": "Error uploading products",
 
-  "SALES_PLAN.DESCRIPTION_REQUIRED": "Description is required.", 
+  "SALES_PLAN.DESCRIPTION_REQUIRED": "Description is required.",
 
   "SALES_PLAN.ROUTES.ROUTE_BOGOTA_NORTE": "Bogotá North",
   "SALES_PLAN.ROUTES.ROUTE_BOGOTA_SUR": "Bogotá South",
@@ -449,7 +449,13 @@
   "SALES_PLAN.ROUTES.ROUTE_FL_TAMPA": "Florida - Tampa",
   "SALES_PLAN.ROUTES.ROUTE_FL_JACKSONVILLE": "Florida - Jacksonville",
   "SALES_PLAN.ROUTES.ROUTE_FL_NAPLES": "Florida - Naples",
-  "SALES_PLAN.ROUTES.ROUTE_FL_FORT_LAUDERDALE": "Florida - Fort Lauderdale", 
+  "SALES_PLAN.ROUTES.ROUTE_FL_FORT_LAUDERDALE": "Florida - Fort Lauderdale",
+  "SALES_PLAN.ROUTES.NORTH_ROUTE": "Northern Route",
+  "SALES_PLAN.ROUTES.SOUTH_ROUTE": "Southern Route",
+  "SALES_PLAN.ROUTES.EAST_ROUTE": "Eastern Route",
+  "SALES_PLAN.ROUTES.WEST_ROUTE": "Western Route",
+  "SALES_PLAN.ROUTES.DOWNTOWN": "Downtown",
+  "SALES_PLAN.ROUTES.RURAL_AREA": "Rural Area",
 
   "SALES_PLAN.LOAD_SUCCESS": "The sales plan was loaded successfully."
 

@@ -398,9 +398,9 @@
   "PRODUCT_DAYS": "días",
   "BUTTON_BACK": "Volver",
   "PRODUCT_LOAD_ERROR": "No se pudo cargar el producto.",
-  "UPLOAD_FILE_MESSAGE": "Error cargando productos", 
+  "UPLOAD_FILE_MESSAGE": "Error cargando productos",
 
-  "SALES_PLAN.DESCRIPTION_REQUIRED": "La descripción es obligatoria.", 
+  "SALES_PLAN.DESCRIPTION_REQUIRED": "La descripción es obligatoria.",
 
   "SALES_PLAN.ROUTES.ROUTE_BOGOTA_NORTE": "Bogotá Norte",
   "SALES_PLAN.ROUTES.ROUTE_BOGOTA_SUR": "Bogotá Sur",
@@ -450,6 +450,12 @@
   "SALES_PLAN.ROUTES.ROUTE_FL_JACKSONVILLE": "Florida - Jacksonville",
   "SALES_PLAN.ROUTES.ROUTE_FL_NAPLES": "Florida - Naples",
   "SALES_PLAN.ROUTES.ROUTE_FL_FORT_LAUDERDALE": "Florida - Fort Lauderdale",
+  "SALES_PLAN.ROUTES.NORTH_ROUTE": "Ruta Norte",
+  "SALES_PLAN.ROUTES.SOUTH_ROUTE": "Ruta Sur",
+  "SALES_PLAN.ROUTES.EAST_ROUTE": "Ruta Este",
+  "SALES_PLAN.ROUTES.WEST_ROUTE": "Ruta Oeste",
+  "SALES_PLAN.ROUTES.DOWNTOWN": "Centro",
+  "SALES_PLAN.ROUTES.RURAL_AREA": "Area Rural",
 
   "SALES_PLAN.LOAD_SUCCESS": "El plan de ventas se cargó exitosamente."
 
