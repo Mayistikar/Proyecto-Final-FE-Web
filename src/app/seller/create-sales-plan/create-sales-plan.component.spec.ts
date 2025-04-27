@@ -10,6 +10,8 @@ import { SalesPlanService } from '../services/sales-plan.service';
 import { AuthService, UserData } from '../../auth/auth.service';
 import { faker } from '@faker-js/faker';
 import { SalesPlan } from '../../models/sales-plan.model';
+import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CreateSalesPlanComponent', () => {
   let component: CreateSalesPlanComponent;
@@ -53,9 +55,16 @@ describe('CreateSalesPlanComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         CreateSalesPlanComponent,
+        ReactiveFormsModule,
         HttpClientTestingModule,
+        BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
       ],
       providers: [
         TranslateService,
@@ -86,10 +95,21 @@ describe('CreateSalesPlanComponent', () => {
 
   it('should mark form as touched and not submit if invalid', () => {
     mockAuthService.getUserData.and.returnValue(sellerUser);
-    mockAuthService.getUserId.and.returnValue(sellerUser.id);
     fixture.detectChanges();
 
-    spyOn(component.salesPlanForm, 'markAllAsTouched');
+    component.salesPlanForm.patchValue({
+      name: '',
+      description: '',
+      visitRoute: '',
+      dailyGoal: '',
+      weeklyGoal: '',
+      startTime: '',
+      endTime: '',
+      strategy: '',
+      event: ''
+    });
+
+    spyOn(component.salesPlanForm, 'markAllAsTouched').and.callThrough();
     component.onSubmit();
 
     expect(component.salesPlanForm.markAllAsTouched).toHaveBeenCalled();
@@ -100,14 +120,12 @@ describe('CreateSalesPlanComponent', () => {
     const group = component['fb'].group({
       startTime: ['15:00'],
       endTime: ['12:00']
-    });
+    }, { validators: component.validateTimeRange });
 
-    const result = component.validateTimeRange(group);
-    expect(result).toEqual({ invalidTimeRange: true });
+    expect(group.errors).toEqual({ invalidTimeRange: true });
 
     group.patchValue({ endTime: '16:00' });
-    const valid = component.validateTimeRange(group);
-    expect(valid).toBeNull();
+    expect(group.errors).toBeNull();
   });
 
   it('should submit form successfully and navigate on success', fakeAsync(() => {
@@ -133,20 +151,15 @@ describe('CreateSalesPlanComponent', () => {
     translate.setDefaultLang('en');
 
     component.onSubmit();
-    tick();
+    tick(2000); // 👈 necesario porque en el componente hay timer de 2 segundos
 
     expect(mockSalesPlanService.create).toHaveBeenCalled();
     expect(toastr.success).toHaveBeenCalled();
-    expect(component.isLoading).toBeFalse();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
+    expect(component.isLoading).toBeFalse();
   }));
 
-  it('should navigate to dashboard on cancel', () => {
-    component.onCancel();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
-  });
-
-  it('should show toast if getUserId returns null on submit', () => {
+  it('should show error toast if getUserId returns null on submit', fakeAsync(() => {
     mockAuthService.getUserData.and.returnValue(sellerUser);
     mockAuthService.getUserId.and.returnValue(null);
     fixture.detectChanges();
@@ -155,7 +168,7 @@ describe('CreateSalesPlanComponent', () => {
 
     component.salesPlanForm.setValue({
       name: 'Plan sin seller',
-      description: '',
+      description: 'Some description',
       visitRoute: 'Route ABC',
       dailyGoal: 5,
       weeklyGoal: 25,
@@ -166,9 +179,43 @@ describe('CreateSalesPlanComponent', () => {
     });
 
     component.onSubmit();
+    tick(); // 👈 importante
 
     expect(toastr.error).toHaveBeenCalled();
-    expect(mockRouter.navigate).not.toHaveBeenCalled();
     expect(component.isLoading).toBeFalse();
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
+  }));
+
+  it('should show error toast on backend error', fakeAsync(() => {
+    mockAuthService.getUserData.and.returnValue(sellerUser);
+    mockAuthService.getUserId.and.returnValue(sellerUser.id);
+    mockSalesPlanService.create.and.returnValue(throwError(() => new Error('Error')));
+
+    fixture.detectChanges();
+
+    component.salesPlanForm.setValue({
+      name: 'Plan Error',
+      description: 'Another description',
+      visitRoute: 'Route DEF',
+      dailyGoal: 3,
+      weeklyGoal: 15,
+      startTime: '08:00',
+      endTime: '17:00',
+      strategy: 'DIRECT_PROMOTION',
+      event: 'LOCAL_CONCERT'
+    });
+
+    spyOn(toastr, 'error');
+
+    component.onSubmit();
+    tick();
+
+    expect(toastr.error).toHaveBeenCalled();
+    expect(component.isLoading).toBeFalse();
+  }));
+
+  it('should navigate to dashboard on cancel', () => {
+    component.onCancel();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
   });
 });

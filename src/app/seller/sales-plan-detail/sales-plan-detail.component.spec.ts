@@ -1,5 +1,4 @@
 /* tslint:disable:no-unused-variable */
-/* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { SalesPlanDetailComponent } from './sales-plan-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,21 +6,33 @@ import { of, throwError } from 'rxjs';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
-
-class MockSalesPlanService {
-  getById = jasmine.createSpy('getById');
-}
+import { SalesPlan } from '../../models/sales-plan.model';
+import { ToastrModule } from 'ngx-toastr';
 
 describe('SalesPlanDetailComponent', () => {
   let component: SalesPlanDetailComponent;
   let fixture: ComponentFixture<SalesPlanDetailComponent>;
-  let salesPlanService: MockSalesPlanService;
-  let router: jasmine.SpyObj<Router>;
+  let salesPlanServiceSpy: jasmine.SpyObj<SalesPlanService>;
+  let routerSpy: jasmine.SpyObj<Router>;
+
+  const mockPlan: SalesPlan = {
+    id: 'plan-123',
+    name: 'Sample Plan',
+    description: 'Plan description',
+    visitRoute: 'ROUTE_BOGOTA_NORTE',
+    strategy: 'DIRECT_PROMOTION',
+    event: 'LOCAL_CONCERT',
+    dailyGoal: 5,
+    weeklyGoal: 25,
+    startTime: '08:00',
+    endTime: '17:00',
+    sellerId: 'seller-abc',
+    createdAt: '2024-04-25T12:00:00'
+  };
 
   beforeEach(async () => {
-    salesPlanService = new MockSalesPlanService();
-    router = jasmine.createSpyObj('Router', ['navigate']);
+    salesPlanServiceSpy = jasmine.createSpyObj('SalesPlanService', ['getById']);
+    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -29,10 +40,12 @@ describe('SalesPlanDetailComponent', () => {
         BrowserAnimationsModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
+        }),
+        ToastrModule.forRoot()
       ],
       providers: [
-        { provide: SalesPlanService, useValue: salesPlanService },
+        { provide: SalesPlanService, useValue: salesPlanServiceSpy },
+        { provide: Router, useValue: routerSpy },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -42,8 +55,7 @@ describe('SalesPlanDetailComponent', () => {
               }
             }
           }
-        },
-        { provide: Router, useValue: router }
+        }
       ]
     }).compileComponents();
 
@@ -55,19 +67,23 @@ describe('SalesPlanDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should assign planId from route and load plan on init', fakeAsync(() => {
-    salesPlanService.getById.and.returnValue(of(MOCK_SALES_PLAN));
+  it('should load the sales plan successfully on init', fakeAsync(() => {
+    salesPlanServiceSpy.getById.and.returnValue(of(mockPlan));
+
+    component.ngOnInit();
     fixture.detectChanges();
     tick();
 
-    expect(salesPlanService.getById).toHaveBeenCalledWith('plan-123');
-    expect(component.salesPlan).toEqual(MOCK_SALES_PLAN);
+    expect(salesPlanServiceSpy.getById).toHaveBeenCalledWith('plan-123');
+    expect(component.salesPlan).toEqual(mockPlan);
     expect(component.loading).toBeFalse();
     expect(component.error).toBeFalse();
   }));
 
-  it('should handle error and set error flag if getById fails', fakeAsync(() => {
-    salesPlanService.getById.and.returnValue(throwError(() => new Error('Not found')));
+  it('should handle error if getById fails', fakeAsync(() => {
+    salesPlanServiceSpy.getById.and.returnValue(throwError(() => new Error('Not Found')));
+
+    component.ngOnInit();
     fixture.detectChanges();
     tick();
 
@@ -77,25 +93,27 @@ describe('SalesPlanDetailComponent', () => {
   }));
 
   it('should navigate to edit page on editPlan()', () => {
-    component.salesPlan = { ...MOCK_SALES_PLAN };
+    component.salesPlan = { ...mockPlan };
     component.editPlan();
-    expect(router.navigate).toHaveBeenCalledWith([`/seller/edit-sales-plan/${MOCK_SALES_PLAN.id}`]);
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith([`/seller/edit-sales-plan/${mockPlan.id}`]);
   });
 
   it('should navigate to dashboard on cancel', () => {
     component.onCancel();
-    expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
   });
 
-  it('should set error and stop loading if no planId in route', () => {
-    const route = TestBed.inject(ActivatedRoute);
-    spyOn(route.snapshot.paramMap, 'get').and.returnValue(null);
+  it('should handle missing planId in route', () => {
+    const activatedRoute = TestBed.inject(ActivatedRoute);
+    spyOn(activatedRoute.snapshot.paramMap, 'get').and.returnValue(null);
 
     component.ngOnInit();
+    fixture.detectChanges();
 
     expect(component.error).toBeTrue();
     expect(component.loading).toBeFalse();
     expect(component.salesPlan).toBeUndefined();
   });
 });
-
