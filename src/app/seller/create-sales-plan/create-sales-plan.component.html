@@ -1,16 +1,20 @@
 <div class="container mt-5">
   <h2 class="mb-4">{{ 'SALES_PLAN.CREATE_TITLE' | translate }}</h2>
 
+
   <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center my-5" style="min-height: 200px;">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
 
+
   <form *ngIf="!isLoading" [formGroup]="salesPlanForm" (ngSubmit)="onSubmit()" class="mb-5">
     <div class="row">
 
+
       <div class="col-md-6">
+
         <div class="mb-3">
           <label for="name" class="form-label">{{ 'SALES_PLAN.NAME' | translate }}</label>
           <input
@@ -34,11 +38,7 @@
             formControlName="description"
             rows="3"
             [placeholder]="'SALES_PLAN.DESCRIPTION_PLACEHOLDER' | translate"
-            [ngClass]="{ 'is-invalid': salesPlanForm.get('description')?.invalid && salesPlanForm.get('description')?.touched }"
           ></textarea>
-          <div class="invalid-feedback" *ngIf="salesPlanForm.get('description')?.errors?.['required']">
-            {{ 'SALES_PLAN.DESCRIPTION_REQUIRED' | translate }}
-          </div>
         </div>
 
         <div class="mb-3">
@@ -78,7 +78,9 @@
         </div>
       </div>
 
+
       <div class="col-md-6">
+
         <div class="mb-3">
           <label for="event" class="form-label">{{ 'SALES_PLAN.EVENT' | translate }}</label>
           <select
@@ -105,6 +107,7 @@
             class="form-control"
             formControlName="dailyGoal"
             [placeholder]="'SALES_PLAN.DAILY_PLACEHOLDER' | translate"
+            [min]="1"
             [ngClass]="{ 'is-invalid': salesPlanForm.get('dailyGoal')?.invalid && salesPlanForm.get('dailyGoal')?.touched }"
           />
           <div class="invalid-feedback">
@@ -120,6 +123,7 @@
             class="form-control"
             formControlName="weeklyGoal"
             [placeholder]="'SALES_PLAN.WEEKLY_PLACEHOLDER' | translate"
+            [min]="1"
             [ngClass]="{ 'is-invalid': salesPlanForm.get('weeklyGoal')?.invalid && salesPlanForm.get('weeklyGoal')?.touched }"
           />
           <div class="invalid-feedback">
@@ -161,7 +165,7 @@
         <span *ngIf="!isLoading">{{ 'COMMON.SAVE' | translate }}</span>
         <span *ngIf="isLoading">
           <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          {{ 'LOADING_BUTTON_TEXT' | translate }}
+          {{ 'COMMON.PROCESSING' | translate }}
         </span>
       </button>
 
