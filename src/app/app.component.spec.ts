@@ -73,19 +73,37 @@ describe('AppComponent', () => {
   it('should call AuthService.logout and redirect to /login?logout=true', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-  
+
     const auth   = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     const router = TestBed.inject(Router);
-  
+
     spyOn(router, 'navigate');
-  
-    app.logout();   
-  
-    expect(auth.logout).toHaveBeenCalled();  
+
+    app.logout();
+
+    expect(auth.logout).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(
       ['/login'],
       { queryParams: { logout: true } }
     );
   });
-  
+
+  it('should navigate to /warehouse when goWarehouse is called', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const router = TestBed.inject(Router);
+    const navigateSpy = spyOn(router, 'navigate');
+    app.goWarehouse();
+    expect(navigateSpy).toHaveBeenCalledWith(['/warehouse']);
+  });
+
+  it('should navigate to /admin when goAuthorization is called', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const router = TestBed.inject(Router);
+    const navigateSpy = spyOn(router, 'navigate');
+    app.goAuthorization();
+    expect(navigateSpy).toHaveBeenCalledWith(['/admin']);
+  });
+
 });
