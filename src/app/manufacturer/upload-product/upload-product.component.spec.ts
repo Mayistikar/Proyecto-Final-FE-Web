@@ -3,7 +3,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {UploadProductComponent} from './upload-product.component';
-import {ProductService, MockProductService} from '../services/product.service';
+import {ProductService } from '../services/product.service';
+import { MockProductService } from '../services/product.service.spec';
 import {of} from "rxjs";
 import {AuthService, MockAuthService} from '../../auth/auth.service';
 
@@ -21,6 +22,7 @@ describe('UploadProductComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const translateServiceSpy = jasmine.createSpyObj('TranslateService', ['instant']);
     const activatedRouteSpy = {snapshot: {params: {}}}; // Mock ActivatedRoute
+    // spyOn(window.location, 'reload').and.callFake(() => {});
 
     await TestBed.configureTestingModule({
       imports: [UploadProductComponent], // Add the standalone component here
@@ -113,5 +115,15 @@ describe('UploadProductComponent', () => {
     component.uploadProducts();
 
     expect(component.isUploading).toBeFalse();
+  });
+
+  it('should create a download link and trigger a click event', () => {
+    spyOn(document, 'createElement').and.callThrough();
+    const clickSpy = spyOn(HTMLAnchorElement.prototype, 'click');
+
+    component.downloadFile();
+
+    expect(document.createElement).toHaveBeenCalledWith('a');
+    expect(clickSpy).toHaveBeenCalled();
   });
 });
