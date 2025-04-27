@@ -24,7 +24,7 @@ export class SellerService {
       experience: seller.specialty
     };
 
-    return this.http.post(`${BASE_URL}/auth/seller`, payload);
+    return this.http.post(`${BASE_URL}/api/create_seller`, payload);
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
@@ -34,7 +34,7 @@ export class SellerService {
   getById(id: string): Observable<any> {
     return this.http.get(`${BASE_URL}/api/sellers/${id}`);
   }
-  
+
   getAllUsers(): Observable<any> {
     return this.http.get(`${BASE_URL}/auth/users`);
   }

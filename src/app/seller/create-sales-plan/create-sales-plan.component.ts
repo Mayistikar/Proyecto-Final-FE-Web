@@ -43,7 +43,7 @@ import { finalize } from 'rxjs/operators';
 export class CreateSalesPlanComponent implements OnInit {
   salesPlanForm!: FormGroup;
   isLoading = false;
-  availableRoutes: string[] = [];
+  availableRoutes: string[] = ['NORTH_ROUTE', 'SOUTH_ROUTE', 'EAST_ROUTE', 'WEST_ROUTE', 'DOWNTOWN', 'RURAL_AREA'];
   sellerZone = '';
   sellerCountry = '';
 
@@ -62,14 +62,12 @@ export class CreateSalesPlanComponent implements OnInit {
   ngOnInit(): void {
     const user = this.authService.getUserData();
 
-    if (!user || user.role !== 'seller' || !user.zone) {
+    if (!user || user.role !== 'seller') {
       this.router.navigate(['/login']);
       return;
     }
 
-    this.sellerZone = user.zone;
     this.sellerCountry = zoneToCountryMap[this.sellerZone];
-    this.availableRoutes = routesByZone[this.sellerZone] || [];
 
     this.salesPlanForm = this.fb.group({
       name: ['', Validators.required],
@@ -100,31 +98,30 @@ export class CreateSalesPlanComponent implements OnInit {
       this.salesPlanForm.markAllAsTouched();
       return;
     }
-  
+
     this.isLoading = true;
     const sellerId = this.authService.getUserId();
-  
+
     if (!sellerId) {
       this.translate.get('ERROR.SELLER_INVALID').subscribe(msg => this.toastr.error(msg));
       this.isLoading = false;
       return;
     }
-  
+
     const salesPlan: SalesPlan = {
       ...this.salesPlanForm.value,
       sellerId,
       createdAt: new Date().toISOString()
     };
-  
+
     this.salesPlanService.create(salesPlan).pipe(
-      finalize(() => this.isLoading = false)  
+      finalize(() => this.isLoading = false)
     ).subscribe({
       next: () => {
         this.translate.get('SALES_PLAN.CREATED_SUCCESS').subscribe(msg => this.toastr.success(msg));
         this.router.navigate(['/seller-dashboard']);
       },
       error: (err) => {
-        console.error('❌ Error al crear plan:', err);
         this.translate.get('SALES_PLAN.CREATED_ERROR').subscribe(msg => this.toastr.error(msg));
       }
     });
