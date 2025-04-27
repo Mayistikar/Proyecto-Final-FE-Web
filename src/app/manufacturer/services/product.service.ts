@@ -53,7 +53,7 @@ export class ProductService {
   }
 
   getProductsByManufacturer(manufacturerId: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.baseUrl}/products?manufacturerId=${manufacturerId}`);
+    return this.http.get<Product[]>(`${this.baseUrl}/products/search?manufacturer_id=${manufacturerId}`);
   }
 
   sendProducts(products: any[]): Observable<any> {
