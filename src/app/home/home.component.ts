@@ -42,6 +42,7 @@ export class HomeComponent {
   userType: string | null = null;
   email: string | null = null;
   isLoading = false;
+  errorMessage: string | null = null;
 
   constructor(private fb: FormBuilder,
               public router: Router,
@@ -84,15 +85,11 @@ export class HomeComponent {
           headers: { 'Content-Type': 'application/json' }
         }));
 
-        /*
         const data: any = await lastValueFrom(this.http.get('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/auth/users'))
         console.log({ data })
 
         const user: any = data?.users.find((usr: any) => usr.email === response.email);
         console.log({ user })
-
-        console.log({ response })
-         */
 
         this.authService.login({
           id: response.id,
@@ -101,6 +98,7 @@ export class HomeComponent {
           idToken: response.id_token,
           accessToken: response.access_token,
           refreshToken: response.refresh_token,
+          country: user?.profile?.operation_country
         });
 
         this.isLoading = false;
@@ -116,20 +114,24 @@ export class HomeComponent {
           this.router.navigate(['/home']);
         }
       } catch (error: any) {
-        console.error('Login failed', error);
-
-        if (error.status === 401) {
+        if (error?.error?.error === 'Usuario no encontrado') {
+          this.errorMessage = 'Invalid credentials';
+        } else if (error.status === 401) {
           this.pendingValidation = true;
         } else if (error.status === 403) {
           this.pendingValidation = true;
           this.email = this.loginForm.get('usuario')?.value;
+        } else if (error.status === 422) {
+          this.pendingValidation = true;
+          this.errorMessage = 'Invalid credentials';
+          this.loginForm.get('usuario')?.setErrors({ invalid: true });
+        } else if (error.status === 500) {
+          this.errorMessage = 'Server error';
         }
-
         this.isLoading = false;
         this.cdr.detectChanges();
       }
     } else {
-      console.warn('Form invalid');
       this.loginForm.markAllAsTouched();
       this.isLoading = false;
       this.cdr.detectChanges();

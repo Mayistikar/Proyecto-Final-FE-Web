@@ -315,6 +315,14 @@
   "SALES_PLAN.EDIT_TITLE": "Edit Sales Plan",
   "SALES_PLAN.UPDATED_SUCCESS": "The sales plan was updated successfully.",
   "SALES_PLAN.UPDATED_ERROR": "An error occurred while updating the sales plan.",
+
+  "SALES_PLAN.NORTH_ROUTE": "Northern Route",
+  "SALES_PLAN.SOUTH_ROUTE": "Southern Route",
+  "SALES_PLAN.EAST_ROUTE": "Eastern Route",
+  "SALES_PLAN.WEST_ROUTE": "Western Route",
+  "SALES_PLAN.DOWNTOWN": "Downtown",
+  "SALES_PLAN.RURAL_AREA": "Rural Area",
+
   "COMMON.UPDATE": "Update",
 
   "SALES_PLAN.LOAD_ERROR": "Sales plans could not be loaded. Simulated data will be shown.",

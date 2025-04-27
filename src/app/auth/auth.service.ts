@@ -53,6 +53,7 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');
+    localStorage.removeItem('user_country');
 
     this._isAuthenticated.next(false);
     this.router.navigate(['/']);

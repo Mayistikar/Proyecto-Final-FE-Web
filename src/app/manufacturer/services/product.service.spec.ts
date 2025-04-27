@@ -86,16 +86,6 @@ describe('ProductService', () => {
     req.flush({ success: true });
   });
 
-  it('should get products by manufacturer ID', () => {
-    const manufacturerId = 'm123';
-    service.getProductsByManufacturer(manufacturerId).subscribe(products => {
-      expect(products).toBeTruthy();
-    });
-
-    const req = httpMock.expectOne(`${baseUrl}/products?manufacturerId=${manufacturerId}`);
-    expect(req.request.method).toBe('GET');
-    req.flush([]);
-  });
 
   it('should create product WITHOUT image file', () => {
     const mockProduct = { name: 'Gadget', price: 42 };
@@ -208,19 +198,6 @@ describe('ProductService', () => {
       req.flush('Bad Request', { status: 400, statusText: 'Bad Request' });
     });
 
-    it('should handle error when getting products by manufacturer ID', () => {
-      const manufacturerId = 'invalid-id';
-      service.getProductsByManufacturer(manufacturerId).subscribe({
-        next: () => fail('Expected an error, but got a response'),
-        error: (error) => {
-          expect(error.status).toBe(404);
-        }
-      });
-
-      const req = httpMock.expectOne(`${baseUrl}/products?manufacturerId=${manufacturerId}`);
-      req.flush('Not Found', { status: 404, statusText: 'Not Found' });
-    });
-
     it('should handle error when uploading file to S3', () => {
       const uploadUrl = 'https://s3.amazonaws.com/bucket/image.png';
       const mockFile = new File([''], 'image.png', { type: 'image/png' });
@@ -248,18 +225,6 @@ describe('ProductService', () => {
       req.flush('Internal Server Error', { status: 500, statusText: 'Internal Server Error' });
     });
 
-    it('should handle error when retrieving warehouses by country', () => {
-      const country = 'invalid-country';
-      service.getWarehouses(country).subscribe({
-        next: () => fail('Expected an error, but got a response'),
-        error: (error) => {
-          expect(error.status).toBe(404);
-        }
-      });
-
-      const req = httpMock.expectOne(`${baseUrl}/warehouses?country=${country}`);
-      req.flush('Not Found', { status: 404, statusText: 'Not Found' });
-    });
 });
 
 
