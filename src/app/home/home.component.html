@@ -59,3 +59,15 @@
     </div>
   </div>
 </div>
+
+<!-- Error Alert Toast -->
+<div *ngIf="errorMessage" class="toast-container position-fixed top-0 end-0 p-4 mt-5 me-4 z-3">
+  <div class="toast align-items-center text-bg-danger border-0 show fade" role="alert">
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ errorMessage }}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close" (click)="errorMessage = null"></button>
+    </div>
+  </div>
+</div>

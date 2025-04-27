@@ -71,7 +71,7 @@ export class ProductService {
   getWarehouses(country?: string): Observable<{ id: string; name: string; country: string; location: string; description: string }[]> {
     if (country) {
       return this.http.get<{ id: string; name: string; country: string; location: string; description: string }[]>(
-        `${this.baseUrl}/warehouses?country=${country}`
+        `${this.baseUrl}/warehouses/country/${country}`
       );
     }
     return this.http.get<{ id: string; name: string; country: string; location: string; description: string }[]>(
