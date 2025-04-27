@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import {Manufacturer, Users} from './user.interface';
 import { HttpClient } from '@angular/common/http';
+import { SECTOR_TO_ZONE, ZONE_TO_COUNTRY } from '../models/sales-plan-geography'; 
+
 
 export interface UserData {
   id: string;
@@ -20,14 +22,36 @@ export interface UserData {
 export class AuthService {
   private _isAuthenticated = new BehaviorSubject<boolean>(this.hasValidToken());
   private _userData = new BehaviorSubject<UserData | null>(this.getUserData());
+  
 
   constructor(
     private router: Router,
     private http: HttpClient
   ) {}
 
+  private mapSectorToZoneAndCountry(apiUser: any): { zone: string; country: string } {
+    const sectorCoverage =
+      apiUser.sector_coverage ??                
+      apiUser.profile?.sector_coverage ?? '';   
+  
+
+    if (sectorCoverage.startsWith('ZONE_')) {
+      const zone    = sectorCoverage;
+      const country = ZONE_TO_COUNTRY[zone] ?? 'COVERAGE_COLOMBIA';
+      return { zone, country };
+    }
+  
+    const zone    = SECTOR_TO_ZONE[sectorCoverage] ?? 'ZONE_BOGOTA';
+    const country = ZONE_TO_COUNTRY[zone]          ?? 'COVERAGE_COLOMBIA';
+    return { zone, country };
+  }
+
   login(userData?: any) {
     if (userData) {
+      console.table({ rawUser: userData });
+      const { zone, country } = this.mapSectorToZoneAndCountry(userData);
+      userData.zone    = zone;
+      userData.country = country;
       this._userData.next(userData || null);
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_email', userData.email);
@@ -137,7 +161,7 @@ export class AuthService {
         id,
         email,
         role,
-        companyName: email.split('@')[0]  // Simple fallback: usar parte del correo
+        companyName: email.split('@')[0]  
       };
     }
 
@@ -179,7 +203,7 @@ export class MockAuthService {
         id: this.userData.id,
         email: this.userData.email,
         role: this.userData.role,
-        companyName: this.userData.email.split('@')[0], // Simula el companyName
+        companyName: this.userData.email.split('@')[0], 
       };
     }
     return null;

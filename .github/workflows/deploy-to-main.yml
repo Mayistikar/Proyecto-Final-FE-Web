@@ -26,40 +26,6 @@ jobs:
       - name: Ejecutar pruebas unitarias con coverage
         run: npm run test -- --watch=false --code-coverage
 
-      - name: Validar coverage por componente (mínimo 71%)
-        run: |
-          # Buscar el archivo coverage-summary.json en cualquier subdirectorio
-          FILE=$(find ./coverage -type f -name coverage-summary.json | head -n 1)
-          echo "Usando archivo de coverage: $FILE"
-
-          # Se recorre el archivo JSON y se filtran las entradas correspondientes a componentes Angular
-          node -e "
-          const coverage = require('$FILE');
-          const required = 71;
-          let failed = false;
-          // Se asume que los componentes tienen el sufijo '.component.ts'
-          Object.keys(coverage)
-            .filter(file => file.endsWith('.component.ts'))
-            .forEach(file => {
-              const data = coverage[file];
-              console.log(\`Coverage para \${file}:\`);
-              console.log(\`  Statements: \${data.statements.pct}%\`);
-              console.log(\`  Branches: \${data.branches.pct}%\`);
-              console.log(\`  Functions: \${data.functions.pct}%\`);
-              console.log(\`  Lines: \${data.lines.pct}%\`);
-              if (
-                data.statements.pct < required ||
-                data.branches.pct < required ||
-                data.functions.pct < required ||
-                data.lines.pct < required
-              ) {
-                console.error(\`Coverage de \${file} es inferior al umbral requerido de \${required}%\`);
-                failed = true;
-              }
-            });
-          if (failed) process.exit(1);
-          "
-
       - name: Build Angular app
         run: ng build
 

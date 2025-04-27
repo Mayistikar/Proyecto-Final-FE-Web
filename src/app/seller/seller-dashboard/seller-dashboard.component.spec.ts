@@ -4,13 +4,13 @@ import { TranslateModule, TranslateLoader, TranslateService, TranslateStore } fr
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TranslateFakeLoader } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { UserData } from '../../auth/auth.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
-import { ToastrModule } from 'ngx-toastr'
+import { ToastrModule } from 'ngx-toastr';
 
 describe('SellerDashboardComponent', () => {
   let component: SellerDashboardComponent;
@@ -78,30 +78,30 @@ describe('SellerDashboardComponent', () => {
     });
 
     component.ngOnInit();
-
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
   });
 
   it('should load sales plans if seller is authenticated', () => {
     authServiceSpy.getUserData.and.returnValue(mockSeller);
-    salesPlanServiceSpy.getSalesPlansBySeller.and.returnValue(of({ data: [MOCK_SALES_PLAN], usedMock: false }));
+    salesPlanServiceSpy.getSalesPlansBySeller.and.returnValue(of([MOCK_SALES_PLAN]));
 
     component.ngOnInit();
 
     expect(component.salesPlans.length).toBe(1);
     expect(component.salesPlans[0].id).toBe(MOCK_SALES_PLAN.id);
-    expect(component.usedMock).toBeFalse();
     expect(component.loading).toBeFalse();
+    expect(component.loadError).toBeFalse();
   });
 
-  it('should handle usedMock=true if backend fails and returns mock', () => {
+  it('should handle error when sales plans cannot be loaded', () => {
     authServiceSpy.getUserData.and.returnValue(mockSeller);
-    salesPlanServiceSpy.getSalesPlansBySeller.and.returnValue(of({ data: [MOCK_SALES_PLAN], usedMock: true }));
+    salesPlanServiceSpy.getSalesPlansBySeller.and.returnValue(throwError(() => new Error('Network error')));
 
     component.ngOnInit();
 
-    expect(component.salesPlans.length).toBe(1);
-    expect(component.usedMock).toBeTrue();
+    expect(component.salesPlans.length).toBe(0);
+    expect(component.loading).toBeFalse();
+    expect(component.loadError).toBeTrue();
   });
 
   it('should navigate to root if no user is returned', () => {

@@ -72,7 +72,7 @@ describe('AuthService', () => {
   });
 
   it('should return user data', () => {
-    const userData: UserData = {
+    const inputUserData: UserData = {
       id: '1',
       email: 'test@example.com',
       role: 'user',
@@ -81,10 +81,18 @@ describe('AuthService', () => {
       accessToken: 'accessToken',
       refreshToken: 'refreshToken'
     };
-
-    authService.login(userData);
+  
+    authService.login(inputUserData);
+  
     const result = authService.getUserData();
-    expect(result).toEqual(jasmine.objectContaining(userData));
+  
+    expect(result).toBeTruthy();
+    expect(result?.id).toBe(inputUserData.id);
+    expect(result?.email).toBe(inputUserData.email);
+    expect(result?.role).toBe(inputUserData.role);
+    expect(result?.idToken).toBe(inputUserData.idToken);
+    expect(result?.accessToken).toBe(inputUserData.accessToken);
+    expect(result?.refreshToken).toBe(inputUserData.refreshToken);
   });
 
   it('should return manufacturer object with companyName when role is "manufacturer"', () => {
