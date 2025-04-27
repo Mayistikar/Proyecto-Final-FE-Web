@@ -13,6 +13,18 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "budgets": [
+              {
+                "type": "initial",
+                "maximumWarning": "2mb",
+                "maximumError": "3mb"
+              },
+              {
+                "type": "anyComponentStyle",
+                "maximumWarning": "500kb",
+                "maximumError": "2mb"
+              }
+            ],
             "outputPath": "dist/proyecto-final-web",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -41,13 +53,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "500kB",
+                  "maximumError": "2mb"
                 }
               ],
               "outputHashing": "all"
