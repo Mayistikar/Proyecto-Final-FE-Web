@@ -145,7 +145,6 @@ export class UploadProductComponent {
       }
     });
 
-    console.log({ errors: this.uploadErrors })
   }
 
   private validateCsvStructure(csv: string): { isValid: boolean; errors: string[] } {
@@ -155,6 +154,9 @@ export class UploadProductComponent {
     ];
 
     const lines = csv.split('\n').filter(line => line.trim() !== '');
+    if (lines.length < 2) {
+      return {isValid: false, errors: ['CSV file is empty or has no data.']};
+    }
     const headers = lines[0].split(';').map(header => header.trim());
     const errors: string[] = [];
 
