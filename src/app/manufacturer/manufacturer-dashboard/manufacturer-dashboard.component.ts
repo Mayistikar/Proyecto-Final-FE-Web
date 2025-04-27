@@ -1,8 +1,13 @@
 // manufacturer-dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { Product } from '../../models/product.model';
+import { ProductService } from '../services/product.service';
+import { AuthService } from '../../auth/auth.service';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-manufacturer-dashboard',
@@ -10,23 +15,63 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     CommonModule,
     RouterModule,
-    TranslateModule
+    TranslateModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   templateUrl: './manufacturer-dashboard.component.html',
   styleUrls: ['./manufacturer-dashboard.component.scss']
 })
 export class ManufacturerDashboardComponent implements OnInit {
-  manufacturerName: string = 'Anderson';
-  products: { name: string, description: string }[] = [
-    { name: 'PRODUCT_1_NAME', description: 'PRODUCT_1_DESC' },
-    { name: 'PRODUCT_2_NAME', description: 'PRODUCT_2_DESC' },
-    { name: 'PRODUCT_3_NAME', description: 'PRODUCT_3_DESC' }
-  ];
+  manufacturerName: string = '';
+  products: Product[] = [];
+  loading = false;
+  searchTerm: string = '';
+  loadingProductsValue = 0;
 
-  constructor() {}
+  constructor(
+    private productService: ProductService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Simulated product list; in real case, fetch from backend
+    this.loading = true;
+    this.loadingProductsValue = 0;
+    const interval = setInterval(() => {
+      if (this.loadingProductsValue < 100) {
+        this.loadingProductsValue += 10;
+      } else {
+        clearInterval(interval);
+      }
+    }, 100);
+
+    const manufacturer = this.authService.getCurrentManufacturer();
+    if (manufacturer) {
+      this.manufacturerName = manufacturer.companyName ?? '';
+      this.productService.getProductsByManufacturer(manufacturer.id).subscribe({
+        next: (data) => {
+          this.products = data;
+          this.loading = false;
+        },
+        error: () => {
+          console.error('Error loading products');
+          this.loading = false;
+        }
+      });
+    } else {
+      this.router.navigate(['/manufacturer']);
+    }
+  }
+
+  viewProductDetail(productId: string): void {
+    this.router.navigate([`/manufacturer/product/${productId}`]);
+  }
+
+  get filteredProducts(): any[] {
+    return this.products.filter(product => {
+      return product?.name?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        product?.sku?.toLowerCase().includes(this.searchTerm.toLowerCase());
+    });
   }
 }
-

@@ -1,16 +1,16 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatSelectModule} from '@angular/material/select';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink, Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
+import { AuthService, UserData } from '../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -42,6 +42,7 @@ export class HomeComponent {
   userType: string | null = null;
   email: string | null = null;
   isLoading = false;
+  errorMessage: string | null = null;
 
   constructor(private fb: FormBuilder,
               public router: Router,
@@ -83,7 +84,12 @@ export class HomeComponent {
         const response: any = await lastValueFrom(this.http.post('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/auth/login', loginData, {
           headers: { 'Content-Type': 'application/json' }
         }));
-        console.log('Login successful', response);
+
+        const data: any = await lastValueFrom(this.http.get('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/auth/users'))
+        console.log({ data })
+
+        const user: any = data?.users.find((usr: any) => usr.email === response.email);
+        console.log({ user })
 
         this.authService.login({
           id: response.id,
@@ -91,7 +97,8 @@ export class HomeComponent {
           role: response.role,
           idToken: response.id_token,
           accessToken: response.access_token,
-          refreshToken: response.refresh_token
+          refreshToken: response.refresh_token,
+          country: user?.profile?.operation_country
         });
 
         this.isLoading = false;
@@ -101,23 +108,30 @@ export class HomeComponent {
           this.router.navigate(['/manufacturer-dashboard']);
         } else if (response.role === 'seller') {
           this.router.navigate(['/seller-dashboard']);
+        } else if (response.role === 'admin') {
+          this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/home']);
         }
       } catch (error: any) {
-        console.error('Login failed', error);
-
-        if (error.status === 401) {
+        if (error?.error?.error === 'Usuario no encontrado') {
+          this.errorMessage = 'Invalid credentials';
+        } else if (error.status === 401) {
+          this.pendingValidation = true;
         } else if (error.status === 403) {
           this.pendingValidation = true;
           this.email = this.loginForm.get('usuario')?.value;
+        } else if (error.status === 422) {
+          this.pendingValidation = true;
+          this.errorMessage = 'Invalid credentials';
+          this.loginForm.get('usuario')?.setErrors({ invalid: true });
+        } else if (error.status === 500) {
+          this.errorMessage = 'Server error';
         }
-
         this.isLoading = false;
         this.cdr.detectChanges();
       }
     } else {
-      console.warn('Form invalid');
       this.loginForm.markAllAsTouched();
       this.isLoading = false;
       this.cdr.detectChanges();

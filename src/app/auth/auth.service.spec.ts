@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AuthService, UserData } from './auth.service';
+import {HttpClient} from '@angular/common/http';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -14,7 +15,8 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({
       providers: [
         AuthService,
-        { provide: Router, useValue: routerMock }
+        { provide: Router, useValue: routerMock },
+        { provide: HttpClient, useValue: {} }
       ]
     });
 
@@ -31,6 +33,7 @@ describe('AuthService', () => {
       id: '1',
       email: 'test@example.com',
       role: 'user',
+      zone: 'ZONE_TEST',
       idToken: 'idToken',
       accessToken: 'accessToken',
       refreshToken: 'refreshToken'
@@ -73,12 +76,73 @@ describe('AuthService', () => {
       id: '1',
       email: 'test@example.com',
       role: 'user',
+      zone: 'ZONE_TEST',
       idToken: 'idToken',
       accessToken: 'accessToken',
       refreshToken: 'refreshToken'
     };
 
     authService.login(userData);
-    expect(authService.getUserData()).toEqual(userData);
+    const result = authService.getUserData();
+    expect(result).toEqual(jasmine.objectContaining(userData));
   });
+
+  it('should return manufacturer object with companyName when role is "manufacturer"', () => {
+    localStorage.setItem('user_id',    'm‑123');
+    localStorage.setItem('user_email', 'maker@widgets.com');
+    localStorage.setItem('user_role',  'manufacturer');
+
+    const result = authService.getCurrentManufacturer();
+
+    expect(result).toEqual({
+      id: 'm‑123',
+      email: 'maker@widgets.com',
+      role: 'manufacturer',
+      companyName: 'maker'
+    });
+  });
+
+  it('should return null when role is not "manufacturer" or data missing', () => {
+    localStorage.setItem('user_id',    'u‑1');
+    localStorage.setItem('user_email', 'user@mail.com');
+    localStorage.setItem('user_role',  'seller');
+
+    expect(authService.getCurrentManufacturer()).toBeNull();
+
+    localStorage.clear();
+    localStorage.setItem('user_role', 'manufacturer');
+    expect(authService.getCurrentManufacturer()).toBeNull();
+  });
+
+  it('isAuthenticated observable should emit the correct sequence (fresh instance)', () => {
+    localStorage.clear();
+
+    const freshService = new AuthService(
+      TestBed.inject(Router),
+      TestBed.inject(HttpClient)
+    );
+
+    const emitted: boolean[] = [];
+    const sub = freshService.isAuthenticated.subscribe(v => emitted.push(v));
+
+    expect(emitted).toEqual([false]);
+
+    freshService.login();
+    expect(emitted[emitted.length - 1]).toBeTrue();
+
+    freshService.logout();
+    expect(emitted[emitted.length - 1]).toBeFalse();
+
+    sub.unsubscribe();
+  });
+
+  it('should return null when not all user tokens are present', () => {
+    localStorage.clear();
+    localStorage.setItem('user_id', '1');
+
+    const result = authService.getUserData();
+    expect(result).toBeNull();
+    });
+
+
 });

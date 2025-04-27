@@ -6,6 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { SellerService } from '../seller.service';
 import { Seller } from '../seller.model';
+import { AuthService } from '../../auth/auth.service';
+import { UserData } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-seller-register',
@@ -40,6 +42,7 @@ export class SellerRegisterComponent {
   constructor(
     private router: Router,
     private sellerService: SellerService,
+    private authService: AuthService
   ) {}
 
   get name() { return this.sellerForm.get('name')!; }
@@ -83,9 +86,25 @@ export class SellerRegisterComponent {
       );
 
       this.sellerService.register(seller).subscribe({
-        next: () => this.router.navigate(['/login']),
+        next: (response: any) => {
+          if (response?.access_token && response?.id) {
+            const userData: UserData = {
+              id: response.id,
+              email: response.email,
+              role: 'seller',
+              zone: seller.zone,
+              idToken: response.id_token,
+              accessToken: response.access_token,
+              refreshToken: response.refresh_token
+            };
+            this.authService.login(userData);
+            this.router.navigate(['/seller-dashboard']);
+          } else {
+            this.router.navigate(['/login']);
+          }
+        },
         error: (err: any) => {
-          console.error('Registration error', err)
+          console.error('Registration error', err);
           this.isSubmitting = false;
         }
       });

@@ -8,11 +8,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { faker } from '@faker-js/faker';
 import { SellerDashboardComponent } from '../seller-dashboard/seller-dashboard.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AuthService } from '../../auth/auth.service';
+
 
 describe('SellerRegisterComponent (refactor)', () => {
   let component: SellerRegisterComponent;
   let fixture: ComponentFixture<SellerRegisterComponent>;
   let sellerServiceSpy: jasmine.SpyObj<SellerService>;
+  const authServiceMock = jasmine.createSpyObj('AuthService', ['login']);
 
   const buildValidForm = () => ({
     name: faker.person.fullName(),
@@ -34,10 +38,12 @@ describe('SellerRegisterComponent (refactor)', () => {
         SellerDashboardComponent,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule
       ],
       providers: [
-        { provide: SellerService, useValue: spy }
+        { provide: SellerService, useValue: spy },
+        { provide: AuthService, useValue: authServiceMock }
       ]
     }).compileComponents();
 
@@ -261,5 +267,6 @@ describe('SellerRegisterComponent (refactor)', () => {
 
     expect(navigateSpy).toHaveBeenCalledWith(['/login']);
   }));
+
 
 });

@@ -3,6 +3,7 @@ import { AppComponent } from './app.component';
 import { TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AuthService } from './auth/auth.service';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -14,7 +15,8 @@ describe('AppComponent', () => {
       ],
       providers: [
         TranslateService,
-        TranslateStore
+        TranslateStore,
+        { provide: AuthService, useValue: jasmine.createSpyObj('AuthService', ['logout']) }
       ]
     }).compileComponents();
   });
@@ -67,4 +69,23 @@ describe('AppComponent', () => {
     app.goHome();
     expect(navigateSpy).toHaveBeenCalledWith(['/']);
   });
+
+  it('should call AuthService.logout and redirect to /login?logout=true', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+  
+    const auth   = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+    const router = TestBed.inject(Router);
+  
+    spyOn(router, 'navigate');
+  
+    app.logout();   
+  
+    expect(auth.logout).toHaveBeenCalled();  
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['/login'],
+      { queryParams: { logout: true } }
+    );
+  });
+  
 });

@@ -12,7 +12,7 @@ export class ManufacturerService {
   constructor(private http: HttpClient) {}
 
   register(payload: any): Observable<any> {
-    return this.http.post(`${BASE_URL}/auth/manufacturer`, payload);
+    return this.http.post(`${BASE_URL}/api/create_manufacturer`, payload);
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {

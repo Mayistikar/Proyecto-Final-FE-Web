@@ -6,7 +6,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
-import { AuthService } from './auth/auth.service';
+import {AuthService, UserData} from './auth/auth.service';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -17,13 +18,16 @@ import { AuthService } from './auth/auth.service';
     MatButtonModule,
     MatIconModule,
     RouterOutlet,
-    RouterModule
+    RouterModule,
+    NgIf
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'proyecto-final-web';
+  user : any;
+  userData: UserData | null = null;
 
   constructor(
     private translate: TranslateService,
@@ -32,6 +36,13 @@ export class AppComponent {
   ) {
     translate.addLangs(['en', 'es']);
     translate.setDefaultLang('en');
+    this.user = <string>localStorage.getItem('user_rol');
+  }
+
+  ngOnInit() {
+    this.authService.userData$.subscribe(data => {
+      this.userData = data;
+    });
   }
 
   changeLanguage(lang: string) {
@@ -46,8 +57,17 @@ export class AppComponent {
     this.router.navigate(['/']);
   }
 
+  goWarehouse() {
+    this.router.navigate(['/warehouse']);
+  }
+
+  goAuthorization() {
+    this.router.navigate(['/admin']);
+  }
+
   logout() {
     this.authService.logout();
+    this.userData = null;
     this.router.navigate(['/login'], { queryParams: { logout: true } });
   }
 }

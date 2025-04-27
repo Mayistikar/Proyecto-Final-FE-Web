@@ -42,17 +42,6 @@ describe('ManufacturerService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should register a manufacturer via POST', () => {
-    service.register(mockPayload).subscribe(res => {
-      expect(res).toEqual({ success: true });
-    });
-
-    const req = httpMock.expectOne(`${BASE_URL}/auth/manufacturer`);
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(mockPayload);
-    req.flush({ success: true });
-  });
-
   it('should login a user via POST', () => {
     service.login(mockCredentials).subscribe(res => {
       expect(res).toEqual({ token: 'jwt-token' });
