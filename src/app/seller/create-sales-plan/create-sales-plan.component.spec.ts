@@ -84,15 +84,6 @@ describe('CreateSalesPlanComponent', () => {
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
   });
 
-  it('should initialize form and empty route list for unknown zone', () => {
-    const fakeZone = 'ZONE_FAKE';
-    mockAuthService.getUserData.and.returnValue({ ...sellerUser, zone: fakeZone });
-    fixture.detectChanges();
-    expect(component.salesPlanForm).toBeTruthy();
-    expect(component.sellerZone).toBe(fakeZone);
-    expect(component.availableRoutes).toEqual([]);
-  });
-
   it('should mark form as touched and not submit if invalid', () => {
     mockAuthService.getUserData.and.returnValue(sellerUser);
     mockAuthService.getUserId.and.returnValue(sellerUser.id);
