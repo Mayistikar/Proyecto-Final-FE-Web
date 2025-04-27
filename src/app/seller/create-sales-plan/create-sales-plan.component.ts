@@ -67,7 +67,6 @@ export class CreateSalesPlanComponent implements OnInit {
       return;
     }
 
-
     this.sellerCountry = zoneToCountryMap[this.sellerZone];
 
     this.salesPlanForm = this.fb.group({
