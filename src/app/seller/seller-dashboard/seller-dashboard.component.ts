@@ -1,14 +1,11 @@
 // seller-dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../auth/auth.service';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { SalesPlan } from '../../models/sales-plan.model';
-import { catchError, of } from 'rxjs';
-import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -26,13 +23,13 @@ export class SellerDashboardComponent implements OnInit {
   sellerName: string = '';
   salesPlans: SalesPlan[] = [];
   loading = false;
-  usedMock = false;
+  loadError = false; 
 
   constructor(
     private authService: AuthService,
     private salesPlanService: SalesPlanService,
     private router: Router,
-    private toastr: ToastrService, 
+    private toastr: ToastrService,
     private translate: TranslateService
   ) {}
 
@@ -47,22 +44,24 @@ export class SellerDashboardComponent implements OnInit {
 
     this.sellerName = seller.email.split('@')[0];
 
-    this.salesPlanService.getSalesPlansBySeller(seller.id).subscribe((response) => {
-      this.salesPlans = response.data;
-      this.usedMock = response.usedMock;
-    
-      if (this.usedMock) {
-        this.translate.get('SALES_PLAN.MOCK_NOTICE').subscribe(msg => this.toastr.info(msg));
+    this.salesPlanService.getSalesPlansBySeller(seller.id).subscribe({
+      next: (plans) => {
+        this.salesPlans = plans;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error cargando planes de venta:', error);
+        this.loading = false;
+        this.loadError = true; 
+        this.translate.get('SALES_PLAN.LOAD_ERROR').subscribe(msg => this.toastr.error(msg));
       }
-    
-      this.loading = false;
     });
   }
-  
+
   viewSalesPlanDetail(planId: string): void {
     this.router.navigate([`/seller/sales-plan-detail/${planId}`]);
   }
- 
+
   createSalesPlan(): void {
     this.router.navigate(['/seller/sales-plans/create']);
   }

@@ -1,3 +1,4 @@
+<!-- src/app/seller/edit-sales-plan/edit-sales-plan.component.html -->
 <div class="container mt-5">
   <h2 class="mb-4">{{ 'SALES_PLAN.EDIT_TITLE' | translate }}</h2>
 
@@ -11,10 +12,11 @@
             id="name"
             class="form-control"
             formControlName="name"
-            [placeholder]="'SALES_PLAN.NAME_PLACEHOLDER' | translate"
-            [ngClass]="{ 'is-invalid': salesPlanForm.get('name')?.invalid && salesPlanForm.get('name')?.touched }"
+            placeholder="{{ 'SALES_PLAN.NAME_PLACEHOLDER' | translate }}"
+            [class.is-valid]="salesPlanForm.get('name')?.valid && (salesPlanForm.get('name')?.dirty || salesPlanForm.get('name')?.touched)"
+            [class.is-invalid]="fieldIsInvalid('name')"
           />
-          <div class="invalid-feedback" *ngIf="salesPlanForm.get('name')?.errors?.['required']">
+          <div *ngIf="fieldIsInvalid('name')" class="text-danger small mt-1">
             {{ 'SALES_PLAN.NAME_REQUIRED' | translate }}
           </div>
         </div>
@@ -26,9 +28,13 @@
             class="form-control"
             formControlName="description"
             rows="3"
-            [placeholder]="'SALES_PLAN.DESCRIPTION_PLACEHOLDER' | translate"
-            [ngClass]="{ 'is-invalid': salesPlanForm.get('description')?.invalid && salesPlanForm.get('description')?.touched }"
+            placeholder="{{ 'SALES_PLAN.DESCRIPTION_PLACEHOLDER' | translate }}"
+            [class.is-valid]="salesPlanForm.get('description')?.valid && (salesPlanForm.get('description')?.dirty || salesPlanForm.get('description')?.touched)"
+            [class.is-invalid]="fieldIsInvalid('description')"
           ></textarea>
+          <div *ngIf="fieldIsInvalid('description')" class="text-danger small mt-1">
+            {{ 'SALES_PLAN.DESCRIPTION_REQUIRED' | translate }}
+          </div>
         </div>
 
         <div class="mb-3">
@@ -37,14 +43,15 @@
             id="visitRoute"
             class="form-select"
             formControlName="visitRoute"
-            [ngClass]="{ 'is-invalid': salesPlanForm.get('visitRoute')?.invalid && salesPlanForm.get('visitRoute')?.touched }"
+            [class.is-valid]="salesPlanForm.get('visitRoute')?.valid && (salesPlanForm.get('visitRoute')?.dirty || salesPlanForm.get('visitRoute')?.touched)"
+            [class.is-invalid]="fieldIsInvalid('visitRoute')"
           >
             <option value="" disabled>{{ 'SALES_PLAN.SELECT_ROUTE' | translate }}</option>
             <option *ngFor="let route of availableRoutes" [value]="route">
-              {{ 'SALES_PLAN.' + route | translate }}
+              {{ 'SALES_PLAN.ROUTES.' + route | translate }}
             </option>
           </select>
-          <div class="invalid-feedback">
+          <div *ngIf="fieldIsInvalid('visitRoute')" class="text-danger small mt-1">
             {{ 'SALES_PLAN.ROUTE_REQUIRED' | translate }}
           </div>
         </div>
@@ -55,13 +62,17 @@
             id="strategy"
             class="form-select"
             formControlName="strategy"
-            [ngClass]="{ 'is-invalid': salesPlanForm.get('strategy')?.invalid && salesPlanForm.get('strategy')?.touched }"
+            [class.is-valid]="salesPlanForm.get('strategy')?.valid && (salesPlanForm.get('strategy')?.dirty || salesPlanForm.get('strategy')?.touched)"
+            [class.is-invalid]="fieldIsInvalid('strategy')"
           >
             <option value="" disabled>{{ 'SALES_PLAN.SELECT_STRATEGY' | translate }}</option>
             <option *ngFor="let s of strategies" [value]="s">
               {{ 'SALES_PLAN.STRATEGIES.' + s | translate }}
             </option>
           </select>
+          <div *ngIf="fieldIsInvalid('strategy')" class="text-danger small mt-1">
+            {{ 'SALES_PLAN.STRATEGY_REQUIRED' | translate }}
+          </div>
         </div>
       </div>
 
@@ -72,13 +83,17 @@
             id="event"
             class="form-select"
             formControlName="event"
-            [ngClass]="{ 'is-invalid': salesPlanForm.get('event')?.invalid && salesPlanForm.get('event')?.touched }"
+            [class.is-valid]="salesPlanForm.get('event')?.valid && (salesPlanForm.get('event')?.dirty || salesPlanForm.get('event')?.touched)"
+            [class.is-invalid]="fieldIsInvalid('event')"
           >
             <option value="" disabled>{{ 'SALES_PLAN.SELECT_EVENT' | translate }}</option>
             <option *ngFor="let e of events" [value]="e">
               {{ 'SALES_PLAN.EVENTS.' + e | translate }}
             </option>
           </select>
+          <div *ngIf="fieldIsInvalid('event')" class="text-danger small mt-1">
+            {{ 'SALES_PLAN.EVENT_REQUIRED' | translate }}
+          </div>
         </div>
 
         <div class="mb-3">
@@ -88,9 +103,14 @@
             id="dailyGoal"
             class="form-control"
             formControlName="dailyGoal"
-            [placeholder]="'SALES_PLAN.DAILY_PLACEHOLDER' | translate"
-            [ngClass]="{ 'is-invalid': salesPlanForm.get('dailyGoal')?.invalid && salesPlanForm.get('dailyGoal')?.touched }"
+            min="1"
+            placeholder="{{ 'SALES_PLAN.DAILY_PLACEHOLDER' | translate }}"
+            [class.is-valid]="salesPlanForm.get('dailyGoal')?.valid && (salesPlanForm.get('dailyGoal')?.dirty || salesPlanForm.get('dailyGoal')?.touched)"
+            [class.is-invalid]="fieldIsInvalid('dailyGoal')"
           />
+          <div *ngIf="fieldIsInvalid('dailyGoal')" class="text-danger small mt-1">
+            {{ 'SALES_PLAN.DAILY_REQUIRED' | translate }}
+          </div>
         </div>
 
         <div class="mb-3">
@@ -100,9 +120,14 @@
             id="weeklyGoal"
             class="form-control"
             formControlName="weeklyGoal"
-            [placeholder]="'SALES_PLAN.WEEKLY_PLACEHOLDER' | translate"
-            [ngClass]="{ 'is-invalid': salesPlanForm.get('weeklyGoal')?.invalid && salesPlanForm.get('weeklyGoal')?.touched }"
+            min="1"
+            placeholder="{{ 'SALES_PLAN.WEEKLY_PLACEHOLDER' | translate }}"
+            [class.is-valid]="salesPlanForm.get('weeklyGoal')?.valid && (salesPlanForm.get('weeklyGoal')?.dirty || salesPlanForm.get('weeklyGoal')?.touched)"
+            [class.is-invalid]="fieldIsInvalid('weeklyGoal')"
           />
+          <div *ngIf="fieldIsInvalid('weeklyGoal')" class="text-danger small mt-1">
+            {{ 'SALES_PLAN.WEEKLY_REQUIRED' | translate }}
+          </div>
         </div>
 
         <div class="form-row d-flex gap-3">
@@ -113,9 +138,11 @@
               id="startTime"
               class="form-control"
               formControlName="startTime"
-              [ngClass]="{ 'is-invalid': salesPlanForm.hasError('invalidTimeRange') && salesPlanForm.touched }"
+              [class.is-valid]="salesPlanForm.get('startTime')?.valid && !salesPlanForm.errors?.['invalidTimeRange'] && (salesPlanForm.get('startTime')?.dirty || salesPlanForm.get('startTime')?.touched)"
+              [class.is-invalid]="fieldIsInvalid('startTime') || salesPlanForm.errors?.['invalidTimeRange']"
             />
           </div>
+
           <div class="mb-3 w-50">
             <label for="endTime" class="form-label">{{ 'SALES_PLAN.END_TIME' | translate }}</label>
             <input
@@ -123,7 +150,8 @@
               id="endTime"
               class="form-control"
               formControlName="endTime"
-              [ngClass]="{ 'is-invalid': salesPlanForm.hasError('invalidTimeRange') && salesPlanForm.touched }"
+              [class.is-valid]="salesPlanForm.get('endTime')?.valid && !salesPlanForm.errors?.['invalidTimeRange'] && (salesPlanForm.get('endTime')?.dirty || salesPlanForm.get('endTime')?.touched)"
+              [class.is-invalid]="fieldIsInvalid('endTime') || salesPlanForm.errors?.['invalidTimeRange']"
             />
           </div>
         </div>
@@ -135,16 +163,16 @@
     </div>
 
     <div class="d-flex justify-content-end mt-4 gap-3">
-      <button type="submit" class="btn btn-primary" [disabled]="salesPlanForm.invalid || isLoading">
-        <span *ngIf="!isLoading">{{ 'COMMON.UPDATE' | translate }}</span>
-        <span *ngIf="isLoading">
+      <button type="submit" class="btn btn-primary" [disabled]="salesPlanForm.invalid || updating || !isFormChanged()">
+        <span *ngIf="!updating">{{ 'BUTTON_UPDATE' | translate }}</span>
+        <span *ngIf="updating">
           <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          {{ 'LOADING_BUTTON_TEXT' | translate }}
+          {{ 'COMMON.PROCESSING' | translate }}
         </span>
       </button>
-
-      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" [disabled]="isLoading">
-        {{ 'COMMON.CANCEL' | translate }}
+    
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" [disabled]="updating">
+        {{ 'BUTTON_CANCEL' | translate }}
       </button>
     </div>
   </form>

@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { SalesPlan } from '../../models/sales-plan.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sales-plan-detail',
@@ -30,37 +31,69 @@ export class SalesPlanDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private salesPlanService: SalesPlanService,
     private router: Router,
-    public translate: TranslateService
+    private translate: TranslateService,
+    private toastr: ToastrService
+    
   ) {}
 
   ngOnInit(): void {
     const planId = this.route.snapshot.paramMap.get('id');
 
     if (!planId) {
-      this.error = true;
-      this.loading = false;
+      this.handleLoadError();
       return;
     }
 
     this.salesPlanService.getById(planId).subscribe({
-      next: (plan) => {
-        this.salesPlan = plan;
+      next: (plan: any) => {
+        if (!plan) {
+          this.handleLoadError();
+          return;
+        }
+
+        this.salesPlan = {
+          id: plan.id,
+          name: plan.name,
+          description: plan.description,
+          visitRoute: plan.visit_route,
+          strategy: plan.strategy,
+          event: plan.event,
+          dailyGoal: plan.daily_goal,
+          weeklyGoal: plan.weekly_goal,
+          startTime: plan.start_time,
+          endTime: plan.end_time,
+          sellerId: plan.seller_id,
+          createdAt: plan.created_at
+        };
+
         this.loading = false;
+        this.toastr.success(
+          this.translate.instant('SALES_PLAN.LOAD_SUCCESS'),
+          this.translate.instant('COMMON.SUCCESS'),
+          { timeOut: 3000 }
+        );
       },
       error: () => {
-        this.error = true;
-        this.loading = false;
+        this.handleLoadError();
       }
     });
+  }
+
+  private handleLoadError(): void {
+    this.error = true;
+    this.loading = false;
+    this.toastr.error(
+      this.translate.instant('SALES_PLAN.LOAD_ERROR'),
+      this.translate.instant('COMMON.ERROR'),
+      { timeOut: 4000 }
+    );
   }
 
   editPlan(): void {
     this.router.navigate([`/seller/edit-sales-plan/${this.salesPlan.id}`]);
   }
-  
 
   onCancel(): void {
     this.router.navigate(['/seller-dashboard']);
   }
-
 }

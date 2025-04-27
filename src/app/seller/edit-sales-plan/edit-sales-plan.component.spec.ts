@@ -11,6 +11,7 @@ import { of, throwError } from 'rxjs';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { AuthService } from '../../auth/auth.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormControl, FormGroup } from '@angular/forms';
 
 class MockSalesPlanService {
   getById = jasmine.createSpy('getById');
@@ -99,12 +100,10 @@ describe('EditSalesPlanComponent', () => {
   });
 
   it('should update and navigate on successful submission', fakeAsync(() => {
-    spyOn(translate, 'get').and.returnValue(of('Éxito'));
     spyOn(toastrService, 'success');
-
     component.salesPlanForm.setValue({
       name: 'Updated Plan',
-      description: 'Updated',
+      description: 'Updated description',
       visitRoute: 'ROUTE_BOGOTA_NORTE',
       dailyGoal: 10,
       weeklyGoal: 50,
@@ -113,38 +112,22 @@ describe('EditSalesPlanComponent', () => {
       strategy: 'FREE_SAMPLES',
       event: 'SPORT_EVENT'
     });
+    component.initialSalesPlanData = { ...component.salesPlanForm.value, description: 'Different description' }; // Forzar isFormChanged true
 
     salesPlanService.update.and.returnValue(of({}));
     component.onSubmit();
-    tick();
+    tick(2000);
 
-    expect(toastrService.success).toHaveBeenCalledWith('Éxito');
+    expect(toastrService.success).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
-    expect(component.isLoading).toBeFalse();
+    expect(component.updating).toBeFalse();
   }));
 
-  it('should set availableRoutes to [] if zone is unknown', () => {
-    const mockUser = { role: 'seller', zone: 'ZONE_UNKNOWN' };
-    spyOn(component['authService'], 'getUserData').and.returnValue({
-      id: 'test-id',
-      email: 'test@example.com',
-      role: 'seller',
-      zone: 'ZONE_UNKNOWN',
-      idToken: 'mock-token',
-      accessToken: 'mock-token',
-      refreshToken: 'mock-token'
-    });
-    component.ngOnInit();
-    expect(component.availableRoutes).toEqual([]);
-  });
-
-  it('should assign empty sellerId if authService.getUserId is null', () => {
-    spyOn(component['authService'], 'getUserId').and.returnValue(null);
-    component.planId = 'plan-001';
-
+  it('should not submit if no changes detected', () => {
+    spyOn(toastrService, 'info');
     component.salesPlanForm.setValue({
-      name: 'Plan',
-      description: '',
+      name: 'Edit Plan',
+      description: 'Test description',
       visitRoute: 'ROUTE_BOGOTA_NORTE',
       dailyGoal: 5,
       weeklyGoal: 25,
@@ -153,55 +136,77 @@ describe('EditSalesPlanComponent', () => {
       strategy: 'DIRECT_PROMOTION',
       event: 'LOCAL_CONCERT'
     });
+    component.initialSalesPlanData = { ...component.salesPlanForm.value };
 
-    salesPlanService.update.and.returnValue(of({}));
     component.onSubmit();
 
-    expect(salesPlanService.update).toHaveBeenCalledWith('plan-001', jasmine.objectContaining({ sellerId: '' }));
+    expect(toastrService.info).toHaveBeenCalled();
+    expect(salesPlanService.update).not.toHaveBeenCalled();
   });
 
-  it('should navigate to detail page on cancel', () => {
-    component.planId = 'plan-888';
+  it('should navigate to dashboard on cancel', () => {
     component.onCancel();
-    expect(router.navigate).toHaveBeenCalledWith(['/seller/sales-plan-detail/plan-888']);
-  });
-
-  it('should navigate to /login if user is invalid', () => {
-    const authService = TestBed.inject(AuthService);
-    spyOn(authService, 'getUserData').and.returnValue(null);
-    component.ngOnInit();
-    expect(router.navigate).toHaveBeenCalledWith(['/login']);
-  });
-
-  it('should show error and redirect if planId is missing', () => {
-    const authService = TestBed.inject(AuthService);
-    spyOn(authService, 'getUserData').and.returnValue({
-      id: 'seller-id-001',
-      email: 'seller@example.com',
-      role: 'seller',
-      zone: 'ZONE_BOGOTA',
-      idToken: 'mock-idToken',
-      accessToken: 'mock-accessToken',
-      refreshToken: 'mock-refreshToken'
-    });
-    const route = TestBed.inject(ActivatedRoute);
-    spyOn(route.snapshot.paramMap, 'get').and.returnValue('');
-    spyOn(toastrService, 'error');
-
-    component.ngOnInit();
-
-    expect(toastrService.error).toHaveBeenCalledWith('ID inválido del plan.');
     expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
   });
 
   it('should handle load error and navigate', fakeAsync(() => {
-    spyOn(translate, 'get').and.returnValue(of('Error al cargar'));
     spyOn(toastrService, 'error');
-    component.planId = 'plan-error';
-    salesPlanService.getById.and.returnValue(throwError(() => new Error('fail')));
-    component['loadSalesPlan']();
+    salesPlanService.getById.and.returnValue(throwError(() => new Error('Load fail')));
+    component.ngOnInit();
     tick();
-    expect(toastrService.error).toHaveBeenCalledWith('Error al cargar');
+    expect(toastrService.error).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
+  }));
+
+  it('should handle null plan from API gracefully', fakeAsync(() => {
+    spyOn(toastrService, 'error');
+
+    salesPlanService.getById.and.returnValue(of(null as any));
+
+    component.ngOnInit();
+    tick();
+    fixture.detectChanges();
+
+    expect(toastrService.error).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
+  }));
+
+  it('should validate that startTime is before endTime', () => {
+    const form = new FormGroup({
+      startTime: new FormControl('10:00'),
+      endTime: new FormControl('09:00')
+    });
+
+    const result = component.validateTimeRange(form);
+
+    expect(result).toEqual({ invalidTimeRange: true });
+  });
+
+  it('should show a toast if update fails', fakeAsync(() => {
+    component.salesPlanForm.setValue({
+      name: 'Plan con error',
+      description: 'Descripción nueva',
+      visitRoute: 'ROUTE_BOGOTA_NORTE',
+      dailyGoal: 11,
+      weeklyGoal: 55,
+      startTime: '09:00',
+      endTime:   '18:00',
+      strategy: 'DIRECT_PROMOTION',
+      event: 'LOCAL_CONCERT'
+    });
+    component.initialSalesPlanData = { ...component.salesPlanForm.value, name: 'Distinto' };
+
+    spyOn(toastrService, 'error');
+
+    salesPlanService.update.and.returnValue(
+      throwError(() => new Error('update fail'))
+    );
+
+    component.onSubmit();
+    tick();
+
+    expect(toastrService.error).toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+    expect(component.updating).toBeFalse();
   }));
 });

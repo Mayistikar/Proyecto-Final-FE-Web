@@ -44,7 +44,7 @@ export class UploadProductComponent {
   ) {
     this.userCountry = this.authService.getUserCountry();
     this.userId = this.authService.getUserId();
-    this.productService.getWarehouses(this.userCountry || '').subscribe((warehouses) => {
+    this.productService.getWarehouses('Colombia').subscribe((warehouses) => {
       this.warehouses = warehouses;
     });
   }

@@ -3,8 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { SalesPlanService } from './sales-plan.service';
 import { SalesPlan } from '../../models/sales-plan.model';
-import { faker } from '@faker-js/faker';
-import { MOCK_SALES_PLAN } from '../mocks/mock-sales-plan';
 
 describe('SalesPlanService', () => {
   let service: SalesPlanService;
@@ -58,8 +56,7 @@ describe('SalesPlanService', () => {
     const mockPlans = [mockPlan];
 
     service.getSalesPlansBySeller(mockPlan.sellerId).subscribe(response => {
-      expect(response.data).toEqual(mockPlans);
-      expect(response.usedMock).toBeFalse();
+      expect(response).toEqual(mockPlans);
     });
 
     const req = httpMock.expectOne(`${baseUrl}/sales-plans/seller/${mockPlan.sellerId}`);
@@ -89,22 +86,13 @@ describe('SalesPlanService', () => {
     req.flush(updatedPlan);
   });
 
-  it('should return MOCK_SALES_PLAN if id is "mock-id"', () => {
-    service.getById('mock-id').subscribe(response => {
-      expect(response).toEqual(MOCK_SALES_PLAN);
+  it('should delete a sales plan', () => {
+    service.delete(mockPlan.id).subscribe(response => {
+      expect(response).toBeNull(); 
     });
 
-    httpMock.expectNone(`${baseUrl}/sales-plans/mock-id`);
-  });
-
-  it('should return MOCK_SALES_PLAN on getSalesPlansBySeller() error', () => {
-    service.getSalesPlansBySeller(mockPlan.sellerId).subscribe(response => {
-      expect(response.data).toEqual([MOCK_SALES_PLAN]);
-      expect(response.usedMock).toBeTrue();
-    });
-
-    const req = httpMock.expectOne(`${baseUrl}/sales-plans/seller/${mockPlan.sellerId}`);
-    expect(req.request.method).toBe('GET');
-    req.error(new ErrorEvent('Network error'));
+    const req = httpMock.expectOne(`${baseUrl}/sales-plans/${mockPlan.id}`);
+    expect(req.request.method).toBe('DELETE');
+    req.flush(null); 
   });
 });

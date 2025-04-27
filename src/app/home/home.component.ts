@@ -98,7 +98,8 @@ export class HomeComponent {
           idToken: response.id_token,
           accessToken: response.access_token,
           refreshToken: response.refresh_token,
-          country: user?.profile?.operation_country
+          country: user?.profile?.operation_country,
+          sector_coverage: user?.profile?.sector_coverage
         });
 
         this.isLoading = false;
