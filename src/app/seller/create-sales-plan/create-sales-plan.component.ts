@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SalesPlanService } from '../services/sales-plan.service';
-import { SalesPlan } from '../../models/sales-plan.model';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../auth/auth.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
@@ -17,8 +16,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { routesByZone, zoneToCountryMap } from '../../models/sales-plan-routes';
-import { finalize } from 'rxjs/operators';
-import { timer } from 'rxjs';
+import { finalize, timer } from 'rxjs';
 
 @Component({
   selector: 'app-create-sales-plan',
@@ -43,11 +41,11 @@ export class CreateSalesPlanComponent implements OnInit {
   salesPlanForm!: FormGroup;
   isLoading = false;
   availableRoutes: string[] = ['NORTH_ROUTE', 'SOUTH_ROUTE', 'EAST_ROUTE', 'WEST_ROUTE', 'DOWNTOWN', 'RURAL_AREA'];
+  strategies = ['DIRECT_PROMOTION', 'FREE_SAMPLES', 'BULK_DISCOUNT'];
+  events = ['LOCAL_CONCERT', 'REGIONAL_FAIR', 'SPORT_EVENT'];
   sellerZone = '';
   sellerCountry = '';
 
-  strategies: string[] = ['DIRECT_PROMOTION', 'FREE_SAMPLES', 'BULK_DISCOUNT'];
-  events: string[] = ['LOCAL_CONCERT', 'REGIONAL_FAIR', 'SPORT_EVENT'];
 
   constructor(
     private fb: FormBuilder,
@@ -60,17 +58,19 @@ export class CreateSalesPlanComponent implements OnInit {
 
   ngOnInit(): void {
     const user = this.authService.getUserData();
-
     if (!user || user.role !== 'seller') {
       this.router.navigate(['/login']);
       return;
     }
 
-    this.sellerCountry = zoneToCountryMap[this.sellerZone];
+    this.sellerZone = user.zone || '';
+    this.sellerCountry = zoneToCountryMap[this.sellerZone] || '';
+    this.availableRoutes = routesByZone[this.sellerZone] || [];
+
 
     this.salesPlanForm = this.fb.group({
-      name: ['', [Validators.required]],
-      description: [''],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
       visitRoute: ['', [Validators.required]],
       dailyGoal: ['', [Validators.required, Validators.min(1)]],
       weeklyGoal: ['', [Validators.required, Validators.min(1)]],
@@ -84,10 +84,15 @@ export class CreateSalesPlanComponent implements OnInit {
   validateTimeRange(group: FormGroup): ValidationErrors | null {
     const start = group.get('startTime')?.value;
     const end = group.get('endTime')?.value;
-
+  
     if (!start || !end) return null;
-
+  
     return start < end ? null : { invalidTimeRange: true };
+  }
+
+  fieldIsInvalid(field: string): boolean {
+    const control = this.salesPlanForm.get(field);
+    return !!(control && control.invalid && (control.dirty || control.touched));
   }
 
   private toSnakeCase(payload: any): any {
@@ -114,7 +119,6 @@ export class CreateSalesPlanComponent implements OnInit {
 
     this.isLoading = true;
     const sellerId = this.authService.getUserId();
-
     if (!sellerId) {
       this.translate.get('ERROR.SELLER_INVALID').subscribe(msg => this.toastr.error(msg));
       this.isLoading = false;
@@ -122,7 +126,6 @@ export class CreateSalesPlanComponent implements OnInit {
     }
 
     const formValue = this.salesPlanForm.value;
-
     const salesPlan = {
       ...formValue,
       sellerId,
@@ -131,16 +134,20 @@ export class CreateSalesPlanComponent implements OnInit {
 
     const payload = this.toSnakeCase(salesPlan);
 
+    console.log('Payload enviado al backend:', payload);
+
     this.salesPlanService.create(payload).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log('Respuesta del backend:', response);
         this.translate.get('SALES_PLAN.CREATED_SUCCESS').subscribe(msg => {
           this.toastr.success(msg);
-          timer(1500).subscribe(() => this.router.navigate(['/seller-dashboard']));
+          timer(2000).subscribe(() => this.router.navigate(['/seller-dashboard']));
         });
       },
-      error: (err) => {
+      error: (error) => {
+        console.error('Error recibido del backend:', error); // 👈 Agregado para ver el error real
         this.translate.get('SALES_PLAN.CREATED_ERROR').subscribe(msg => this.toastr.error(msg));
       }
     });

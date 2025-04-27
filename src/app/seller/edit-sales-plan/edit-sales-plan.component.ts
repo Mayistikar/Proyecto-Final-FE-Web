@@ -4,21 +4,18 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SalesPlanService } from '../services/sales-plan.service';
-import { SalesPlan } from '../../models/sales-plan.model';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../auth/auth.service';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs';
 import { routesByZone, zoneToCountryMap } from '../../models/sales-plan-routes';
-import { finalize } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-edit-sales-plan',
@@ -28,12 +25,11 @@ import { finalize } from 'rxjs/operators';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSlideToggleModule,
-    MatProgressSpinnerModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
     TranslateModule
   ],
   templateUrl: './edit-sales-plan.component.html',
@@ -41,123 +37,171 @@ import { finalize } from 'rxjs/operators';
 })
 export class EditSalesPlanComponent implements OnInit {
   salesPlanForm!: FormGroup;
-  isLoading = true;
-  planId: string = '';
+  loading = false;    
+  updating = false;  
+  salesPlanId!: string;
+  initialSalesPlanData: any;
   availableRoutes: string[] = [];
+  strategies = ['DIRECT_PROMOTION', 'FREE_SAMPLES', 'BULK_DISCOUNT'];
+  events = ['LOCAL_CONCERT', 'REGIONAL_FAIR', 'SPORT_EVENT'];
   sellerZone = '';
   sellerCountry = '';
 
-  strategies: string[] = ['DIRECT_PROMOTION', 'FREE_SAMPLES', 'BULK_DISCOUNT'];
-  events: string[] = ['LOCAL_CONCERT', 'REGIONAL_FAIR', 'SPORT_EVENT'];
-
   constructor(
     private fb: FormBuilder,
-    private salesPlanService: SalesPlanService,
     private route: ActivatedRoute,
-    private router: Router,
-    private toastr: ToastrService,
+    private salesPlanService: SalesPlanService,
     private authService: AuthService,
+    private toastr: ToastrService,
+    private router: Router,
     private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
-    const user = this.authService.getUserData();
-
-    if (!user || user.role !== 'seller' || !user.zone) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.sellerZone = user.zone;
-    this.sellerCountry = zoneToCountryMap[this.sellerZone];
-    this.availableRoutes = routesByZone[this.sellerZone] || [];
-
-    this.planId = this.route.snapshot.paramMap.get('id') || '';
-
-    if (!this.planId) {
-      this.toastr.error('ID inválido del plan.');
-      this.router.navigate(['/seller-dashboard']);
-      return;
-    }
-
-    this.salesPlanForm = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
-      visitRoute: ['', Validators.required],
-      dailyGoal: ['', [Validators.required, Validators.min(1)]],
-      weeklyGoal: ['', [Validators.required, Validators.min(1)]],
-      startTime: ['', Validators.required],
-      endTime: ['', Validators.required],
-      strategy: ['', Validators.required],
-      event: ['', Validators.required]
-    }, { validators: this.validateTimeRange });
-
+    this.salesPlanId = this.route.snapshot.paramMap.get('id')!;
+    console.log('ID del Plan de Venta recibido:', this.salesPlanId);
+    this.initForm();
     this.loadSalesPlan();
   }
 
-  private loadSalesPlan(): void {
-    this.salesPlanService.getById(this.planId).subscribe({
-      next: (plan: SalesPlan) => {
-        this.salesPlanForm.patchValue({
-          name: plan.name,
-          description: plan.description,
-          visitRoute: plan.visitRoute,
-          dailyGoal: plan.dailyGoal,
-          weeklyGoal: plan.weeklyGoal,
-          startTime: plan.startTime,
-          endTime: plan.endTime,
-          strategy: plan.strategy,
-          event: plan.event
-        });
-        this.isLoading = false;
-      },
-      error: () => {
-        this.translate.get('SALES_PLAN.LOAD_ERROR').subscribe(msg => this.toastr.error(msg));
-        this.router.navigate(['/seller-dashboard']);
-      }
-    });
+  initForm(): void {
+    console.log('Creando Formulario de Edición');
+    this.salesPlanForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      visitRoute: ['', [Validators.required]],
+      strategy: ['', [Validators.required]],
+      event: ['', [Validators.required]],
+      dailyGoal: ['', [Validators.required, Validators.min(1)]],
+      weeklyGoal: ['', [Validators.required, Validators.min(1)]],
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]]
+    }, { validators: this.validateTimeRange });
   }
 
   validateTimeRange(group: FormGroup): ValidationErrors | null {
     const start = group.get('startTime')?.value;
     const end = group.get('endTime')?.value;
-
     if (!start || !end) return null;
-
     return start < end ? null : { invalidTimeRange: true };
+  }
+
+  loadSalesPlan(): void {
+    console.log('Cargando Plan de Venta desde el backend...');
+    this.loading = true;
+    this.salesPlanService.getById(this.salesPlanId).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe({
+      next: (plan: any) => {
+        if (!plan) {
+          this.handleLoadError();
+          return;
+        }
+        const normalized = {
+          name: plan.name,
+          description: plan.description,
+          visitRoute: plan.visit_route,
+          strategy: plan.strategy,
+          event: plan.event,
+          dailyGoal: plan.daily_goal,
+          weeklyGoal: plan.weekly_goal,
+          startTime: plan.start_time,
+          endTime: plan.end_time
+        };
+        this.salesPlanForm.patchValue(normalized);
+        this.initialSalesPlanData = normalized;
+
+        const user = this.authService.getUserData();
+        this.sellerZone = user?.zone || '';
+        this.sellerCountry = zoneToCountryMap[this.sellerZone] || '';
+        this.availableRoutes = routesByZone[this.sellerZone] || [];
+      },
+      error: () => this.handleLoadError()
+    });
+  }
+
+  private handleLoadError(): void {
+    this.toastr.error(
+      this.translate.instant('SALES_PLAN.LOAD_ERROR'),
+      this.translate.instant('COMMON.ERROR'),
+      { timeOut: 4000 }
+    );
+    this.router.navigate(['/seller-dashboard']);
+  }
+
+  fieldIsInvalid(field: string): boolean {
+    const control = this.salesPlanForm.get(field);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  isFormChanged(): boolean {
+    const current = this.salesPlanForm.getRawValue();
+    return JSON.stringify(current) !== JSON.stringify(this.initialSalesPlanData);
+  }
+
+  private toSnakeCase(payload: any): any {
+    return {
+      name: payload.name,
+      description: payload.description,
+      visit_route: payload.visitRoute,
+      strategy: payload.strategy,
+      event: payload.event,
+      daily_goal: payload.dailyGoal,
+      weekly_goal: payload.weeklyGoal,
+      start_time: payload.startTime,
+      end_time: payload.endTime
+    };
   }
 
   onSubmit(): void {
     if (this.salesPlanForm.invalid) {
       this.salesPlanForm.markAllAsTouched();
+      this.toastr.error(
+        this.translate.instant('FORM.INVALID'),
+        this.translate.instant('COMMON.ERROR'),
+        { timeOut: 3000 }
+      );
       return;
     }
-  
-    this.isLoading = true;
-  
-    const updatedPlan: SalesPlan = {
-      ...this.salesPlanForm.value,
-      id: this.planId,
-      sellerId: this.authService.getUserId() || '',
-      createdAt: new Date().toISOString()
-    };
-  
-    this.salesPlanService.update(this.planId, updatedPlan).pipe(
-      finalize(() => this.isLoading = false) 
+
+    if (!this.isFormChanged()) {
+      console.info('No hay cambios para actualizar');
+      this.toastr.info(
+        this.translate.instant('FORM.NO_CHANGES'),
+        this.translate.instant('COMMON.INFO'),
+        { timeOut: 3000 }
+      );
+      return;
+    }
+
+    this.updating = true; 
+    const payload = this.toSnakeCase(this.salesPlanForm.value);
+
+    this.salesPlanService.update(this.salesPlanId, payload).pipe(
+      finalize(() => this.updating = false)
     ).subscribe({
       next: () => {
-        this.translate.get('SALES_PLAN.UPDATED_SUCCESS').subscribe(msg => this.toastr.success(msg));
-        this.router.navigate(['/seller-dashboard']);
+        console.log('Plan de venta actualizado exitosamente');
+        this.toastr.success(
+          this.translate.instant('SALES_PLAN.UPDATED_SUCCESS'),
+          this.translate.instant('COMMON.SUCCESS'),
+          { timeOut: 3000 }
+        );
+        setTimeout(() => {
+          this.router.navigate(['/seller-dashboard']);
+        }, 2000);
       },
-      error: (err) => {
-        console.error('❌ Error real del backend:', err);
-        this.translate.get('SALES_PLAN.UPDATED_ERROR').subscribe(msg => this.toastr.error(msg));
+      error: () => {
+        this.toastr.error(
+          this.translate.instant('SALES_PLAN.UPDATED_ERROR'),
+          this.translate.instant('COMMON.ERROR'),
+          { timeOut: 3000 }
+        );
       }
     });
   }
 
-  
   onCancel(): void {
-    this.router.navigate([`/seller/sales-plan-detail/${this.planId}`]);
+    this.router.navigate(['/seller-dashboard']);
   }
 }
