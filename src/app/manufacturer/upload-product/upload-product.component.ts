@@ -42,16 +42,17 @@ export class UploadProductComponent {
     private router: Router,
     private authService: AuthService,
   ) {
-    this.userCountry = this.authService.getUserCountry();
+    this.userCountry = this.authService.getUserCountry()?.split("_")[1];
     this.userId = this.authService.getUserId();
-    this.productService.getWarehouses('Colombia').subscribe((warehouses) => {
+    console.log(this.userId);
+    this.productService.getWarehouses(this.userCountry?.toLowerCase()).subscribe((warehouses) => {
       this.warehouses = warehouses;
     });
   }
 
   downloadFile(): void {
     const link = document.createElement('a');
-    link.href = 'https://assetsccp.s3.us-east-1.amazonaws.com/plantilla.csv';
+    link.href = 'https://assetsccp.s3.us-east-1.amazonaws.com/plantilla_2.0.csv';
     link.download = 'sample-file.pdf';
     link.click();
   }
@@ -124,7 +125,8 @@ export class UploadProductComponent {
       return {
         ...item,
         warehouse: this.warehouseSelected,
-        manufacturer_id: this.userId
+        manufacturer_id: this.userId,
+        country: this.userCountry,
       };
     }));
 
@@ -149,8 +151,8 @@ export class UploadProductComponent {
 
   private validateCsvStructure(csv: string): { isValid: boolean; errors: string[] } {
     const expectedHeaders = [
-      "name", "description", "category", "price", "currency", "stock", "sku",
-      "expirationDate", "deliveryTime", "storageConditions", "commercialConditions", "isPerishable"
+      "name", "description", "category", "price", "currency", "is_perishable", "stock", "sku",
+      "expiration_date", "delivery_time", "storage_conditions", "image", "commercial_conditions"
     ];
 
     const lines = csv.split('\n').filter(line => line.trim() !== '');
@@ -172,7 +174,7 @@ export class UploadProductComponent {
         return;
       }
 
-      const [name, description, category, price, currency, stock, sku, expirationDate, deliveryTime, storageConditions, commercialConditions, isPerishable] = values;
+      const [name, description, category, price, currency, is_perishable, stock, sku, expiration_date, delivery_time, storage_conditions, image, commercial_conditions] = values;
 
       if (!name.trim()) errors.push(`Row ${rowIndex + 1}: "name" is required.`);
       if (!description.trim()) errors.push(`Row ${rowIndex + 1}: "description" is required.`);
@@ -181,12 +183,12 @@ export class UploadProductComponent {
       if (!currency.trim()) errors.push(`Row ${rowIndex + 1}: "currency" is required.`);
       if (isNaN(parseInt(stock))) errors.push(`Row ${rowIndex + 1}: "stock" must be a valid integer.`);
       if (!sku.trim()) errors.push(`Row ${rowIndex + 1}: "sku" is required.`);
-      if (isNaN(Date.parse(expirationDate))) errors.push(`Row ${rowIndex + 1}: "expirationDate" must be a valid date.`);
-      if (isNaN(parseInt(deliveryTime))) errors.push(`Row ${rowIndex + 1}: "deliveryTime" must be a valid integer.`);
-      if (!storageConditions.trim()) errors.push(`Row ${rowIndex + 1}: "storageConditions" is required.`);
-      if (!commercialConditions.trim()) errors.push(`Row ${rowIndex + 1}: "commercialConditions" is required.`);
-      if (!["TRUE", "FALSE"].includes(isPerishable.trim().toUpperCase())) {
-        errors.push(`Row ${rowIndex + 1}: "isPerishable" must be either TRUE or FALSE.`);
+      if (isNaN(Date.parse(expiration_date))) errors.push(`Row ${rowIndex + 1}: "expiration_date" must be a valid date.`);
+      if (isNaN(parseInt(delivery_time))) errors.push(`Row ${rowIndex + 1}: "delivery_time" must be a valid integer.`);
+      if (!storage_conditions.trim()) errors.push(`Row ${rowIndex + 1}: "storage_conditions" is required.`);
+      if (!commercial_conditions.trim()) errors.push(`Row ${rowIndex + 1}: "commercial_conditions" is required.`);
+      if (!["TRUE", "FALSE"].includes(is_perishable.trim().toUpperCase())) {
+        errors.push(`Row ${rowIndex + 1}: "is_perishable" must be either TRUE or FALSE.`);
       }
     });
 
