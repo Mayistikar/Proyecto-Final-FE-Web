@@ -22,7 +22,7 @@ export class WarehouseComponent {
   products: any[] = [];
   userName: string = '';
   warehouses: Record<string, any> = {};
-  countries: string[] = ['Colombia', 'Estados Unidos'];
+  countries: string[] = ['Colombia', 'USA'];
   searchTerm: string = '';
   selectedCountry: string = '';
   selectedWarehouse: string = '';
@@ -81,7 +81,7 @@ export class WarehouseComponent {
         product?.sku?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         product?.category?.toLowerCase().includes(this.searchTerm.toLowerCase());
 
-      const matchesCountry = !this.selectedCountry || product?.country === this.selectedCountry;
+      const matchesCountry = !this.selectedCountry.toLowerCase() || product?.country.toLowerCase() === this.selectedCountry.toLowerCase();
       const matchesWarehouse = !this.selectedWarehouse || product?.warehouse === this.selectedWarehouse;
 
       return matchesSearchTerm && matchesCountry && matchesWarehouse;
