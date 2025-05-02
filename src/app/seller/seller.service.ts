@@ -1,7 +1,7 @@
 // seller.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Seller } from './seller.model';
 
 const BASE_URL = 'https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod';
@@ -37,6 +37,16 @@ export class SellerService {
 
   getAllUsers(): Observable<any> {
     return this.http.get(`${BASE_URL}/auth/users`);
+  }
+
+  getAll(): Observable<Seller[]> {
+    return this.getAllUsers().pipe(
+      map((users: any[]) =>                              
+        users
+          .filter((u: any) => u.role === 'seller')       
+          .map((u: any) => u as Seller)                 
+      )
+    );
   }
 
   getStats(): Observable<any> {

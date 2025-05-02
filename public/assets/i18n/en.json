@@ -457,6 +457,26 @@
   "SALES_PLAN.ROUTES.DOWNTOWN": "Downtown",
   "SALES_PLAN.ROUTES.RURAL_AREA": "Rural Area",
 
-  "SALES_PLAN.LOAD_SUCCESS": "The sales plan was loaded successfully."
+  "SALES_PLAN.LOAD_SUCCESS": "The sales plan was loaded successfully.", 
+  
+  "MENU_PERFORMANCE": "Performance report",
+  "PERFORMANCE_TITLE": "Performance KPIs",
+  "FILTER_SELLER": "Seller",
+  "FILTER_PERIOD": "Period",
+  "FILTER_ALL": "All",
+  "FILTER_MONTH": "Current month",
+  "FILTER_QUARTER": "Last three months",
+  "TABLE_SELLER": "Seller",
+  "TABLE_CLIENTS": "Clients",
+  "TABLE_TOTAL": "Total sales",
+  "TABLE_MONTHLY": "Monthly sales",
+  "TABLE_QUARTERLY": "Quarterly sales",
+  "PERFORMANCE_NO_DATA": "No data available for the selected filters.",
+  "PERFORMANCE_LOAD_ERROR": "Unable to load performance data.",
+  "PERFORMANCE_SELLERS_ERROR": "Unable to load sellers list.",
+  "BUTTON_REFRESH": "Refresh",
+  "GLOBAL": "Global"
+
+  
 
 }

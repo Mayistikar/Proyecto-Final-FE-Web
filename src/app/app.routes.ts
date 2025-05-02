@@ -14,6 +14,7 @@ import { EditSalesPlanComponent } from './seller/edit-sales-plan/edit-sales-plan
 import { UploadProductComponent } from './manufacturer/upload-product/upload-product.component';
 import { AdminComponent } from './admin/admin.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
+import { PerformanceDashboardComponent } from './performance/performance-dashboard/performance-dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -30,5 +31,6 @@ export const routes: Routes = [
   { path: 'seller/edit-sales-plan/:id', component: EditSalesPlanComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
   { path: 'warehouse', component: WarehouseComponent, canActivate: [AuthGuard] },
+  { path: 'performance-dashboard', component: PerformanceDashboardComponent,canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];

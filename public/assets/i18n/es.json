@@ -457,6 +457,24 @@
   "SALES_PLAN.ROUTES.DOWNTOWN": "Centro",
   "SALES_PLAN.ROUTES.RURAL_AREA": "Area Rural",
 
-  "SALES_PLAN.LOAD_SUCCESS": "El plan de ventas se cargó exitosamente."
+  "SALES_PLAN.LOAD_SUCCESS": "El plan de ventas se cargó exitosamente.", 
+
+  "MENU_PERFORMANCE": "Reporte de desempeño",
+  "PERFORMANCE_TITLE": "Indicadores de desempeño",
+  "FILTER_SELLER": "Vendedor",
+  "FILTER_PERIOD": "Periodo",
+  "FILTER_ALL": "Todos",
+  "FILTER_MONTH": "Mes actual",
+  "FILTER_QUARTER": "Último trimestre",
+  "TABLE_SELLER": "Vendedor",
+  "TABLE_CLIENTS": "Clientes",
+  "TABLE_TOTAL": "Ventas totales",
+  "TABLE_MONTHLY": "Ventas mensuales",
+  "TABLE_QUARTERLY": "Ventas trimestrales",
+  "PERFORMANCE_NO_DATA": "No hay datos para los filtros seleccionados.",
+  "PERFORMANCE_LOAD_ERROR": "No se pudo cargar la información de desempeño.",
+  "PERFORMANCE_SELLERS_ERROR": "No se pudo cargar la lista de vendedores.",
+  "BUTTON_REFRESH": "Actualizar",
+  "GLOBAL": "Global"
 
 }

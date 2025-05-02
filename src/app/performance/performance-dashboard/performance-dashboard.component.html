@@ -1,0 +1,93 @@
+<!-- src/app/performance/performance-dashboard.component.html -->
+<div class="container mt-5">
+    <h2 class="mb-4">{{ 'PERFORMANCE_TITLE' | translate }}</h2>
+  
+    <form [formGroup]="filterForm" class="row g-3 mb-4">
+      <div class="col-md-4">
+        <label class="form-label">{{ 'FILTER_SELLER' | translate }}</label>
+        <ng-container [ngSwitch]="true">
+          <div *ngSwitchCase="sellersErr()" class="alert alert-danger p-2">
+            {{ 'PERFORMANCE_SELLERS_ERROR' | translate }}
+          </div>
+          <div *ngSwitchCase="sellersLoading()" class="d-flex align-items-center">
+            <mat-spinner diameter="20" class="me-2"></mat-spinner>
+            <small>{{ 'LOADING_BUTTON_TEXT' | translate }}</small>
+          </div>
+          <select *ngSwitchDefault class="form-select" formControlName="sellerId">
+            <option value="">{{ 'FILTER_ALL' | translate }}</option>
+            <option *ngFor="let s of sellers()" [value]="s.id">{{ s.name }}</option>
+          </select>
+        </ng-container>
+      </div>
+  
+      <div class="col-md-3">
+        <label class="form-label">{{ 'FILTER_PERIOD' | translate }}</label>
+        <select class="form-select" formControlName="period">
+          <option value="month">{{ 'FILTER_MONTH' | translate }}</option>
+          <option value="quarter">{{ 'FILTER_QUARTER' | translate }}</option>
+        </select>
+      </div>
+  
+      <div class="col-md-3 d-flex align-items-end">
+        <button class="btn btn-primary w-100" type="button" (click)="refresh()" [disabled]="loading()">
+          <span *ngIf="!loading(); else loadBtn">
+            <i class="bi bi-arrow-clockwise me-1"></i>
+            {{ 'BUTTON_REFRESH' | translate }}
+          </span>
+          <ng-template #loadBtn>
+            <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+            {{ 'LOADING_BUTTON_TEXT' | translate }}
+          </ng-template>
+        </button>
+      </div>
+    </form>
+  
+    <ng-container *ngIf="loading(); else loadedOrError">
+      <div class="d-flex justify-content-center my-5">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+    </ng-container>
+  
+    <ng-template #loadedOrError>
+      <div *ngIf="loadErr()" class="alert alert-danger">
+        {{ 'PERFORMANCE_LOAD_ERROR' | translate }}
+      </div>
+  
+      <div *ngIf="!loadErr()">
+        <table mat-table [dataSource]="kpis()" class="table table-striped">
+          <ng-container matColumnDef="seller">
+            <th mat-header-cell *matHeaderCellDef>{{ 'TABLE_SELLER' | translate }}</th>
+            <td mat-cell *matCellDef="let k">{{ k.sellerName || ('GLOBAL' | translate) }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="clients">
+            <th mat-header-cell *matHeaderCellDef>{{ 'TABLE_CLIENTS' | translate }}</th>
+            <td mat-cell *matCellDef="let k">{{ k.clientCount }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>{{ 'TABLE_TOTAL' | translate }}</th>
+            <td mat-cell *matCellDef="let k">{{ k.totalSales | currency }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="monthly">
+            <th mat-header-cell *matHeaderCellDef>{{ 'TABLE_MONTHLY' | translate }}</th>
+            <td mat-cell *matCellDef="let k">{{ k.monthlySales | currency }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="quarterly">
+            <th mat-header-cell *matHeaderCellDef>{{ 'TABLE_QUARTERLY' | translate }}</th>
+            <td mat-cell *matCellDef="let k">{{ k.quarterlySales | currency }}</td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+  
+        <div *ngIf="kpis().length === 0" class="alert alert-info">
+          {{ 'PERFORMANCE_NO_DATA' | translate }}
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  
