@@ -22,6 +22,7 @@ export class SellerService {
 
   constructor(private http: HttpClient) {}
 
+
   getAll(): Observable<Seller[]> {
     return this.http
       .get<any[]>(`${BASE_URL}/auth/users?role=seller`)
