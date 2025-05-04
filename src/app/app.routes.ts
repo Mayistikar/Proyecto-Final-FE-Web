@@ -31,6 +31,6 @@ export const routes: Routes = [
   { path: 'seller/edit-sales-plan/:id', component: EditSalesPlanComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
   { path: 'warehouse', component: WarehouseComponent, canActivate: [AuthGuard] },
-  { path: 'performance-dashboard', component: PerformanceDashboardComponent,canActivate: [AuthGuard] },
+  { path: 'performance-dashboard', component: PerformanceDashboardComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];
