@@ -475,6 +475,12 @@
   "PERFORMANCE_LOAD_ERROR": "No se pudo cargar la información de desempeño.",
   "PERFORMANCE_SELLERS_ERROR": "No se pudo cargar la lista de vendedores.",
   "BUTTON_REFRESH": "Actualizar",
-  "GLOBAL": "Global"
+  "GLOBAL": "Global", 
+
+  "PERFORMANCE_SUBTITLE": "Reporte de Desempeño",
+  "PLACEHOLDER_SELLER": "Buscar Vendedor",
+  "BUTTON_FILTER": "Filtrar",
+  "BUTTON_CLEAR": "Limpiar",
+  "PERFORMANCE_TABLE_TITLE": "Tabla de Reportes de Desempeño"
 
 }

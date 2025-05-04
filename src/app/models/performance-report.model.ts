@@ -6,6 +6,4 @@ export interface PerformanceKpi {
   monthlySales: number;
   quarterlySales: number;
   currency?: string;           
-  startDate?: string;           
-  endDate?: string;
 }

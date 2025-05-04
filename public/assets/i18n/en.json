@@ -475,8 +475,13 @@
   "PERFORMANCE_LOAD_ERROR": "Unable to load performance data.",
   "PERFORMANCE_SELLERS_ERROR": "Unable to load sellers list.",
   "BUTTON_REFRESH": "Refresh",
-  "GLOBAL": "Global"
+  "GLOBAL": "Global",
 
-  
+  "PERFORMANCE_SUBTITLE": "Performance Report",
+  "PLACEHOLDER_SELLER": "Search Seller",
+  "BUTTON_FILTER": "Filter",
+  "BUTTON_CLEAR": "Clear",
+  "PERFORMANCE_TABLE_TITLE": "Performance Report Table"
+
 
 }
