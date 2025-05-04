@@ -13,13 +13,13 @@
       <div class="col-md-6">
         <h4 class="mb-3">{{ 'ADMIN_PRODUCTS_FILTER' | translate }}</h4>
         <div class="mb-3">
-          <select id="countryFilter" class="form-control" [(ngModel)]="selectedCountry">
+          <select id="countryFilter" class="form-control" [(ngModel)]="selectedCountry" aria-label="Filter by country">
             <option value="">{{ 'PRODUCT_FIELD_COUNTRY' | translate }}</option>
             <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
           </select>
         </div>
         <div class="mb-3">
-          <select id="warehouseFilter" class="form-control" [(ngModel)]="selectedWarehouse">
+          <select id="warehouseFilter" class="form-control" [(ngModel)]="selectedWarehouse" aria-label="Filter by warehouse">
             <option value="">{{ 'PRODUCT_FIELD_WAREHOUSE' | translate }}</option>
             <option *ngFor="let warehouse of warehouses | keyvalue" [value]="warehouse.key">{{ warehouse.value.name }}</option>
           </select>

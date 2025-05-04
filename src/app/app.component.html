@@ -10,6 +10,13 @@
       <i class="bi bi-person-check-fill"></i>
       {{ 'MENU_AUTHORIZATIONS' | translate }}
     </span>
+    <span
+      class="ms-3 menu-item"
+      *ngIf="userData?.role === 'admin' || userData?.role === 'manager'"
+      (click)="goPerformanceDashboard()">
+      <i class="bi bi-graph-up"></i>
+      {{ 'MENU_PERFORMANCE' | translate }}
+    </span>
   </div>
 
   <div class="language-buttons">
