@@ -1,51 +1,49 @@
-<!-- src/app/performance/performance-dashboard.component.html -->
 <div class="container my-5">
 
   <h2 class="mb-2">{{ 'PERFORMANCE_TITLE' | translate }}</h2>
-  <p class="mb-4">{{ 'PERFORMANCE_SUBTITLE' | translate }}</p>
+  <p  class="mb-4">{{ 'PERFORMANCE_SUBTITLE' | translate }}</p>
 
-  <!-- ░░░░░  Filtros  ░░░░░ -->
-  <form [formGroup]="filterForm" class="row g-3 align-items-end mb-4">
+  <form [formGroup]="filterForm" class="row align-items-end g-3 mb-4">
 
-    <!-- seller autocomplete -->
     <div class="col-md-4">
-      <label class="form-label" for="seller-autocomplete">
-        {{ 'FILTER_SELLER' | translate }}
-      </label>
+      <label class="form-label">{{ 'FILTER_SELLER' | translate }}</label>
 
-      <ng-container [ngSwitch]="true">
-        <!-- error cargando vendedores -->
-        <div *ngSwitchCase="sellersErr()" class="alert alert-danger p-2">
-          {{ 'PERFORMANCE_SELLERS_ERROR' | translate }}
-        </div>
+      <div *ngIf="sellersErr()" class="alert alert-danger p-2">
+        {{ 'PERFORMANCE_SELLERS_ERROR' | translate }}
+      </div>
 
-        <!-- loading vendedores -->
-        <div *ngSwitchCase="sellersLoading()" class="d-flex align-items-center">
-          <span class="spinner-border spinner-border-sm me-2"></span>
-          <small>{{ 'LOADING_BUTTON_TEXT' | translate }}</small>
-        </div>
+      <div *ngIf="sellersLoading()" class="d-flex align-items-center">
+        <div class="spinner-border spinner-border-sm me-2"></div>
+        <small>{{ 'LOADING_BUTTON_TEXT' | translate }}</small>
+      </div>
 
-        <!-- input -->
-        <mat-form-field *ngSwitchDefault appearance="outline" class="w-100">
-          <input
-            id="seller-autocomplete"
-            matInput
-            type="text"
-            [formControl]="sellerNameControl"
-            [matAutocomplete]="auto"
-            placeholder="{{ 'PLACEHOLDER_SELLER' | translate }}">
-          <mat-autocomplete #auto="matAutocomplete"
-                            (optionSelected)="onSellerSelected($event)">
-            <mat-option *ngFor="let s of filteredSellers$ | async"
-                        [value]="s.name">
-              {{ s.name }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </ng-container>
+      <div class="position-relative">
+        <input type="text"
+               class="form-control"
+               placeholder="{{ 'PLACEHOLDER_SELLER' | translate }}"
+               autocomplete="off"
+               [formControl]="sellerNameControl"
+               (focus)="dropdownOpen = true"
+               (input)="onSellerInputChange($event)"
+               (keydown.escape)="dropdownOpen = false">
+
+        <ul *ngIf="dropdownOpen"
+            class="list-group position-absolute w-100 shadow-sm z-3"
+            [style.max-height.px]="220"
+            [style.overflow-y]="'auto'">
+          <li *ngFor="let s of filteredSellers$ | async"
+              class="list-group-item list-group-item-action"
+              (mousedown)="selectSeller(s)">
+            {{ s.name }}
+          </li>
+          <li *ngIf="(filteredSellers$ | async)?.length === 0"
+              class="list-group-item disabled">
+            {{ 'NO_RESULTS' | translate }}
+          </li>
+        </ul>
+      </div>
     </div>
 
-    <!-- period -->
     <div class="col-md-3">
       <label class="form-label" for="period-select">
         {{ 'FILTER_PERIOD' | translate }}
@@ -53,20 +51,19 @@
       <select id="period-select" class="form-select" formControlName="period">
         <option value="month">{{ 'FILTER_MONTH'    | translate }}</option>
         <option value="quarter">{{ 'FILTER_QUARTER' | translate }}</option>
-        <option value="all">{{ 'FILTER_ALL'        | translate }}</option>
+        <option value="all">{{ 'FILTER_ALL' | translate }}</option>
       </select>
     </div>
 
-    <!-- buttons -->
     <div class="col-md-5 d-flex gap-2">
       <button type="button"
               class="btn btn-primary flex-grow-1"
-              [disabled]="loading()"
-              (click)="refresh()">
-        <ng-container *ngIf="!loading(); else spinnerBtn">
+              (click)="refresh()"
+              [disabled]="loading()">
+        <ng-container *ngIf="!loading(); else loadingTpl">
           <i class="bi bi-funnel me-1"></i> {{ 'BUTTON_FILTER' | translate }}
         </ng-container>
-        <ng-template #spinnerBtn>
+        <ng-template #loadingTpl>
           <span class="spinner-border spinner-border-sm me-1"></span>
           {{ 'LOADING_BUTTON_TEXT' | translate }}
         </ng-template>
@@ -80,9 +77,8 @@
     </div>
   </form>
 
-  <!-- ░░░░░  Tarjetas resumen  ░░░░░ -->
   <div *ngIf="summaryKpi()" class="row g-3 mb-4">
-    <div class="col-sm-6 col-lg-3" *ngFor="let c of cards">
+    <div class="col-6 col-lg-3" *ngFor="let c of cards">
       <div class="card shadow-sm h-100 text-center">
         <div class="card-body">
           <h6 class="card-title">{{ c.title | translate }}</h6>
@@ -92,55 +88,53 @@
     </div>
   </div>
 
-  <ng-container *ngIf="loading(); else tableTpl">
-    <div class="d-flex justify-content-center my-5">
-      <span class="spinner-border spinner-border-sm"></span>
-    </div>
-  </ng-container>
-
-  <ng-template #tableTpl>
-
-    <div *ngIf="loadErr()" class="alert alert-danger">
-      {{ 'PERFORMANCE_LOAD_ERROR' | translate }}
+  <div class="position-relative">
+    <div *ngIf="isLoading" class="overlay-spinner">
+      <div class="spinner-border"></div>
     </div>
 
-    <h5 class="mt-4">{{ 'PERFORMANCE_TABLE_TITLE' | translate }}</h5>
+    <div class="table-responsive scroll-table">
+      <table class="table table-hover table-bordered">
+        <thead class="table-light sticky-head text-center">
+          <tr>
+            <th>{{ 'TABLE_SELLER'    | translate }}</th>
+            <th>{{ 'TABLE_CLIENTS'   | translate }}</th>
+            <th>{{ 'TABLE_TOTAL'     | translate }}</th>
+            <th>{{ 'TABLE_MONTHLY'   | translate }}</th>
+            <th>{{ 'TABLE_QUARTERLY' | translate }}</th>
+          </tr>
+        </thead>
 
-    <table mat-table [dataSource]="kpis()"
-           class="table table-bordered table-hover mt-3">
+        <tbody>
+          <ng-container *ngIf="isLoading">
+            <tr *ngFor="let _ of skeletonRows">
+              <td colspan="5">
+                <div class="placeholder-glow">
+                  <span class="placeholder col-12"></span>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
 
-      <ng-container matColumnDef="seller">
-        <th mat-header-cell *matHeaderCellDef># {{ 'TABLE_SELLER' | translate }}</th>
-        <td mat-cell *matCellDef="let k">{{ k.sellerName }}</td>
-      </ng-container>
+          <ng-container *ngIf="!isLoading">
+            <tr *ngFor="let k of kpis(); trackBy: trackById" class="text-center">
+              <td>{{ k.sellerName }}</td>
+              <td>{{ k.clientCount }}</td>
+              <td>{{ k.totalSales     | currency:k.currency:'symbol':'1.0-0' }}</td>
+              <td>{{ k.monthlySales   | currency:k.currency:'symbol':'1.0-0' }}</td>
+              <td>{{ k.quarterlySales | currency:k.currency:'symbol':'1.0-0' }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
 
-      <ng-container matColumnDef="clients">
-        <th mat-header-cell *matHeaderCellDef>{{ 'TABLE_CLIENTS' | translate }}</th>
-        <td mat-cell *matCellDef="let k">{{ k.clientCount }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef>{{ 'TABLE_TOTAL' | translate }}</th>
-        <td mat-cell *matCellDef="let k">{{ k.totalSales | currency:k.currency }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="monthly">
-        <th mat-header-cell *matHeaderCellDef>{{ 'TABLE_MONTHLY' | translate }}</th>
-        <td mat-cell *matCellDef="let k">{{ k.monthlySales | currency:k.currency }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="quarterly">
-        <th mat-header-cell *matHeaderCellDef>{{ 'TABLE_QUARTERLY' | translate }}</th>
-        <td mat-cell *matCellDef="let k">{{ k.quarterlySales | currency:k.currency }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns; trackBy: trackById"></tr>
-    </table>
-
-    <div *ngIf="kpis().length === 0" class="alert alert-info">
-      {{ 'PERFORMANCE_NO_DATA' | translate }}
+      <div *ngIf="!isLoading && kpis().length === 0" class="alert alert-info">
+        {{ 'PERFORMANCE_NO_DATA' | translate }}
+      </div>
     </div>
+  </div>
 
-  </ng-template>
+  <div *ngIf="loadErr()" class="alert alert-danger mt-3">
+    {{ 'PERFORMANCE_LOAD_ERROR' | translate }}
+  </div>
 </div>
