@@ -481,6 +481,23 @@
   "PLACEHOLDER_SELLER": "Buscar Vendedor",
   "BUTTON_FILTER": "Filtrar",
   "BUTTON_CLEAR": "Limpiar",
-  "PERFORMANCE_TABLE_TITLE": "Tabla de Reportes de Desempeño"
+  "PERFORMANCE_TABLE_TITLE": "Tabla de Reportes de Desempeño",
+  
+  "CARD_CLIENTS": "Clientes",
+  "CARD_TOTAL_SALES": "Ventas Totales",
+  "CARD_MONTH_SALES": "Ventas Mensuales",
+  "CARD_QUARTER_SALES": "Ventas Trimestrales",
+
+  "SHOWING_RESULTS_FOR": "Mostrando resultados para",
+  "NO_RESULTS": "No se encontraron resultados coincidentes.",
+
+  "PERFORMANCE_TITLE_DETAIL": "Indicadores de Desempeño",
+  "PERFORMANCE_SUBTITLE_DETAIL": "Análisis detallado del desempeño del vendedor seleccionado.", 
+  "SHOWING_RESULTS_GLOBAL": "Mostrando resultados consolidados para todos los vendedores", 
+  "ADMIN_NAME": "Administrador", 
+
+  "PERFORMANCE_STATUS_GOOD": "Desempeño alto",
+  "PERFORMANCE_STATUS_AVERAGE": "Desempeño medio",
+  "PERFORMANCE_STATUS_LOW": "Desempeño bajo"
 
 }
