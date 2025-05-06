@@ -1,140 +1,165 @@
-<div class="container my-5">
+<div class="container py-5">
 
-  <h2 class="mb-2">{{ 'PERFORMANCE_TITLE' | translate }}</h2>
-  <p  class="mb-4">{{ 'PERFORMANCE_SUBTITLE' | translate }}</p>
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <h2 class="mb-2">
+        {{ selectedSeller
+          ? (selectedSeller.name + ' – ' + ('PERFORMANCE_TITLE_DETAIL' | translate))
+          : (adminName() + ' – ' + ('PERFORMANCE_TITLE' | translate)) }}
+      </h2>
+      <p class="mb-1 text-muted">
+        {{ selectedSeller ? ('PERFORMANCE_SUBTITLE_DETAIL' | translate) : ('PERFORMANCE_SUBTITLE' | translate) }}
+      </p>
+      <p *ngIf="!selectedSeller" class="text-muted small fst-italic">
+        {{ 'SHOWING_RESULTS_GLOBAL' | translate }}
+      </p>
+    </div>
+  </div>
 
-  <form [formGroup]="filterForm" class="row align-items-end g-3 mb-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <form [formGroup]="filterForm" class="mb-3">
+        <label for="sellerSearch" class="form-label fw-semibold">
+          {{ 'FILTER_SELLER' | translate }}
+        </label>
 
-    <div class="col-md-4">
-      <label class="form-label">{{ 'FILTER_SELLER' | translate }}</label>
+        <div *ngIf="sellersErr()" class="alert alert-danger py-2 px-3 small mb-2">
+          {{ 'PERFORMANCE_SELLERS_ERROR' | translate }}
+        </div>
 
-      <div *ngIf="sellersErr()" class="alert alert-danger p-2">
-        {{ 'PERFORMANCE_SELLERS_ERROR' | translate }}
-      </div>
+        <div *ngIf="sellersLoading()" class="d-flex align-items-center mb-2">
+          <div class="spinner-border spinner-border-sm me-2"></div>
+          <small>{{ 'LOADING_BUTTON_TEXT' | translate }}</small>
+        </div>
 
-      <div *ngIf="sellersLoading()" class="d-flex align-items-center">
-        <div class="spinner-border spinner-border-sm me-2"></div>
-        <small>{{ 'LOADING_BUTTON_TEXT' | translate }}</small>
-      </div>
+        <div class="position-relative seller-dropdown">
+          <input id="sellerSearch"
+                 type="text"
+                 class="form-control"
+                 placeholder="{{ 'PLACEHOLDER_SELLER' | translate }}"
+                 autocomplete="off"
+                 [formControl]="sellerNameControl"
+                 (focus)="dropdownOpen = true"
+                 (input)="onSellerInputChange($event)"
+                 (keydown.escape)="dropdownOpen = false"
+                 aria-autocomplete="list"
+                 aria-controls="seller-options">
 
-      <div class="position-relative">
-        <input type="text"
-               class="form-control"
-               placeholder="{{ 'PLACEHOLDER_SELLER' | translate }}"
-               autocomplete="off"
-               [formControl]="sellerNameControl"
-               (focus)="dropdownOpen = true"
-               (input)="onSellerInputChange($event)"
-               (keydown.escape)="dropdownOpen = false">
+          <ul *ngIf="dropdownOpen"
+              id="seller-options"
+              class="list-group position-absolute w-100 shadow-sm z-3 overflow-auto"
+              [style.maxHeight.px]="220">
+            <li *ngFor="let s of filteredSellers$ | async"
+                class="list-group-item list-group-item-action"
+                (mousedown)="selectSeller(s)">
+              {{ s.name }}
+            </li>
+            <li *ngIf="(filteredSellers$ | async)?.length === 0"
+                class="list-group-item disabled text-center text-muted">
+              {{ 'NO_RESULTS' | translate }}
+            </li>
+          </ul>
+        </div>
+      </form>
 
-        <ul *ngIf="dropdownOpen"
-            class="list-group position-absolute w-100 shadow-sm z-3"
-            [style.max-height.px]="220"
-            [style.overflow-y]="'auto'">
-          <li *ngFor="let s of filteredSellers$ | async"
-              class="list-group-item list-group-item-action"
-              (mousedown)="selectSeller(s)">
-            {{ s.name }}
-          </li>
-          <li *ngIf="(filteredSellers$ | async)?.length === 0"
-              class="list-group-item disabled">
-            {{ 'NO_RESULTS' | translate }}
-          </li>
-        </ul>
+      <div *ngIf="selectedSeller" class="mb-4">
+        <strong class="text-muted small">
+          {{ 'SHOWING_RESULTS_FOR' | translate }}: {{ selectedSeller.name }}
+        </strong>
       </div>
     </div>
+  </div>
 
-    <div class="col-md-3">
-      <label class="form-label" for="period-select">
-        {{ 'FILTER_PERIOD' | translate }}
-      </label>
-      <select id="period-select" class="form-select" formControlName="period">
-        <option value="month">{{ 'FILTER_MONTH'    | translate }}</option>
-        <option value="quarter">{{ 'FILTER_QUARTER' | translate }}</option>
-        <option value="all">{{ 'FILTER_ALL' | translate }}</option>
-      </select>
-    </div>
-
-    <div class="col-md-5 d-flex gap-2">
-      <button type="button"
-              class="btn btn-primary flex-grow-1"
-              (click)="refresh()"
-              [disabled]="loading()">
-        <ng-container *ngIf="!loading(); else loadingTpl">
-          <i class="bi bi-funnel me-1"></i> {{ 'BUTTON_FILTER' | translate }}
-        </ng-container>
-        <ng-template #loadingTpl>
-          <span class="spinner-border spinner-border-sm me-1"></span>
-          {{ 'LOADING_BUTTON_TEXT' | translate }}
-        </ng-template>
-      </button>
-
-      <button type="button"
-              class="btn btn-outline-secondary"
-              (click)="clearFilters()">
-        {{ 'BUTTON_CLEAR' | translate }}
-      </button>
-    </div>
-  </form>
-
-  <div *ngIf="summaryKpi()" class="row g-3 mb-4">
-    <div class="col-6 col-lg-3" *ngFor="let c of cards">
-      <div class="card shadow-sm h-100 text-center">
-        <div class="card-body">
-          <h6 class="card-title">{{ c.title | translate }}</h6>
-          <h3 class="mb-0">{{ c.value }}</h3>
+  <div *ngIf="summaryKpi()" class="row g-3 mb-4 justify-content-center">
+    <div class="col-6 col-md-3 col-lg-2" *ngFor="let c of cards">
+      <div class="card shadow-sm h-100 text-center border-0 rounded-3">
+        <div class="card-body py-3">
+          <h6 class="card-title text-muted small">{{ c.title | translate }}</h6>
+          <h3 class="mb-0 fw-bold d-flex justify-content-center align-items-baseline gap-1 flex-wrap">
+            <ng-container *ngIf="c.value?.amount; else plainValue">
+              <span>{{ c.value.amount }}</span>
+              <span class="small text-muted">{{ c.value.currency }}</span>
+            </ng-container>
+            <ng-template #plainValue>{{ c.value }}</ng-template>
+          </h3>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="position-relative">
-    <div *ngIf="isLoading" class="overlay-spinner">
-      <div class="spinner-border"></div>
-    </div>
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <div class="position-relative">
 
-    <div class="table-responsive scroll-table">
-      <table class="table table-hover table-bordered">
-        <thead class="table-light sticky-head text-center">
-          <tr>
-            <th>{{ 'TABLE_SELLER'    | translate }}</th>
-            <th>{{ 'TABLE_CLIENTS'   | translate }}</th>
-            <th>{{ 'TABLE_TOTAL'     | translate }}</th>
-            <th>{{ 'TABLE_MONTHLY'   | translate }}</th>
-            <th>{{ 'TABLE_QUARTERLY' | translate }}</th>
-          </tr>
-        </thead>
+        <div *ngIf="isLoading" class="position-absolute top-50 start-50 translate-middle z-3">
+          <div class="spinner-border text-primary" role="status" aria-label="Loading..."></div>
+        </div>
 
-        <tbody>
-          <ng-container *ngIf="isLoading">
-            <tr *ngFor="let _ of skeletonRows">
-              <td colspan="5">
-                <div class="placeholder-glow">
-                  <span class="placeholder col-12"></span>
-                </div>
-              </td>
-            </tr>
-          </ng-container>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle text-center shadow-sm mb-0">
+            <thead class="table-light sticky-top">
+              <tr>
+                <th scope="col">{{ 'TABLE_SELLER' | translate }}</th>
+                <th scope="col">{{ 'TABLE_CLIENTS' | translate }}</th>
+                <th scope="col">{{ 'TABLE_TOTAL' | translate }}</th>
+                <th scope="col">{{ 'TABLE_MONTHLY' | translate }}</th>
+                <th scope="col">{{ 'TABLE_QUARTERLY' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngIf="isLoading">
+                <tr *ngFor="let _ of skeletonRows">
+                  <td colspan="5">
+                    <div class="placeholder-glow">
+                      <span class="placeholder col-12"></span>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
 
-          <ng-container *ngIf="!isLoading">
-            <tr *ngFor="let k of kpis(); trackBy: trackById" class="text-center">
-              <td>{{ k.sellerName }}</td>
-              <td>{{ k.clientCount }}</td>
-              <td>{{ k.totalSales     | currency:k.currency:'symbol':'1.0-0' }}</td>
-              <td>{{ k.monthlySales   | currency:k.currency:'symbol':'1.0-0' }}</td>
-              <td>{{ k.quarterlySales | currency:k.currency:'symbol':'1.0-0' }}</td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
+              <ng-container *ngIf="!isLoading">
+                <tr *ngFor="let k of kpis(); trackBy: trackById">
+                  <td>{{ k.sellerName }}</td>
+                  <td>{{ k.clientCount }}</td>
+                  <td>
+                    {{ asFormattedMoney(k.totalSales, k.currency).amount }}
+                    {{ asFormattedMoney(k.totalSales, k.currency).currency }}
+                    <i [ngClass]="getPerformanceIcon(k.totalSales)"
+                       class="ms-2"
+                       [attr.aria-label]="getPerformanceLabel(k.totalSales) | translate"
+                       [attr.title]="getPerformanceLabel(k.totalSales) | translate"></i>
+                  </td>
+                  <td>
+                    {{ asFormattedMoney(k.monthlySales, k.currency).amount }}
+                    {{ asFormattedMoney(k.monthlySales, k.currency).currency }}
+                    <i [ngClass]="getPerformanceIcon(k.monthlySales)"
+                       class="ms-2"
+                       [attr.aria-label]="getPerformanceLabel(k.monthlySales) | translate"
+                       [attr.title]="getPerformanceLabel(k.monthlySales) | translate"></i>
+                  </td>
+                  <td>
+                    {{ asFormattedMoney(k.quarterlySales, k.currency).amount }}
+                    {{ asFormattedMoney(k.quarterlySales, k.currency).currency }}
+                    <i [ngClass]="getPerformanceIcon(k.quarterlySales)"
+                       class="ms-2"
+                       [attr.aria-label]="getPerformanceLabel(k.quarterlySales) | translate"
+                       [attr.title]="getPerformanceLabel(k.quarterlySales) | translate"></i>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
 
-      <div *ngIf="!isLoading && kpis().length === 0" class="alert alert-info">
-        {{ 'PERFORMANCE_NO_DATA' | translate }}
+          <div *ngIf="!isLoading && kpis().length === 0" class="alert alert-info text-center mt-3">
+            {{ 'PERFORMANCE_NO_DATA' | translate }}
+          </div>
+        </div>
+
+        <div *ngIf="loadErr()" class="alert alert-danger mt-4 text-center">
+          {{ 'PERFORMANCE_LOAD_ERROR' | translate }}
+        </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="loadErr()" class="alert alert-danger mt-3">
-    {{ 'PERFORMANCE_LOAD_ERROR' | translate }}
-  </div>
 </div>
