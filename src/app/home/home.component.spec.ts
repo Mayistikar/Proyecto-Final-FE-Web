@@ -163,4 +163,103 @@ describe('HomeComponent', () => {
       expect(component.loginForm.touched).toBeTrue();
       expect(component.isLoading).toBeFalse();
     });
+
+    it('should navigate to seller dashboard on successful login with seller role', async () => {
+      spyOn(component.http, 'post').and.returnValue(of({
+        id: '2',
+        email: 'seller@example.com',
+        role: 'seller',
+        id_token: 'token',
+        access_token: 'access',
+        refresh_token: 'refresh'
+      }));
+      spyOn(component.http, 'get').and.returnValue(of({ users: [{ email: 'seller@example.com', profile: { operation_country: 'CO' } }] }));
+    
+      const routerSpy = spyOn(component.router, 'navigate');
+      component.loginForm.setValue({ usuario: 'seller@example.com', contrasena: 'password' });
+    
+      await component.onSubmit();
+    
+      expect(routerSpy).toHaveBeenCalledWith(['/seller-dashboard']);
+    });
+
+    it('should navigate to admin dashboard on successful login with admin role', async () => {
+      spyOn(component.http, 'post').and.returnValue(of({
+        id: '3',
+        email: 'admin@example.com',
+        role: 'admin',
+        id_token: 'token',
+        access_token: 'access',
+        refresh_token: 'refresh'
+      }));
+      spyOn(component.http, 'get').and.returnValue(of({ users: [{ email: 'admin@example.com', profile: { operation_country: 'ES' } }] }));
+    
+      const routerSpy = spyOn(component.router, 'navigate');
+      component.loginForm.setValue({ usuario: 'admin@example.com', contrasena: 'adminpass' });
+    
+      await component.onSubmit();
+    
+      expect(routerSpy).toHaveBeenCalledWith(['/admin']);
+    });
+
+    it('should navigate to home when role is unknown', async () => {
+      spyOn(component.http, 'post').and.returnValue(of({
+        id: '4',
+        email: 'guest@example.com',
+        role: 'unknown_role',
+        id_token: 'token',
+        access_token: 'access',
+        refresh_token: 'refresh'
+      }));
+      spyOn(component.http, 'get').and.returnValue(of({ users: [{ email: 'guest@example.com', profile: { operation_country: 'AR' } }] }));
+    
+      const routerSpy = spyOn(component.router, 'navigate');
+      component.loginForm.setValue({ usuario: 'guest@example.com', contrasena: 'guestpass' });
+    
+      await component.onSubmit();
+    
+      expect(routerSpy).toHaveBeenCalledWith(['/home']);
+    });
+    
+    it('should handle error 422 by setting pendingValidation, errorMessage and form error', async () => {
+      spyOn(component.http, 'post').and.returnValue(
+        throwError(() => ({ status: 422 }))
+      );
+    
+      component.loginForm.setValue({ usuario: 'user@example.com', contrasena: 'wrongpass' });
+    
+      await component.onSubmit();
+    
+      expect(component.pendingValidation).toBeTrue();
+      expect(component.errorMessage).toBe('Invalid credentials');
+      expect(component.loginForm.get('usuario')?.errors).toEqual({ invalid: true });
+    });
+  
+    it('should set userType and email to null if not provided in router state', fakeAsync(() => {
+      const mockState = {
+        pendingValidation: true
+      };
+    
+      const mockRouter = {
+        getCurrentNavigation: () => ({
+          extras: { state: mockState }
+        })
+      } as any;
+    
+      const component = new HomeComponent(
+        new FormBuilder(),
+        mockRouter,
+        TestBed.inject(AuthService),
+        TestBed.inject(HttpClient),
+        mockChangeDetectorRef
+      );
+    
+      expect(component.pendingValidation).toBeTrue();
+      expect(component.userType).toBeNull();
+      expect(component.email).toBeNull();
+    
+      tick(3000);
+      expect(component.pendingValidation).toBeFalse();
+    }));
+
 });

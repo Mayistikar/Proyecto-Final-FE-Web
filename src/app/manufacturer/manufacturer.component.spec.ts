@@ -204,4 +204,24 @@ describe('ManufacturerComponent', () => {
     }));
   });
 
+  it('should not submit the form if it is invalid or passwords do not match', () => {
+    const registerSpy = spyOn(component['manufacturerService'], 'register');
+  
+    component.manufacturerForm.setValue({
+      manufacturerName: '', 
+      companyName: '',
+      companyAddress: '',
+      companyCountry: '',
+      manufacturerEmail: 'correo@valido.com',
+      manufacturerPhone: '123',  
+      manufacturerRUC: '123',
+      password: '12345678',
+      confirmPassword: '87654321'  
+    });
+  
+    component.onSubmit();
+  
+    expect(registerSpy).not.toHaveBeenCalled();
+  });
+
 });
