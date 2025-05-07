@@ -103,6 +103,7 @@
             class="form-control"
             formControlName="dailyGoal"
             min="1"
+            step="1"
             placeholder="{{ 'SALES_PLAN.DAILY_PLACEHOLDER' | translate }}"
             [class.is-valid]="salesPlanForm.get('dailyGoal')?.valid && (salesPlanForm.get('dailyGoal')?.dirty || salesPlanForm.get('dailyGoal')?.touched)"
             [class.is-invalid]="fieldIsInvalid('dailyGoal')"
@@ -110,24 +111,31 @@
           <div *ngIf="fieldIsInvalid('dailyGoal')" class="text-danger small mt-1">
             {{ 'SALES_PLAN.DAILY_REQUIRED' | translate }}
           </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="weeklyGoal" class="form-label">{{ 'SALES_PLAN.WEEKLY_GOAL' | translate }}</label>
-          <input
-            type="number"
-            id="weeklyGoal"
-            class="form-control"
-            formControlName="weeklyGoal"
-            min="1"
-            placeholder="{{ 'SALES_PLAN.WEEKLY_PLACEHOLDER' | translate }}"
-            [class.is-valid]="salesPlanForm.get('weeklyGoal')?.valid && (salesPlanForm.get('weeklyGoal')?.dirty || salesPlanForm.get('weeklyGoal')?.touched)"
-            [class.is-invalid]="fieldIsInvalid('weeklyGoal')"
-          />
-          <div *ngIf="fieldIsInvalid('weeklyGoal')" class="text-danger small mt-1">
-            {{ 'SALES_PLAN.WEEKLY_REQUIRED' | translate }}
+          <div class="form-text text-muted">
+            {{ 'SALES_PLAN.ONLY_INTEGER_VALUES' | translate }}
           </div>
         </div>
+
+          <div class="mb-3">
+            <label for="weeklyGoal" class="form-label">{{ 'SALES_PLAN.WEEKLY_GOAL' | translate }}</label>
+            <input
+              type="number"
+              id="weeklyGoal"
+              class="form-control"
+              formControlName="weeklyGoal"
+              min="1"
+              step="1"
+              placeholder="{{ 'SALES_PLAN.WEEKLY_PLACEHOLDER' | translate }}"
+              [class.is-valid]="salesPlanForm.get('weeklyGoal')?.valid && (salesPlanForm.get('weeklyGoal')?.dirty || salesPlanForm.get('weeklyGoal')?.touched)"
+              [class.is-invalid]="fieldIsInvalid('weeklyGoal')"
+            />
+            <div *ngIf="fieldIsInvalid('weeklyGoal')" class="text-danger small mt-1">
+              {{ 'SALES_PLAN.WEEKLY_REQUIRED' | translate }}
+            </div>
+            <div class="form-text text-muted">
+              {{ 'SALES_PLAN.ONLY_INTEGER_VALUES' | translate }}
+            </div>
+          </div>
 
         <div class="form-row d-flex gap-3">
           <div class="mb-3 w-50">

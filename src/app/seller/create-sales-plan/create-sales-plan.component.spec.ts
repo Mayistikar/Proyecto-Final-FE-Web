@@ -110,9 +110,7 @@ describe('CreateSalesPlanComponent', () => {
   });
 
   it('should submit form successfully and navigate on success', fakeAsync(() => {
-    mockAuthService.getUserData.and.returnValue(sellerUser);
-    mockAuthService.getUserId.and.returnValue(sellerUser.id);
-    mockSalesPlanService.create.and.returnValue(of({
+    const mockPlan = {
       id: faker.string.uuid(),
       sellerId: sellerUser.id,
       name: 'Plan Demo',
@@ -120,36 +118,46 @@ describe('CreateSalesPlanComponent', () => {
       visitRoute: 'Route XYZ',
       dailyGoal: 10,
       weeklyGoal: 50,
-      startTime: '08:00',
-      endTime: '18:00',
+      startTime: '08:00:00',
+      endTime: '18:00:00',
       strategy: 'DIRECT_PROMOTION',
       event: 'LOCAL_CONCERT',
       createdAt: new Date().toISOString()
-    }));
-
+    };
+  
+    mockAuthService.getUserData.and.returnValue(sellerUser);
+    mockAuthService.getUserId.and.returnValue(sellerUser.id);
+    mockSalesPlanService.create.and.returnValue(of(mockPlan));
+  
     fixture.detectChanges();
-
+  
     component.salesPlanForm.setValue({
-      name: 'Plan Demo',
-      description: 'Push strategy description',
-      visitRoute: 'Route XYZ',
-      dailyGoal: 10,
-      weeklyGoal: 50,
+      name: mockPlan.name,
+      description: mockPlan.description,
+      visitRoute: mockPlan.visitRoute,
+      dailyGoal: mockPlan.dailyGoal,
+      weeklyGoal: mockPlan.weeklyGoal,
       startTime: '08:00',
       endTime: '18:00',
-      strategy: 'DIRECT_PROMOTION',
-      event: 'LOCAL_CONCERT'
+      strategy: mockPlan.strategy,
+      event: mockPlan.event
     });
-
-    spyOn(toastr, 'success').and.callThrough();
-    spyOn(translate, 'instant').and.callFake((key: string) => key);
-
+  
+    expect(component.salesPlanForm.valid).toBeTrue();
+  
+    const toastrSpy = spyOn(toastr, 'success');
+    const translateSpy = spyOn(translate, 'instant').and.callFake((key: string) => key);
+    const navigateSpy = mockRouter.navigate as jasmine.Spy;
+  
     component.onSubmit();
-    tick(1500);
-
-    expect(mockSalesPlanService.create).toHaveBeenCalled();
-    expect(toastr.success).toHaveBeenCalled();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/seller-dashboard']);
+    tick(1500); 
+  
+    expect(mockSalesPlanService.create).toHaveBeenCalledWith(jasmine.objectContaining({
+      name: mockPlan.name,
+      seller_id: sellerUser.id
+    }));
+    expect(toastrSpy).toHaveBeenCalled();
+    expect(navigateSpy).toHaveBeenCalledWith(['/seller-dashboard']);
     expect(component.isLoading).toBeFalse();
   }));
 

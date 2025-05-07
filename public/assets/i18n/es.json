@@ -498,6 +498,8 @@
 
   "PERFORMANCE_STATUS_GOOD": "Desempeño alto",
   "PERFORMANCE_STATUS_AVERAGE": "Desempeño medio",
-  "PERFORMANCE_STATUS_LOW": "Desempeño bajo"
+  "PERFORMANCE_STATUS_LOW": "Desempeño bajo", 
+
+    "SALES_PLAN.ONLY_INTEGER_VALUES": "Solo se permiten números enteros"
 
 }

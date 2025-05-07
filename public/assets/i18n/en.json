@@ -495,7 +495,9 @@
   "ADMIN_NAME": "Administrator", 
   "PERFORMANCE_STATUS_GOOD": "High performance",
   "PERFORMANCE_STATUS_AVERAGE": "Average performance",
-  "PERFORMANCE_STATUS_LOW": "Low performance"
+  "PERFORMANCE_STATUS_LOW": "Low performance", 
+
+  "SALES_PLAN.ONLY_INTEGER_VALUES": "Only integer values are allowed"
 
 }
   

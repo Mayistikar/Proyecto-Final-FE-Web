@@ -1,7 +1,7 @@
 // src/app/seller/edit-sales-plan/edit-sales-plan.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidationErrors, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { AuthService } from '../../auth/auth.service';
@@ -70,8 +70,8 @@ export class EditSalesPlanComponent implements OnInit {
       visitRoute: ['', [Validators.required]],
       strategy: ['', [Validators.required]],
       event: ['', [Validators.required]],
-      dailyGoal: ['', [Validators.required, Validators.min(1)]],
-      weeklyGoal: ['', [Validators.required, Validators.min(1)]],
+      dailyGoal: ['', [Validators.required, Validators.min(1), this.integerValidator]],
+      weeklyGoal: ['', [Validators.required, Validators.min(1), this.integerValidator]],
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]]
     }, { validators: this.validateTimeRange });
@@ -82,6 +82,11 @@ export class EditSalesPlanComponent implements OnInit {
     const end = group.get('endTime')?.value;
     if (!start || !end) return null;
     return start < end ? null : { invalidTimeRange: true };
+  }
+
+  integerValidator(control: FormControl): ValidationErrors | null {
+    const value = control.value;
+    return Number.isInteger(Number(value)) ? null : { notInteger: true };
   }
 
   loadSalesPlan(): void {
@@ -142,11 +147,15 @@ export class EditSalesPlanComponent implements OnInit {
       visit_route: payload.visitRoute,
       strategy: payload.strategy,
       event: payload.event,
-      daily_goal: payload.dailyGoal,
-      weekly_goal: payload.weeklyGoal,
-      start_time: payload.startTime,
-      end_time: payload.endTime
+      daily_goal: Math.floor(payload.dailyGoal),
+      weekly_goal: Math.floor(payload.weeklyGoal),
+      start_time: this.toHHMMSS(payload.startTime),
+      end_time: this.toHHMMSS(payload.endTime)
     };
+  }
+
+  private toHHMMSS(time: string): string {
+    return time.length === 5 ? `${time}:00` : time;
   }
 
   onSubmit(): void {
