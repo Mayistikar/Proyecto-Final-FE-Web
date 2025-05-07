@@ -153,4 +153,50 @@ describe('AuthService', () => {
     });
 
 
+    it('should assign zone and country directly if sector_coverage starts with "ZONE_"', () => {
+      const userData: UserData = {
+        id: '1',
+        email: 'test@zone.com',
+        role: 'manufacturer',
+        idToken: 'id-token',
+        accessToken: 'access-token',
+        refreshToken: 'refresh-token'
+      };
+    
+      const rawUser = {
+        ...userData,
+        sector_coverage: 'ZONE_CALI'
+      };
+    
+      localStorage.clear();
+      authService.login(rawUser);
+    
+      expect(localStorage.getItem('user_zone')).toBe('ZONE_CALI');
+      expect(localStorage.getItem('user_country')).toBe('COVERAGE_COLOMBIA'); // si no está definido en mapa
+    });
+
+    it('should default country to COVERAGE_COLOMBIA when zone has no mapping', () => {
+      const userData: UserData = {
+        id: '1',
+        email: 'user@nomap.com',
+        role: 'manufacturer',
+        idToken: 'id',
+        accessToken: 'access',
+        refreshToken: 'refresh',
+        zone: 'ZONE_UNKNOWN'
+      };
+    
+      const rawUser = {
+        ...userData,
+        sector_coverage: 'ZONE_UNKNOWN' 
+      };
+    
+      localStorage.clear();
+      authService.login(rawUser);
+    
+      expect(localStorage.getItem('user_country')).toBe('COVERAGE_COLOMBIA');
+    });
+    
+
+
 });

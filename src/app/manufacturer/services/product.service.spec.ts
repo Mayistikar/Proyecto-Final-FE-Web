@@ -225,6 +225,72 @@ describe('ProductService', () => {
       req.flush('Internal Server Error', { status: 500, statusText: 'Internal Server Error' });
     });
 
+    it('should get products by manufacturer ID', (): void => {
+      const manufacturerId = 'm123';
+      const mockProducts: Product[] = [
+        { id: 'p1', name: 'Prod1', price: 100 } as Product,
+        { id: 'p2', name: 'Prod2', price: 150 } as Product
+      ];
+  
+      service.getProductsByManufacturer(manufacturerId).subscribe((products: Product[]) => {
+        expect(products.length).toBe(2);
+        expect(products).toEqual(mockProducts);
+      });
+  
+      const req = httpMock.expectOne(`${baseUrl}/products/search?manufacturer_id=${manufacturerId}`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockProducts);
+    });
+  
+    it('should send multiple products', (): void => {
+      const products: any[] = [{ name: 'Prod1' }, { name: 'Prod2' }];
+  
+      service.sendProducts(products).subscribe((response: any[]) => {
+        expect(response.length).toBe(2);
+        expect(response[0]).toEqual({ success: true });
+        expect(response[1]).toEqual({ success: true });
+      });
+  
+      const reqs = httpMock.match(`${baseUrl}/products`);
+      expect(reqs.length).toBe(2);
+      reqs.forEach((req: any) => {
+        expect(req.request.method).toBe('POST');
+        req.flush({ success: true });
+      });
+    });
+
+    it('should get warehouses by country', (): void => {
+      const country = 'Colombia';
+      const mockWarehouses = [
+        { id: '1', name: 'Bogotá Central', country: 'Colombia', location: 'Bogotá', description: 'Main warehouse' }
+      ];
+    
+      service.getWarehouses(country).subscribe((warehouses) => {
+        expect(warehouses.length).toBe(1);
+        expect(warehouses[0].country).toBe('Colombia');
+      });
+    
+      const req = httpMock.expectOne(`${baseUrl}/warehouses/country/${country}`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockWarehouses);
+    });
+    
+    it('should get all warehouses when no country is specified', (): void => {
+      const mockWarehouses = [
+        { id: '1', name: 'Warehouse A', country: 'USA', location: 'NY', description: 'East coast' },
+        { id: '2', name: 'Warehouse B', country: 'Germany', location: 'Berlin', description: 'EU hub' }
+      ];
+    
+      service.getWarehouses().subscribe((warehouses) => {
+        expect(warehouses.length).toBe(2);
+      });
+    
+      const req = httpMock.expectOne(`${baseUrl}/warehouses`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockWarehouses);
+    });
+    
+
 });
 
 
