@@ -252,6 +252,19 @@ describe('SellerService', () => {
     });
   });
 
+  it('getAll() devuelve [] si /auth/users y /api/sellers fallan', () => {
+    let sellers: Seller[] | undefined;
+  
+    service.getAll().subscribe(list => (sellers = list));
+  
+    const req1 = httpCtl.expectOne(AUTH_SELLERS_ENDPOINT);
+    req1.error(new ProgressEvent('error'));
+  
+    const req2 = httpCtl.expectOne(API_SELLERS_ENDPOINT);
+    req2.error(new ProgressEvent('error'));
+  
+    expect(sellers).toEqual([]);
+  });
   
 });
 

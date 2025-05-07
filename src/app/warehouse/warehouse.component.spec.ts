@@ -123,4 +123,55 @@ describe('WarehouseComponent', () => {
   afterEach(() => {
     httpMock.verify();
   });
+
+  it('should call fetchProducts and fetchWarehouses on ngOnInit', () => {
+    const fetchProductsSpy = spyOn(component, 'fetchProducts');
+    const fetchWarehousesSpy = spyOn(component, 'fetchWarehouses');
+  
+    component.ngOnInit();
+  
+    expect(fetchProductsSpy).toHaveBeenCalled();
+    expect(fetchWarehousesSpy).toHaveBeenCalled();
+  });
+
+  it('should handle error when fetching products', () => {
+    spyOn(console, 'error');
+  
+    component.fetchProducts();
+  
+    const req = httpMock.expectOne('https://kxa0nfrh14.execute-api.us-east-1.amazonaws.com/prod/api/products/search');
+    req.flush('Error loading products', { status: 500, statusText: 'Internal Server Error' });
+  
+    expect(console.error).toHaveBeenCalledWith('Error fetching products:', jasmine.anything());
+    expect(component.isLoading).toBeFalse();
+  });
+
+  it('should set userName from localStorage if user_email exists', () => {
+    const testEmail = 'test@example.com';
+    spyOn(localStorage, 'getItem').withArgs('user_email').and.returnValue(testEmail);
+  
+    const fixture = TestBed.createComponent(WarehouseComponent);
+    const component = fixture.componentInstance;
+  
+    expect(component.userName).toBe(testEmail);
+  });
+
+  it('should set userName to empty string if user_email is falsy', () => {
+    spyOn(localStorage, 'getItem').withArgs('user_email').and.returnValue('');
+  
+    const fixture = TestBed.createComponent(WarehouseComponent);
+    const component = fixture.componentInstance;
+  
+    expect(component.userName).toBe('');
+  });
+
+  it('should assign empty string to userName if user_email is null', () => {
+    spyOn(localStorage, 'getItem').withArgs('user_email').and.returnValue(null);
+  
+    const fixture = TestBed.createComponent(WarehouseComponent);
+    const component = fixture.componentInstance;
+  
+    expect(component.userName).toBe('');
+  });
+  
 });
