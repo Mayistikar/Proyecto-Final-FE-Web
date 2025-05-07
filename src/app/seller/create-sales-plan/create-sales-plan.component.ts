@@ -1,7 +1,7 @@
 // src/app/seller/create-sales-plan/create-sales-plan.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidationErrors, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SalesPlanService } from '../services/sales-plan.service';
 import { ToastrService } from 'ngx-toastr';
@@ -66,13 +66,18 @@ export class CreateSalesPlanComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       visitRoute: ['', [Validators.required]],
-      dailyGoal: ['', [Validators.required, Validators.min(1)]],
-      weeklyGoal: ['', [Validators.required, Validators.min(1)]],
+      dailyGoal: ['', [Validators.required, Validators.min(1), this.integerValidator]],
+      weeklyGoal: ['', [Validators.required, Validators.min(1), this.integerValidator]],
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
       strategy: ['', [Validators.required]],
       event: ['', [Validators.required]]
     }, { validators: this.validateTimeRange });
+  }
+
+  integerValidator(control: FormControl): ValidationErrors | null {
+    const value = control.value;
+    return Number.isInteger(Number(value)) ? null : { notInteger: true };
   }
 
   validateTimeRange(group: FormGroup): ValidationErrors | null {
@@ -94,15 +99,19 @@ export class CreateSalesPlanComponent implements OnInit {
       name: payload.name,
       description: payload.description,
       visit_route: payload.visitRoute,
-      daily_goal: payload.dailyGoal,
-      weekly_goal: payload.weeklyGoal,
-      start_time: payload.startTime,
-      end_time: payload.endTime,
+      daily_goal: Math.floor(payload.dailyGoal), 
+      weekly_goal: Math.floor(payload.weeklyGoal), 
+      start_time: this.toHHMMSS(payload.startTime),
+      end_time: this.toHHMMSS(payload.endTime),
       strategy: payload.strategy,
       event: payload.event,
       seller_id: payload.sellerId,
       created_at: payload.createdAt
     };
+  }
+
+  private toHHMMSS(time: string): string {
+    return time.length === 5 ? `${time}:00` : time;
   }
 
   onSubmit(): void {

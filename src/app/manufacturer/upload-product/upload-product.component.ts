@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {KeyValuePipe, CommonModule} from '@angular/common';
 import {ProductService} from '../services/product.service';
@@ -23,7 +23,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
   templateUrl: './upload-product.component.html',
   styleUrl: './upload-product.component.css'
 })
-export class UploadProductComponent {
+export class UploadProductComponent implements OnInit{
 
   jsonData: any[] = [];
   isFileUploaded: boolean = false;
@@ -33,7 +33,7 @@ export class UploadProductComponent {
   userCountry?: string | null = '';
   userId?: string | null = '';
   warehouses: any[] = [];
-  warehouseSelected: any;
+  warehouseSelected: string = '';
 
   constructor(
     private productService: ProductService,
@@ -41,14 +41,41 @@ export class UploadProductComponent {
     private translate: TranslateService,
     private router: Router,
     private authService: AuthService,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.userCountry = this.authService.getUserCountry()?.split("_")[1];
     this.userId = this.authService.getUserId();
-    console.log(this.userId);
-    this.productService.getWarehouses(this.userCountry?.toLowerCase()).subscribe((warehouses) => {
-      this.warehouses = warehouses;
+    console.log('User ID:', this.userId);
+    console.log('User Country:', this.userCountry);
+  
+    this.loadWarehouses(); 
+  }
+  
+
+private loadWarehouses(): void {
+  if (this.userCountry) {
+    this.productService.getWarehouses().subscribe({
+      next: (warehouses) => {
+        console.log('Warehouses sin filtro:', warehouses);
+        this.warehouses = warehouses;
+      },
+      error: (err) => {
+        console.error('Error loading all warehouses:', err);
+      }
+    });
+  } else {
+    console.warn('No country found for current user');
+    this.productService.getWarehouses().subscribe({
+      next: (warehouses) => {
+        this.warehouses = warehouses;
+      },
+      error: (err) => {
+        console.error('Fallback: Error loading all warehouses:', err);
+      }
     });
   }
+}
 
   downloadFile(): void {
     const link = document.createElement('a');

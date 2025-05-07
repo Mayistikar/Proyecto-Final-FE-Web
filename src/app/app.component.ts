@@ -65,6 +65,10 @@ export class AppComponent {
     this.router.navigate(['/admin']);
   }
 
+  goPerformanceDashboard() {
+    this.router.navigate(['/performance-dashboard']);
+  }
+
   logout() {
     this.authService.logout();
     this.userData = null;

@@ -457,6 +457,47 @@
   "SALES_PLAN.ROUTES.DOWNTOWN": "Downtown",
   "SALES_PLAN.ROUTES.RURAL_AREA": "Rural Area",
 
-  "SALES_PLAN.LOAD_SUCCESS": "The sales plan was loaded successfully."
+  "SALES_PLAN.LOAD_SUCCESS": "The sales plan was loaded successfully.", 
+  
+  "MENU_PERFORMANCE": "Performance report",
+  "PERFORMANCE_TITLE": "Performance KPIs",
+  "FILTER_SELLER": "Seller",
+  "FILTER_PERIOD": "Period",
+  "FILTER_ALL": "All",
+  "FILTER_MONTH": "Current month",
+  "FILTER_QUARTER": "Last three months",
+  "TABLE_SELLER": "Seller",
+  "TABLE_CLIENTS": "Clients",
+  "TABLE_TOTAL": "Total sales",
+  "TABLE_MONTHLY": "Monthly sales",
+  "TABLE_QUARTERLY": "Quarterly sales",
+  "PERFORMANCE_NO_DATA": "No data available for the selected filters.",
+  "PERFORMANCE_LOAD_ERROR": "Unable to load performance data.",
+  "PERFORMANCE_SELLERS_ERROR": "Unable to load sellers list.",
+  "BUTTON_REFRESH": "Refresh",
+  "GLOBAL": "Global",
+
+  "PERFORMANCE_SUBTITLE": "Performance Report",
+  "PLACEHOLDER_SELLER": "Search Seller",
+  "BUTTON_FILTER": "Filter",
+  "BUTTON_CLEAR": "Clear",
+  "PERFORMANCE_TABLE_TITLE": "Performance Report Table", 
+
+  "CARD_CLIENTS": "Clients",
+  "CARD_TOTAL_SALES": "Total Sales",
+  "CARD_MONTH_SALES": "Monthly Sales",
+  "CARD_QUARTER_SALES": "Quarterly Sales", 
+  "SHOWING_RESULTS_FOR": "Showing results for",
+  "NO_RESULTS": "No matching results found.", 
+  "PERFORMANCE_TITLE_DETAIL": "Sales KPIs",
+  "PERFORMANCE_SUBTITLE_DETAIL": "Detailed performance metrics for the selected seller.", 
+  "SHOWING_RESULTS_GLOBAL": "Showing consolidated results for all sellers",
+  "ADMIN_NAME": "Administrator", 
+  "PERFORMANCE_STATUS_GOOD": "High performance",
+  "PERFORMANCE_STATUS_AVERAGE": "Average performance",
+  "PERFORMANCE_STATUS_LOW": "Low performance", 
+
+  "SALES_PLAN.ONLY_INTEGER_VALUES": "Only integer values are allowed"
 
 }
+  

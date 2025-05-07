@@ -97,4 +97,31 @@ describe('AdminComponent', () => {
     component.closeErrorMessage();
     expect(component.errorMessageVisible).toBeFalse();
   });
+
+  it('should handle error in getUsers and set isLoading to false', fakeAsync(() => {
+    const errorSpy = spyOn(console, 'error');
+    const mockError = new Error('Failed to fetch users');
+    
+    spyOn(component['authService'], 'getUsers').and.returnValue(throwError(() => mockError));
+  
+    component.ngOnInit();
+    tick();
+  
+    expect(component.isLoading).toBeFalse();
+    expect(errorSpy).toHaveBeenCalledWith('Error fetching users:', mockError);
+  }));
+
+  it('should set errorMessageVisible to true when authorize fails', fakeAsync(() => {
+    component.ngOnInit();
+    tick();
+  
+    const user = component.unauthorizedUsers[0];
+  
+    spyOn(component['authService'], 'authorizeUser').and.returnValue(throwError(() => new Error('Authorization failed')));
+  
+    component.authorize(user);
+    tick();
+  
+    expect(component.errorMessageVisible).toBeTrue();
+  }));
 });

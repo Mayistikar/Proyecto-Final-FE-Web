@@ -133,4 +133,28 @@ describe('ManufacturerDashboardComponent', () => {
     expect(component.manufacturerName).toBe('');  
   });
 
+  it('should increment loadingProductsValue from 0 to 100 and clear interval', (done: DoneFn) => {
+    component.loadingProductsValue = 0;
+    component.ngOnInit();
+  
+    setTimeout(() => {
+      expect(component.loadingProductsValue).toBe(100);
+      done();
+    }, 1100);
+  });
+
+  it('should filter products by sku', () => {
+    component.products = [
+      { id: '1', name: 'Alpha', sku: 'SKU123' },
+      { id: '2', name: 'Beta', sku: 'XYZ789' },
+      { id: '3', name: 'Gamma', sku: 'TEST001' }
+    ] as any[];
+  
+    component.searchTerm = 'xyz';
+  
+    const result = component.filteredProducts;
+    expect(result.length).toBe(1);
+    expect(result[0].sku).toBe('XYZ789');
+  });
+
 });

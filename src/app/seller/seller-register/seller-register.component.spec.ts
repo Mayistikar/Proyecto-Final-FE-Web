@@ -186,7 +186,6 @@ describe('SellerRegisterComponent (refactor)', () => {
       confirmPassword: ''
     };
 
-    // Desactiva validadores para permitir el envío
     Object.keys(component.sellerForm.controls).forEach(key => {
       component.sellerForm.get(key)?.clearValidators();
       component.sellerForm.get(key)?.updateValueAndValidity();
@@ -195,7 +194,6 @@ describe('SellerRegisterComponent (refactor)', () => {
     component.sellerForm.setValue(emptyForm);
     fixture.detectChanges();
 
-    // Espía a router.navigate para evitar error de ruta no definida
     const navigateSpy = spyOn(component['router'], 'navigate');
     sellerServiceSpy.register.and.returnValue(of({}));
 
@@ -212,7 +210,6 @@ describe('SellerRegisterComponent (refactor)', () => {
       password: ''
     }));
 
-    // Asegura que intentó navegar a la ruta esperada
     expect(navigateSpy).toHaveBeenCalledWith(['/login']);
   }));
 
@@ -240,7 +237,7 @@ describe('SellerRegisterComponent (refactor)', () => {
       confirmPassword: null
     };
 
-    // Desactiva validadores para permitir submit
+
     Object.keys(nullishForm).forEach(key => {
       component.sellerForm.get(key)?.clearValidators();
       component.sellerForm.get(key)?.updateValueAndValidity();
@@ -268,5 +265,36 @@ describe('SellerRegisterComponent (refactor)', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['/login']);
   }));
 
+
+  it('should call authService.login and navigate to seller-dashboard when response is valid', fakeAsync(() => {
+    const formData = buildValidForm();
+    component.sellerForm.setValue(formData);
+  
+    const validResponse = {
+      id: '123',
+      email: formData.email,
+      access_token: 'access123',
+      id_token: 'id123',
+      refresh_token: 'refresh123'
+    };
+  
+    sellerServiceSpy.register.and.returnValue(of(validResponse));
+  
+    const navigateSpy = spyOn(component['router'], 'navigate');
+    component.onSubmit();
+    tick();
+  
+    expect(authServiceMock.login).toHaveBeenCalledWith(jasmine.objectContaining({
+      id: validResponse.id,
+      email: validResponse.email,
+      role: 'seller',
+      zone: formData.zone,
+      idToken: validResponse.id_token,
+      accessToken: validResponse.access_token,
+      refreshToken: validResponse.refresh_token
+    }));
+  
+    expect(navigateSpy).toHaveBeenCalledWith(['/seller-dashboard']);
+  }));
 
 });

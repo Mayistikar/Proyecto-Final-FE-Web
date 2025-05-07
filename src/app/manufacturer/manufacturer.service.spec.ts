@@ -100,6 +100,19 @@ describe('ManufacturerService', () => {
     expect(req.request.method).toBe('DELETE');
     req.flush(mockResponse);
   });
+
+  it('should register a manufacturer via POST', () => {
+    const mockResponse = { message: 'Manufacturer created' };
+
+    service.register(mockPayload).subscribe(res => {
+      expect(res).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(`${BASE_URL}/api/create_manufacturer`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(mockPayload);
+    req.flush(mockResponse);
+  });
 });
 
 
